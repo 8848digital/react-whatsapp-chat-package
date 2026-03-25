@@ -26,7 +26,10 @@ export const createWhatsAppClient = (baseURL: string, token?: string) => {
       params.append("reference_doctype", payload.reference_doctype);
       params.append("reference_name", payload.reference_name);
       const url = `/api/method/crm_integration.crm_integration.api.whatsapp.get_whatsapp_messages?${params.toString()}`;
-      return client.get<GetWhatsAppMessagesResponse>(url, { headers: { "Content-Type": "text/plain" } }).then(r => r.data);
+      const res = await client.get<GetWhatsAppMessagesResponse>(url, { 
+        headers: { "Content-Type": "text/plain" } 
+      });
+      return res.data;
     },
     sendMessage: async (payload: SendWhatsAppMessagePayload) => {
       const params = new URLSearchParams();
@@ -40,15 +43,17 @@ export const createWhatsAppClient = (baseURL: string, token?: string) => {
       if (payload.links?.length) params.append("links", JSON.stringify(payload.links));
 
       const url = `/api/method/crm_integration.crm_integration.api.whatsapp.create_whatsapp_message?${params.toString()}`;
-      return client.post<FrappeMethodResponse>(url, undefined, {
+      const res = await client.post<FrappeMethodResponse>(url, undefined, {
         headers: { "Content-Type": "text/plain" }
-      }).then(r => r.data);
+      });
+      return res.data;
     },
     getTemplates: async (references: TemplateListReference[]) => {
       const params = new URLSearchParams();
       params.set("references", JSON.stringify(references));
       const url = `/api/method/crm_integration.crm_integration.api.whatsapp.get_templates_list?${params.toString()}`;
-      return client.get<GetTemplatesListResponse>(url).then(r => r.data);
+      const res = await client.get<GetTemplatesListResponse>(url);
+      return res.data;
     },
     sendTemplate: async (payload: SendWhatsAppTemplatePayload) => {
       const url = "/api/method/crm_integration.crm_integration.api.whatsapp.send_whatsapp_template";
@@ -58,27 +63,31 @@ export const createWhatsAppClient = (baseURL: string, token?: string) => {
       formData.append("to", payload.to);
       formData.append("template", payload.template);
       if (payload.links?.length) formData.append("links", JSON.stringify(payload.links));
-      return client.post<SendWhatsAppTemplateResponse>(url, formData).then(r => r.data);
+      const res = await client.post<SendWhatsAppTemplateResponse>(url, formData);
+      return res.data;
     },
     sendReadReceipt: async (payload: SendReadReceiptPayload) => {
       const params = new URLSearchParams();
       params.append("name", payload.name);
       const url = `/api/method/crm_integration.crm_integration.api.whatsapp.send_read_receipt?${params.toString()}`;
-      return client.get<SendReadReceiptResponse>(url, { headers: { "Content-Type": "text/plain" } }).then(r => r.data);
+      const res = await client.get<SendReadReceiptResponse>(url, { 
+        headers: { "Content-Type": "text/plain" } 
+      });
+      return res.data;
     },
     uploadFile: async (file: File) => {
       const url = "/api/method/upload_file";
       const formData = new FormData();
       formData.append("file", file);
-      // Using 'any' here as the response structure can vary based on frappe version, 
-      // thoughเรา have interface UploadFileResponse
-      return client.post<any>(url, formData).then(r => r.data);
+      const res = await client.post<UploadFileResponse>(url, formData);
+      return res.data;
     },
     getIncomingCommunications: async (user: string) => {
       const params = new URLSearchParams();
       params.set("user", user);
       const url = `/api/method/crm_integration.crm_integration.api.dashboard.get_incoming_communications?${params.toString()}`;
-      return client.get<GetIncomingCommunicationsResponse>(url).then(r => r.data);
+      const res = await client.get<GetIncomingCommunicationsResponse>(url);
+      return res.data;
     }
   };
 };

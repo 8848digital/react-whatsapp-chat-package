@@ -1,5 +1,5 @@
 import { default as React } from 'react';
-import { Message } from '../types/whatsapp';
+import { Message, SocketMessageDoc, WhatsAppMessage } from '../types/whatsapp';
 /**
  * Format timestamp into local HH:MM AM/PM
  */
@@ -14,4 +14,4 @@ export declare const renderMessageStatusIcon: (status?: number, isOutbound?: num
 export declare const parseMessageWithLinks: (text: string) => React.ReactNode;
 /** Map backend status string to UI status number (1 Sent, 2 Failed, 3 Delivered, 4 Read, 5 Pending). */
 export declare function statusStringToNumber(s: string | undefined): number | undefined;
-export declare function transformToMessage(raw: any): Message | null;
+export declare function transformToMessage(raw: SocketMessageDoc | WhatsAppMessage | any): Message | null;

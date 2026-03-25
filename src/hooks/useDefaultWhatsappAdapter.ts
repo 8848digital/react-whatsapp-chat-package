@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { createWhatsAppClient } from "../api/whatsappApi";
 import { transformToMessage } from "../utils/whatsapp";
 import type { 
-  WhatsappWidgetApiAdapter, Message, TemplateListReference, SocketMessageDoc
+  WhatsappWidgetApiAdapter, Message, TemplateListReference, SocketMessageDoc, WhatsAppMessage
 } from "../types/whatsapp";
 
 /**
@@ -22,7 +22,7 @@ export const useDefaultWhatsappAdapter = (baseURL?: string, token?: string, user
       getMessages: async (doctype: string, name: string) => {
         const res = await client.getMessages({ reference_doctype: doctype, reference_name: name });
         const msgs = res.message || [];
-        return msgs.map((m: any) => transformToMessage(m as SocketMessageDoc)).filter((m): m is Message => !!m);
+        return msgs.map((m: WhatsAppMessage) => transformToMessage(m)).filter((m: Message | null): m is Message => !!m);
       },
       sendMessage: async (payload) => {
         const res = await client.sendMessage(payload);
@@ -37,8 +37,6 @@ export const useDefaultWhatsappAdapter = (baseURL?: string, token?: string, user
       },
       uploadFile: async (file: File) => {
         const res = await client.uploadFile(file);
-        // Frappe 14/15 format: { message: { file_url: "..." } } 
-        // Some older versions might be { file_url: "..." }
         const file_url = res.message?.file_url || res.file_url || "";
         return { file_url };
       },
@@ -55,13 +53,14 @@ export const useDefaultWhatsappAdapter = (baseURL?: string, token?: string, user
           // If no specific contact is provided, return the total unread count for WhatsApp
           if (!phone && !referenceName) {
             return data
-              .filter((c: any) => c.type === "whatsapp")
-              .reduce((sum: number, c: any) => sum + (c.counts || 0), 0);
+              .filter((c: { type: string; counts?: number }) => c.type === "whatsapp")
+              .reduce((sum: number, c: { counts?: number }) => sum + (c.counts || 0), 0);
           }
 
           // Find the unread count for the specific contact
           const currentCount = data.find(
-            (c: any) => c.type === "whatsapp" && 
+            (c: { type: string; from?: string; customer?: string; counts?: number }) => 
+            c.type === "whatsapp" && 
             ((phone && c.from === phone) || (referenceName && c.customer === referenceName))
           )?.counts ?? 0;
           

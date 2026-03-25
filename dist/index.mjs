@@ -3040,43 +3040,47 @@ const {
       const r = new URLSearchParams();
       r.append("reference_doctype", s.reference_doctype), r.append("reference_name", s.reference_name);
       const o = `/api/method/crm_integration.crm_integration.api.whatsapp.get_whatsapp_messages?${r.toString()}`;
-      return n.get(o, { headers: { "Content-Type": "text/plain" } }).then((a) => a.data);
+      return (await n.get(o, {
+        headers: { "Content-Type": "text/plain" }
+      })).data;
     },
     sendMessage: async (s) => {
-      var a;
+      var i;
       const r = new URLSearchParams();
-      s.reference_doctype && r.append("reference_doctype", s.reference_doctype), s.reference_name && r.append("reference_name", s.reference_name), r.append("message", s.message), r.append("to", s.to), s.attach && r.append("attach", s.attach), s.content_type && r.append("content_type", s.content_type), s.reply_to !== void 0 && r.append("reply_to", s.reply_to || ""), (a = s.links) != null && a.length && r.append("links", JSON.stringify(s.links));
+      s.reference_doctype && r.append("reference_doctype", s.reference_doctype), s.reference_name && r.append("reference_name", s.reference_name), r.append("message", s.message), r.append("to", s.to), s.attach && r.append("attach", s.attach), s.content_type && r.append("content_type", s.content_type), s.reply_to !== void 0 && r.append("reply_to", s.reply_to || ""), (i = s.links) != null && i.length && r.append("links", JSON.stringify(s.links));
       const o = `/api/method/crm_integration.crm_integration.api.whatsapp.create_whatsapp_message?${r.toString()}`;
-      return n.post(o, void 0, {
+      return (await n.post(o, void 0, {
         headers: { "Content-Type": "text/plain" }
-      }).then((i) => i.data);
+      })).data;
     },
     getTemplates: async (s) => {
       const r = new URLSearchParams();
       r.set("references", JSON.stringify(s));
       const o = `/api/method/crm_integration.crm_integration.api.whatsapp.get_templates_list?${r.toString()}`;
-      return n.get(o).then((a) => a.data);
+      return (await n.get(o)).data;
     },
     sendTemplate: async (s) => {
-      var a;
+      var i;
       const r = "/api/method/crm_integration.crm_integration.api.whatsapp.send_whatsapp_template", o = new FormData();
-      return s.reference_doctype && o.append("reference_doctype", s.reference_doctype), s.reference_name && o.append("reference_name", s.reference_name), o.append("to", s.to), o.append("template", s.template), (a = s.links) != null && a.length && o.append("links", JSON.stringify(s.links)), n.post(r, o).then((i) => i.data);
+      return s.reference_doctype && o.append("reference_doctype", s.reference_doctype), s.reference_name && o.append("reference_name", s.reference_name), o.append("to", s.to), o.append("template", s.template), (i = s.links) != null && i.length && o.append("links", JSON.stringify(s.links)), (await n.post(r, o)).data;
     },
     sendReadReceipt: async (s) => {
       const r = new URLSearchParams();
       r.append("name", s.name);
       const o = `/api/method/crm_integration.crm_integration.api.whatsapp.send_read_receipt?${r.toString()}`;
-      return n.get(o, { headers: { "Content-Type": "text/plain" } }).then((a) => a.data);
+      return (await n.get(o, {
+        headers: { "Content-Type": "text/plain" }
+      })).data;
     },
     uploadFile: async (s) => {
       const r = "/api/method/upload_file", o = new FormData();
-      return o.append("file", s), n.post(r, o).then((a) => a.data);
+      return o.append("file", s), (await n.post(r, o)).data;
     },
     getIncomingCommunications: async (s) => {
       const r = new URLSearchParams();
       r.set("user", s);
       const o = `/api/method/crm_integration.crm_integration.api.dashboard.get_incoming_communications?${r.toString()}`;
-      return n.get(o).then((a) => a.data);
+      return (await n.get(o)).data;
     }
   };
 }, zr = (e, t, n) => {

@@ -377,6 +377,7 @@ export interface WhatsAppMessage {
     }>;
     header_type?: string | null;
     sample?: string | null;
+    [key: string]: unknown;
 }
 export interface GetWhatsAppMessagesResponse {
     message: WhatsAppMessage[];
@@ -430,6 +431,8 @@ export interface UploadFileResponse {
         file_size?: number;
         [key: string]: unknown;
     };
+    file_url?: string;
+    [key: string]: unknown;
 }
 export interface WhatsAppMessageData {
     message?: string;

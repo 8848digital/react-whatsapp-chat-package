@@ -99,9 +99,9 @@ export function statusStringToNumber(s: string | undefined): number | undefined 
  * Unified transformer for both API (raw) and Socket (raw) messages.
  * Ensures internal consistency between real-time updates and historical data.
  */
-import type { Message, SocketMessageDoc, MessageTemplateLink } from "../types/whatsapp";
+import type { Message, SocketMessageDoc, MessageTemplateLink, WhatsAppMessage } from "../types/whatsapp";
 
-export function transformToMessage(raw: any): Message | null {
+export function transformToMessage(raw: SocketMessageDoc | WhatsAppMessage | any): Message | null {
   if (!raw?.name) return null;
 
   const isOutbound = raw.type === "Outgoing";
