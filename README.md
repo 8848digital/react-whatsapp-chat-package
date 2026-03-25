@@ -66,12 +66,7 @@ import { WhatsappChat } from "react-whatsapp-chat-widget";
 const SidePanel = () => {
   return (
     <div style={{ height: "600px", border: "1px solid #ddd" }}>
-      <WhatsappChat 
-        baseURL="https://api.com" 
-        token="xyz" 
-        phone="1234567890" 
-        refName="Contact-001" 
-      />
+      <WhatsappChat baseURL="https://api.com" token="xyz" phone="1234567890" refName="Contact-001" />
     </div>
   );
 };
@@ -95,24 +90,24 @@ The Trigger component includes everything in the `WhatsappChat` props, plus:
 
 These props are available on both `WhatsappChat` and `WhatsappChatTrigger`.
 
-| Prop               | Type                       | Default     | Description                                                   |
-| ------------------ | -------------------------- | ----------- | ------------------------------------------------------------- |
-| **Connection Settings** |                        |             |                                                               |
-| `baseURL`          | `string`                   | Optional    | API Base URL.                                                 |
-| `token`            | `string`                   | Optional    | Auth token for API calls.                                     |
-| **Metadata**       |                            |             |                                                               |
-| `phone`            | `string`                   | Optional    | The recipient's phone number.                                 |
-| `refName`          | `string`                   | `""`        | Primary record ID (e.g. "Contact-001").                       |
-| `refDoctype`       | `string`                   | `"Contact"` | Primary record type.                                          |
-| `currentUserEmail` | `string`                   | Optional    | Your identity (required for unread badge logic).              |
-| `links`            | `WhatsappChatLink[]`       | `[]`        | Secondary linked documents to track communication against.    |
-| **Real-Time Integration** |                       |             |                                                               |
-| `socketPayload`    | `SocketPayload`            | Optional    | Raw socket event from your host app to trigger unread counts. |
-| `socketConnected`  | `boolean`                  | Optional    | Manual override for socket connection status.                 |
-| **Notifications**  |                            |             |                                                               |
-| `showNotification` | `Function`                 | Optional    | Callback for success alerts.                                  |
-| `showWarning`      | `Function`                 | Optional    | Callback for warning alerts.                                  |
-| `showError`        | `Function`                 | Optional    | Callback for error alerts.                                    |
+| Prop                      | Type                 | Default     | Description                                                   |
+| ------------------------- | -------------------- | ----------- | ------------------------------------------------------------- |
+| **Connection Settings**   |                      |             |                                                               |
+| `baseURL`                 | `string`             | Optional    | API Base URL.                                                 |
+| `token`                   | `string`             | Optional    | Auth token for API calls.                                     |
+| **Metadata**              |                      |             |                                                               |
+| `phone`                   | `string`             | Optional    | The recipient's phone number.                                 |
+| `refName`                 | `string`             | `""`        | Primary record ID (e.g. "Contact-001").                       |
+| `refDoctype`              | `string`             | `"Contact"` | Primary record type.                                          |
+| `currentUserEmail`        | `string`             | Optional    | Your identity (required for unread badge logic).              |
+| `links`                   | `WhatsappChatLink[]` | `[]`        | Secondary linked documents to track communication against.    |
+| **Real-Time Integration** |                      |             |                                                               |
+| `socketPayload`           | `SocketPayload`      | Optional    | Raw socket event from your host app to trigger unread counts. |
+| `socketConnected`         | `boolean`            | Optional    | Manual override for socket connection status.                 |
+| **Notifications**         |                      |             |                                                               |
+| `showNotification`        | `Function`           | Optional    | Callback for success alerts.                                  |
+| `showWarning`             | `Function`           | Optional    | Callback for warning alerts.                                  |
+| `showError`               | `Function`           | Optional    | Callback for error alerts.                                    |
 
 ## 🔔 Notification Handling
 
@@ -139,13 +134,13 @@ The following props follow the signature: `(title: string, message: string) => v
 Import the styles in your main entry point (App.tsx or layout.tsx):
 
 ```javascript
-import "react-whatsapp-chat-widget/dist/styles.css";
+import "react-whatsapp-chat-package/dist/styles.css";
 ```
 
 ## 📦 Building for Production
 
 ```bash
-cd react-whatsapp-chat-widget
+cd react-whatsapp-chat-package
 npm run build
 ```
 
