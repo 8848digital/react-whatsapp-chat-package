@@ -1,1 +1,1 @@
-# react-whatsapp-chat-widget
+# react-whatsapp-chat-package
