@@ -36,6 +36,8 @@ export const WhatsappChatWidget = () => {
     uploadFileMutation,
   } = useWhatsappWidgetLogic();
 
+  const { config } = useWhatsappChatConfig();
+
   return (
     <>
       <div className="whatsapp-chat-container">
@@ -44,7 +46,7 @@ export const WhatsappChatWidget = () => {
             <User size={20} color="#008069" />
           </div>
           <div className="whatsapp-header-info">
-            <h4>WhatsApp Chat</h4>
+            <h4>{config.currentUserFullName || "WhatsApp Chat"}</h4>
             <span className={isConnected ? "connection-status connected" : "connection-status reconnecting"}>
               {isConnected ? "● Connected" : "○ Reconnecting..."}
             </span>
@@ -102,6 +104,7 @@ export interface WhatsappChatComponentProps {
 
   // --- Meta Props ---
   currentUserEmail?: string;
+  currentUserFullName?: string;
   phone?: string;
   refDoctype?: string;
   refName?: string | null;
@@ -122,6 +125,7 @@ export const WhatsappChat = ({
   baseURL,
   token,
   currentUserEmail,
+  currentUserFullName,
   phone,
   refDoctype = "Contact",
   refName = "",
@@ -138,6 +142,7 @@ export const WhatsappChat = ({
     token,
     socketConnected,
     currentUserEmail,
+    currentUserFullName,
     phone,
     refDoctype,
     refName,

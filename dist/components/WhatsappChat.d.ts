@@ -11,6 +11,7 @@ export interface WhatsappChatComponentProps {
     /** Manual override for socket connection status (useful in pass-through mode) */
     socketConnected?: boolean;
     currentUserEmail?: string;
+    currentUserFullName?: string;
     phone?: string;
     refDoctype?: string;
     refName?: string | null;
@@ -20,5 +21,5 @@ export interface WhatsappChatComponentProps {
     showWarning?: (title: string, message: string) => void;
     showError?: (title: string, message: string) => void;
 }
-export declare const WhatsappChat: ({ apiAdapter: externalApiAdapter, config: externalConfig, socketAdapter: externalSocketAdapter, socketPayload, socketConnected, baseURL, token, currentUserEmail, phone, refDoctype, refName, links, showNotification, showWarning, showError, }: WhatsappChatComponentProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const WhatsappChat: ({ apiAdapter: externalApiAdapter, config: externalConfig, socketAdapter: externalSocketAdapter, socketPayload, socketConnected, baseURL, token, currentUserEmail, currentUserFullName, phone, refDoctype, refName, links, showNotification, showWarning, showError, }: WhatsappChatComponentProps) => import("react/jsx-runtime").JSX.Element | null;
 export default WhatsappChat;

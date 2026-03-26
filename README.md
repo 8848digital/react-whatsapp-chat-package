@@ -103,12 +103,7 @@ import { WhatsappSendMessage } from "react-whatsapp-chat-package";
 const FastReplyPanel = () => {
   return (
     <div style={{ padding: "1rem", border: "1px solid #ddd" }}>
-      <WhatsappSendMessage
-        baseURL="https://api.com"
-        token="xyz"
-        phone="1234567890"
-        currentUserFullName="Support Team"
-      />
+      <WhatsappSendMessage baseURL="https://api.com" token="xyz" phone="1234567890" currentUserFullName="Support Team" />
     </div>
   );
 };

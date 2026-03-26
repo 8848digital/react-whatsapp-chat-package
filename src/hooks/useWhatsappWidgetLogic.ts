@@ -176,7 +176,7 @@ export function useWhatsappWidgetLogic() {
       // 4. Mark the latest one as read (Server logic usually handles all previous ones)
       apiAdapter.sendReadReceipt(latestUnread.name);
       markedReadIds.current.add(latestUnread.name);
-      
+
       // 5. CRITICAL: Update guard IMMEDIATELY to prevent this effect from re-running
       hasCaughtUpReadReceipts.current = true;
     } else if (messages.length > 0) {
@@ -363,7 +363,18 @@ export function useWhatsappWidgetLogic() {
       if (!msg || !msg.name) return;
 
       const currentMessages = store.getState().messages;
+      const isStatusUpdate = msg.status !== null && msg.status !== undefined;
       let tempIndex = -1;
+
+      // Ignore status-only inbound payloads if we don't already have the message in history.
+      // This prevents "Delivered/Read" updates from being appended as if they were new messages.
+      if (msg.is_outbound === 0 && isStatusUpdate) {
+        const exists = currentMessages.some((m: Message) => m.name === msg.name);
+        if (exists && typeof msg.status === "number") {
+          updateMessageStatus(msg.name, msg.status);
+        }
+        return;
+      }
 
       // 1. Read receipt logic: Only if chat is open AND it's an incoming message
       if (config.isChatOpen && msg.is_outbound === 0 && msg.name && config.phone === msg.from) {
@@ -423,7 +434,8 @@ export function useWhatsappWidgetLogic() {
         const alreadyExists = currentMessages.some((m: Message) => m.name === msg.name);
         if (!alreadyExists) {
           appendMessage(msg);
-        } else if (msg.status !== undefined && msg.is_outbound === 1) {
+        } else if (typeof msg.status === "number") {
+          // Allow status updates to update message state (outbound and inbound if present)
           updateMessageStatus(msg.name, msg.status);
         }
       }

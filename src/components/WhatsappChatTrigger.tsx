@@ -26,6 +26,7 @@ interface WhatsappChatTriggerProps {
 
   // --- Meta Props ---
   currentUserEmail?: string;
+  currentUserFullName?: string;
   phone?: string;
   refDoctype?: string;
   refName?: string | null;
@@ -61,6 +62,7 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
   socketPayload,
   socketConnected,
   currentUserEmail,
+  currentUserFullName,
   phone,
   refDoctype = "Contact",
   refName = "",
@@ -88,6 +90,7 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
     token,
     socketConnected,
     currentUserEmail,
+    currentUserFullName,
     phone,
     refDoctype,
     refName,
@@ -150,7 +153,13 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
         width={modalSize}
         header={<h3 style={{ margin: 0, fontSize: "1.1rem" }}>WhatsApp Chat</h3>}
       >
-        <WhatsappChat apiAdapter={apiAdapter} config={config} socketAdapter={finalSocketAdapter} socketPayload={socketPayload} />
+        <WhatsappChat 
+          apiAdapter={apiAdapter} 
+          config={config} 
+          socketAdapter={finalSocketAdapter} 
+          socketPayload={socketPayload} 
+          currentUserFullName={currentUserFullName}
+        />
       </Modal>
     </>
   );

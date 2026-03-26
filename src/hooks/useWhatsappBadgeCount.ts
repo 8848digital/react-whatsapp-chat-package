@@ -96,17 +96,17 @@ export function useWhatsappBadgeCount(
     const onNewMessage = (msg: Message | null) => {
       if (!msg || msg.name === undefined) return;
 
-      // 1. Only process incoming messages for badge/notification
-      if (msg.is_outbound === 0) {
+      // 1. Only process *new incoming* messages for badge/notification.
+      // Ignore status-only updates (Delivered/Read/etc.) to avoid repeated notifications / count churn.
+      const isStatusUpdate = msg.status !== null && msg.status !== undefined;
+      if (msg.is_outbound === 0 && !isStatusUpdate) {
         // Optimistically update the store list
         handleIncomingMessage(msg);
 
         // Notify user if:
         // - Chat is closed
-        // - Message is NOT already read (status 4)
         // - Message is NEW (not already notified)
-        const isRead = msg.status === 4;
-        if (!isChatOpen && !isRead && !notifiedMessageIds.has(msg.name)) {
+        if (!isChatOpen && !notifiedMessageIds.has(msg.name)) {
           notifiedMessageIds.add(msg.name);
           if (apiAdapter.showNotification) {
             const senderInfo = msg.sender || msg.from_name || "Customer";

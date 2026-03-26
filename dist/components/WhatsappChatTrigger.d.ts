@@ -11,6 +11,7 @@ interface WhatsappChatTriggerProps {
     /** Manual override for socket connection status (useful in pass-through mode) */
     socketConnected?: boolean;
     currentUserEmail?: string;
+    currentUserFullName?: string;
     phone?: string;
     refDoctype?: string;
     refName?: string | null;
