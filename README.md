@@ -1,6 +1,6 @@
-# React WhatsApp Chat Widget 💬
+# React WhatsApp Chat Package 💬
 
-A professional, fully-decoupled WhatsApp Chat Widget for React designed with an adapter-based architecture. Built by **8848 Digital**, this package provides a seamless way to integrate WhatsApp messaging into any React application using your own API and real-time logic.
+A professional, fully-decoupled WhatsApp Chat Package for React designed with an adapter-based architecture. Built by **8848 Digital**, this package provides a seamless way to integrate WhatsApp messaging into any React application using your own API and real-time logic.
 
 ## 🚀 Key Features
 
@@ -17,7 +17,7 @@ A professional, fully-decoupled WhatsApp Chat Widget for React designed with an 
 
 ```bash
 # If using Git installation
-npm install https://github.com/8848digital/react-whatsapp-chat-widget.git
+npm install https://github.com/8848digital/react-whatsapp-chat-package.git
 ```
 
 ### Peer Dependencies
@@ -32,11 +32,11 @@ npm install react react-dom zustand @tanstack/react-query @phosphor-icons/react
 
 ### 1. Standard Usage (Direct API Integration)
 
-The easiest way to integrate. The widget handles all API calls internally using the provided `baseURL` and `token`.
+The easiest way to integrate. The package handles all API calls internally using the provided `baseURL` and `token`.
 
 ```tsx
-import { WhatsappChatTrigger } from "react-whatsapp-chat-widget";
-import "react-whatsapp-chat-widget/dist/styles.css";
+import { WhatsappChatTrigger } from "react-whatsapp-chat-package";
+import "react-whatsapp-chat-package/dist/styles.css";
 
 const MyComponent = () => {
   return (
@@ -61,7 +61,7 @@ const MyComponent = () => {
 If you already have your own modal or want to embed the chat directly into a sidebar/page, use the `WhatsappChat` component.
 
 ```tsx
-import { WhatsappChat } from "react-whatsapp-chat-widget";
+import { WhatsappChat } from "react-whatsapp-chat-package";
 
 const SidePanel = () => {
   return (
@@ -77,7 +77,7 @@ const SidePanel = () => {
 For cases where you only need to send a quick message or template without showing the full chat history, use the `SendMessage` variant. This is more compact and does not fetch previous messages.
 
 ```tsx
-import { WhatsappSendMessageTrigger } from "react-whatsapp-chat-widget";
+import { WhatsappSendMessageTrigger } from "react-whatsapp-chat-package";
 
 const QuickAction = () => {
   return (
@@ -93,7 +93,29 @@ const QuickAction = () => {
 };
 ```
 
+#### Embedded Send-Only Component
+
+If you want to use the send-only interface without a trigger button:
+
+```tsx
+import { WhatsappSendMessage } from "react-whatsapp-chat-package";
+
+const FastReplyPanel = () => {
+  return (
+    <div style={{ padding: "1rem", border: "1px solid #ddd" }}>
+      <WhatsappSendMessage
+        baseURL="https://api.com"
+        token="xyz"
+        phone="1234567890"
+        currentUserFullName="Support Team"
+      />
+    </div>
+  );
+};
+```
+
 #### Key differences for Send-Only:
+
 - **No History**: Skips the initial history fetch and does not render the message list.
 - **Compact UI**: The modal defaults to `600px` width and `auto` height (shrinks to fit).
 - **Display Name**: Supports `currentUserFullName` to show your identity in the header.
@@ -104,17 +126,17 @@ const QuickAction = () => {
 
 The Trigger component includes everything in the `WhatsappChat` props, plus:
 
-| Prop                | Type                   | Default           | Description                                                  |
-| ------------------- | ---------------------- | ----------------- | ------------------------------------------------------------ |
-| `buttonLabel`       | `string`               | `"WhatsApp"`      | Trigger button text.                                         |
-| `icon`              | `ReactNode`            | Optional          | Custom icon to show inside/instead of the button.            |
-| `btnClassName`      | `string`               | `""`              | Additional CSS class for the button/trigger wrapper.         |
-| `variant`           | `"default" \| "plain"` | `"default"`       | Use "plain" for a minimalist button without the wrapper box. |
-| `modalSize`         | `string`               | `"1024px"`        | Chat modal width (e.g. "800px", "50%").                      |
-| **Modal Control**   |                        |                   |                                                              |
-| `isOpen`            | `boolean`              | Internal          | Controlled state for the modal visibility.                   |
-| `onOpen`            | `() => void`           | Optional          | Fired when the trigger button is clicked to open the modal.  |
-| `onClose`           | `() => void`           | Optional          | Fired when the modal's close button is clicked.              |
+| Prop              | Type                   | Default      | Description                                                  |
+| ----------------- | ---------------------- | ------------ | ------------------------------------------------------------ |
+| `buttonLabel`     | `string`               | `"WhatsApp"` | Trigger button text.                                         |
+| `icon`            | `ReactNode`            | Optional     | Custom icon to show inside/instead of the button.            |
+| `btnClassName`    | `string`               | `""`         | Additional CSS class for the button/trigger wrapper.         |
+| `variant`         | `"default" \| "plain"` | `"default"`  | Use "plain" for a minimalist button without the wrapper box. |
+| `modalSize`       | `string`               | `"1024px"`   | Chat modal width (e.g. "800px", "50%").                      |
+| **Modal Control** |                        |              |                                                              |
+| `isOpen`          | `boolean`              | Internal     | Controlled state for the modal visibility.                   |
+| `onOpen`          | `() => void`           | Optional     | Fired when the trigger button is clicked to open the modal.  |
+| `onClose`         | `() => void`           | Optional     | Fired when the modal's close button is clicked.              |
 
 ### `WhatsappChat` / Shared Props
 
@@ -142,7 +164,7 @@ These props are available on both `WhatsappChat` and `WhatsappChatTrigger`.
 
 ## 🔔 Notification Handling
 
-The widget is UI-agnostic regarding notifications. Instead of bundling a toast library, it provides "slots" for you to connect your own application's alert system.
+The package is UI-agnostic regarding notifications. Instead of bundling a toast library, it provides "slots" for you to connect your own application's alert system.
 
 The following props follow the signature: `(title: string, message: string) => void`.
 
@@ -165,7 +187,7 @@ The following props follow the signature: `(title: string, message: string) => v
 Import the styles in your main entry point (App.tsx or layout.tsx):
 
 ```javascript
-import "react-whatsapp-chat-package/dist/styles.css";
+import "react-whatsapp-chat-package/styles.css";
 ```
 
 ## 📦 Building for Production
