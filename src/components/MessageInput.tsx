@@ -18,11 +18,12 @@ export const MessageInput = ({
   selectedTemplateName,
   selectedTemplate,
   onClearTemplate,
-  attachedFile,
+  attachedFiles = [],
   onFileRemove,
   onFileSelect,
+  initialInputText = "",
 }: MessageInputProps) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialInputText);
   const containerRef = useRef<HTMLDivElement>(null);
   const fileUploadRef = useRef<FileUploadRef>(null);
   const templateSelected = !!selectedTemplateName;
@@ -34,21 +35,25 @@ export const MessageInput = ({
     }
   }, [templateSelected]);
 
-  // Sync text when template changes
+  // Sync text when template changes; otherwise restore prefilled text when template is cleared
   React.useEffect(() => {
     if (templateText !== undefined && templateText !== "") {
       setText(templateText);
-    } else if (templateText === undefined || templateText === "") {
-      setText("");
+    } else if (!selectedTemplateName) {
+      setText(initialInputText ?? "");
     }
-  }, [templateText]);
+  }, [templateText, selectedTemplateName, initialInputText]);
 
   const handleSend = () => {
-    if (text.trim() || attachedFile || templateSelected) {
-      onSend(text, attachedFile?.fileUrl, attachedFile?.contentType);
+    const attach = attachedFiles
+      .map((file) => file.fileUrl)
+      .filter(Boolean)
+      .map((fileUrl) => ({ file: fileUrl as string }));
+    const firstContentType = attachedFiles[0]?.contentType;
+    if (text.trim() || attach.length > 0 || templateSelected) {
+      onSend(text, attach, firstContentType);
       if (!templateSelected) {
         setText("");
-        if (onFileRemove) onFileRemove();
       }
     }
   };
@@ -58,9 +63,8 @@ export const MessageInput = ({
   };
 
   const handleFilesSelected = (files: File[]) => {
-    const file = files?.[0];
-    if (file && onFileSelect) {
-      onFileSelect(file);
+    if (files?.length && onFileSelect) {
+      onFileSelect(files);
     }
   };
 
@@ -86,7 +90,7 @@ export const MessageInput = ({
       tabIndex={templateSelected ? 0 : undefined}
       style={{ outline: "none" }}
     >
-      <FileUpload ref={fileUploadRef} onSelect={handleFilesSelected} multiple={false} accept="image/*,video/*,audio/*,.pdf,.doc,.docx" />
+      <FileUpload ref={fileUploadRef} onSelect={handleFilesSelected} multiple={true} accept="image/*,video/*,audio/*,.pdf,.doc,.docx" />
       <button
         onClick={handleFileClick}
         type="button"
@@ -149,12 +153,22 @@ export const MessageInput = ({
       <button
         onClick={handleSend}
         className="whatsapp-send-btn"
-        disabled={isLoading || (!templateSelected && !text.trim() && !attachedFile)}
+        disabled={isLoading || (!templateSelected && !text.trim() && attachedFiles.length === 0)}
         title={isSending ? "Sending..." : "Send"}
       >
         {isSending ? <Spinner /> : <PaperPlaneTilt size={20} color="white" />}
       </button>
-      {attachedFile && <AttachmentPreview attachedFile={attachedFile} onFileRemove={onFileRemove} />}
+      {attachedFiles.length > 0 && (
+        <div className="whatsapp-input-attachments-row">
+          {attachedFiles.map((file, index) => (
+            <AttachmentPreview
+              key={`${file.file.name}-${index}`}
+              attachedFile={file}
+              onFileRemove={onFileRemove ? () => onFileRemove(index) : undefined}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

@@ -269,17 +269,29 @@
   border-radius: 3px;
 }
 
+/* Attachment chips: one row, wrap when space runs out (not full-width cards) */
+.whatsapp-input-attachments-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+  flex-basis: 100%;
+}
+
 .whatsapp-attachment-preview {
-  margin-top: 8px;
+  margin-top: 0;
   background: white;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   padding: 8px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  width: 100%;
+  width: auto;
+  max-width: min(260px, 100%);
+  flex: 0 0 auto;
 }
 
 .whatsapp-attachment-image-thumb {
@@ -290,7 +302,8 @@
 }
 
 .whatsapp-attachment-info {
-  flex: 1;
+  flex: 1 1 auto;
+  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -303,7 +316,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  flex: 1;
+  max-width: 140px;
 }
 
 .whatsapp-attachment-remove {

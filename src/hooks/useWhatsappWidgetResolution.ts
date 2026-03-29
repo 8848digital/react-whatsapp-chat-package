@@ -5,7 +5,8 @@ import type {
   WhatsappWidgetApiAdapter, 
   WhatsappWidgetConfig, 
   SocketAdapter, 
-  WhatsappChatLink 
+  WhatsappChatLink,
+  WhatsappAttachItem,
 } from "../types/whatsapp";
 
 export interface WidgetResolutionParams {
@@ -22,6 +23,10 @@ export interface WidgetResolutionParams {
   refName?: string | null;
   links?: WhatsappChatLink[];
   isChatOpen: boolean;
+  /** Pre-seeded attachments (server file paths); merged into resolved `config.attach` */
+  attach?: WhatsappAttachItem[];
+  /** Prefills composer; merged into resolved `config.preAddedMessages` */
+  preAddedMessages?: string;
   showNotification?: (title: string, message: string) => void;
   showWarning?: (title: string, message: string) => void;
   showError?: (title: string, message: string) => void;
@@ -46,6 +51,8 @@ export const useWhatsappWidgetResolution = (params: WidgetResolutionParams) => {
     refName = "",
     links = [],
     isChatOpen,
+    attach: attachProp,
+    preAddedMessages: preAddedMessagesProp,
     showNotification,
     showWarning,
     showError,
@@ -63,7 +70,13 @@ export const useWhatsappWidgetResolution = (params: WidgetResolutionParams) => {
 
   // 3. Resolve Config (Internal vs External)
   const config = useMemo(() => {
-    if (externalConfig) return externalConfig;
+    if (externalConfig) {
+      return {
+        ...externalConfig,
+        ...(attachProp !== undefined ? { attach: attachProp } : {}),
+        ...(preAddedMessagesProp !== undefined ? { preAddedMessages: preAddedMessagesProp } : {}),
+      };
+    }
     return {
       currentUser: currentUserEmail || "",
       currentUserFullName,
@@ -73,8 +86,22 @@ export const useWhatsappWidgetResolution = (params: WidgetResolutionParams) => {
       links: links,
       isChatOpen: isChatOpen,
       apiBaseUrl: baseURL,
+      ...(attachProp !== undefined ? { attach: attachProp } : {}),
+      ...(preAddedMessagesProp !== undefined ? { preAddedMessages: preAddedMessagesProp } : {}),
     };
-  }, [externalConfig, currentUserEmail, currentUserFullName, refDoctype, refName, phone, links, isChatOpen, baseURL]);
+  }, [
+    externalConfig,
+    currentUserEmail,
+    currentUserFullName,
+    refDoctype,
+    refName,
+    phone,
+    links,
+    isChatOpen,
+    baseURL,
+    attachProp,
+    preAddedMessagesProp,
+  ]);
 
   // 4. Resolve Socket Adapter
   const internalSocketAdapter = useMemo(() => {

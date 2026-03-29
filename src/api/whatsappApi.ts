@@ -37,7 +37,13 @@ export const createWhatsAppClient = (baseURL: string, token?: string) => {
       if (payload.reference_name) params.append("reference_name", payload.reference_name);
       params.append("message", payload.message);
       params.append("to", payload.to);
-      if (payload.attach) params.append("attach", payload.attach);
+      if (payload.attach) {
+        if (Array.isArray(payload.attach)) {
+          params.append("attach", JSON.stringify(payload.attach));
+        } else {
+          params.append("attach", payload.attach);
+        }
+      }
       if (payload.content_type) params.append("content_type", payload.content_type);
       if (payload.reply_to !== undefined) params.append("reply_to", payload.reply_to || "");
       if (payload.links?.length) params.append("links", JSON.stringify(payload.links));
@@ -76,10 +82,21 @@ export const createWhatsAppClient = (baseURL: string, token?: string) => {
       return res.data;
     },
     uploadFile: async (file: File) => {
-      const url = "/api/method/upload_file";
+      const url = "/api/method/crm_integration.crm_integration.api.whatsapp.upload_files_from_portal";
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file0", file);
       const res = await client.post<UploadFileResponse>(url, formData);
+      return res.data;
+    },
+    uploadFiles: async (files: File[]) => {
+      const url = "/api/method/crm_integration.crm_integration.api.whatsapp.upload_files_from_portal";
+      const formData = new FormData();
+      files.forEach((file, index) => {
+        formData.append(`file${index}`, file);
+      });
+      const res = await client.post<UploadFileResponse>(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       return res.data;
     },
     getIncomingCommunications: async (user: string) => {

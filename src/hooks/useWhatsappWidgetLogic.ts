@@ -1,6 +1,13 @@
 "use client";
 import { useCallback, useState, useEffect, useMemo, useRef } from "react";
-import type { Message, AttachedFile, WhatsAppTemplateResponse, WhatsappChatLink, SocketPayload } from "../types/whatsapp";
+import type {
+  Message,
+  AttachedFile,
+  WhatsAppTemplateResponse,
+  WhatsappChatLink,
+  SocketPayload,
+  WhatsappAttachItem,
+} from "../types/whatsapp";
 import { transformToMessage } from "../utils/whatsapp";
 import {
   useWhatsappChatConfig,
@@ -17,6 +24,43 @@ function getWhatsAppContentType(file: File): string {
   if (file.type.startsWith("video/")) return "video";
   if (file.type.startsWith("audio/")) return "audio";
   return "document";
+}
+
+function inferContentTypeFromFilePath(path: string): string {
+  const lower = path.toLowerCase();
+  if (/\.(png|jpe?g|gif|webp|bmp|svg)$/.test(lower)) return "image";
+  if (/\.(mp4|webm|mov|mkv)$/.test(lower)) return "video";
+  if (/\.(mp3|wav|ogg|m4a)$/.test(lower)) return "audio";
+  return "document";
+}
+
+function buildPresetPreviewUrl(filePath: string, apiBaseUrl?: string): string | undefined {
+  if (inferContentTypeFromFilePath(filePath) !== "image") return undefined;
+  const trimmed = filePath.trim();
+  if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) return trimmed;
+  const base = (apiBaseUrl || "").replace(/\/$/, "");
+  const path = trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
+  return base ? `${base}${path}` : trimmed;
+}
+
+function attachItemToAttachedFile(item: WhatsappAttachItem, apiBaseUrl?: string): AttachedFile {
+  const raw = item.file.trim();
+  const name = raw.split("/").filter(Boolean).pop() || "attachment";
+  const contentType = inferContentTypeFromFilePath(raw);
+  const dummy = new File([], name, {
+    type:
+      contentType === "image"
+        ? "image/png"
+        : contentType === "video"
+          ? "video/mp4"
+          : "application/octet-stream",
+  });
+  return {
+    file: dummy,
+    fileUrl: raw,
+    contentType,
+    preview: buildPresetPreviewUrl(raw, apiBaseUrl),
+  };
 }
 
 /**
@@ -51,8 +95,11 @@ export function useWhatsappWidgetLogic() {
   const [isLoadingTemplates, setIsLoadingTemplates] = useState(false);
 
   // Local File Upload State
-  const [attachedFile, setAttachedFile] = useState<AttachedFile | null>(null);
+  const [attachedFiles, setAttachedFiles] = useState<AttachedFile[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  /** Bumps when modal reopens so composer remounts with fresh `preAddedMessages` */
+  const [composerMountKey, setComposerMountKey] = useState(0);
+  const prevChatOpenRef = useRef<boolean | null>(null);
 
   /**
    * Consolidates reference logic (Doctype/Name) based on whether an Active Lead is present.
@@ -104,6 +151,28 @@ export function useWhatsappWidgetLogic() {
   useEffect(() => {
     getMessagesRef.current = apiAdapter.getMessages;
   }, [apiAdapter.getMessages]);
+
+  /**
+   * When chat opens: seed `attach` from config; remount composer on modal reopen so `preAddedMessages` applies again.
+   */
+  useEffect(() => {
+    const open = config.isChatOpen;
+    const was = prevChatOpenRef.current;
+    prevChatOpenRef.current = open;
+    if (!open) return;
+
+    if (was === false) {
+      setComposerMountKey((k) => k + 1);
+    }
+
+    if (was === false || was === null) {
+      if (config.attach?.length) {
+        setAttachedFiles(config.attach.map((item) => attachItemToAttachedFile(item, config.apiBaseUrl)));
+      } else {
+        setAttachedFiles([]);
+      }
+    }
+  }, [config.isChatOpen, config.attach, config.apiBaseUrl]);
 
   /**
    * Effect: Fetch initial message history when the contact reference changes AND the chat is open.
@@ -187,12 +256,24 @@ export function useWhatsappWidgetLogic() {
 
 
   /** Clears the currently selected attachment and revokes its local preview URL. */
-  const handleFileRemove = useCallback(() => {
-    setAttachedFile((prev) => {
-      if (prev?.preview) {
-        URL.revokeObjectURL(prev.preview);
+  const handleFileRemove = useCallback((index: number) => {
+    setAttachedFiles((prev) => {
+      const target = prev[index];
+      if (target?.preview) {
+        URL.revokeObjectURL(target.preview);
       }
-      return null;
+      return prev.filter((_, i) => i !== index);
+    });
+  }, []);
+
+  const clearAllAttachedFiles = useCallback(() => {
+    setAttachedFiles((prev) => {
+      prev.forEach((file) => {
+        if (file.preview) {
+          URL.revokeObjectURL(file.preview);
+        }
+      });
+      return [];
     });
   }, []);
 
@@ -200,7 +281,7 @@ export function useWhatsappWidgetLogic() {
    * Primary handler for sending a message or a template.
    */
   const sendMessage = useCallback(
-    async (text: string, attach?: string, contentType?: string) => {
+    async (text: string, attach?: Array<{ file: string }>, contentType?: string) => {
       const {
         primaryDoctype,
         primaryName,
@@ -263,7 +344,7 @@ export function useWhatsappWidgetLogic() {
           setSelectedTemplateName(undefined);
           setSelectedTemplateText(undefined);
           setSelectedTemplate(undefined);
-          handleFileRemove();
+          clearAllAttachedFiles();
           if (apiAdapter.onMessageSent) apiAdapter.onMessageSent();
         } catch (error) {
           console.error(error);
@@ -277,18 +358,20 @@ export function useWhatsappWidgetLogic() {
 
       // --- Regular Message Sending Logic ---
       const messageText = (text || "").trim();
-      if (!messageText && !attach) return;
+      if (!messageText && (!attach || attach.length === 0)) return;
 
       const tempId = `temp-${Date.now()}`;
       lastOutboundTempIdRef.current = tempId;
+      const attachmentFiles = attach?.map((item) => item.file).filter(Boolean) || [];
+      const firstAttachment = attachmentFiles[0];
       appendMessage({
         name: tempId,
         message: messageText,
         sender: "You",
         creation: new Date().toISOString(),
         is_outbound: 1,
-        attach: attach,
-        content_type: contentType,
+        attach: attachmentFiles.length ? attachmentFiles : undefined,
+        content_type: firstAttachment ? contentType || "document" : undefined,
         status: 5,
       });
 
@@ -299,8 +382,8 @@ export function useWhatsappWidgetLogic() {
           reference_doctype: primaryDoctype,
           reference_name: primaryName,
           message: messageText,
-          attach: attach || "",
-          content_type: contentType,
+          attach: attach && attach.length ? attach : "",
+          content_type: firstAttachment ? contentType : undefined,
           links: secondaryLinks,
         });
 
@@ -308,7 +391,7 @@ export function useWhatsappWidgetLogic() {
         updateMessageStatus(tempId, 1);
         apiAdapter.showNotification?.("WhatsApp", "Message sent successfully");
 
-        handleFileRemove();
+        clearAllAttachedFiles();
         if (apiAdapter.onMessageSent) apiAdapter.onMessageSent();
       } catch (error) {
         console.error(error);
@@ -318,7 +401,7 @@ export function useWhatsappWidgetLogic() {
         setIsSending(false);
       }
     },
-    [selectedTemplateName, apiAdapter, config.phone, config.links, selectedTemplate, selectedTemplateText, appendMessage, updateMessageStatus, whatsappReferences, handleFileRemove]
+    [selectedTemplateName, apiAdapter, config.phone, config.links, selectedTemplate, selectedTemplateText, appendMessage, updateMessageStatus, whatsappReferences, clearAllAttachedFiles]
   );
 
   /** Handles the selection of a template from the template library. */
@@ -330,24 +413,31 @@ export function useWhatsappWidgetLogic() {
   };
 
   /** Handles local file selection, triggers upload to server, and manages local previews. */
-  const handleFileSelect = useCallback(async (file: File) => {
-    if (!apiAdapter.uploadFile) return;
+  const handleFileSelect = useCallback(async (files: File[]) => {
+    if ((!apiAdapter.uploadFiles && !apiAdapter.uploadFile) || !files.length) return;
     setIsUploading(true);
 
-    const contentType = getWhatsAppContentType(file);
-    let preview: string | undefined;
-    if (file.type.startsWith("image/")) {
-      preview = URL.createObjectURL(file);
-    }
-
     try {
-      const { file_url } = await apiAdapter.uploadFile(file);
-      setAttachedFile({ file, fileUrl: file_url, contentType, preview });
+      let fileUrls: string[] = [];
+      if (apiAdapter.uploadFiles) {
+        const response = await apiAdapter.uploadFiles(files);
+        fileUrls = response.file_urls || [];
+      } else {
+        const uploads = await Promise.all(files.map((file) => apiAdapter.uploadFile(file)));
+        fileUrls = uploads.map((upload) => upload.file_url).filter(Boolean);
+      }
+
+      const nextFiles: AttachedFile[] = files.map((file, index) => ({
+        file,
+        fileUrl: fileUrls[index] || "",
+        contentType: getWhatsAppContentType(file),
+        preview: file.type.startsWith("image/") ? URL.createObjectURL(file) : undefined,
+      })).filter((item) => !!item.fileUrl);
+
+      setAttachedFiles((prev) => [...prev, ...nextFiles]);
     } catch (e) {
       console.error(e);
       apiAdapter.showError?.("WhatsApp", "Failed to upload file");
-      if (preview) URL.revokeObjectURL(preview);
-      setAttachedFile(null);
     } finally {
       setIsUploading(false);
     }
@@ -472,7 +562,7 @@ export function useWhatsappWidgetLogic() {
     setSelectedTemplateText,
     setSelectedTemplateName,
     setSelectedTemplate,
-    attachedFile,
+    attachedFiles,
     templates,
     isLoadingTemplates,
     sendMessage,
@@ -480,5 +570,6 @@ export function useWhatsappWidgetLogic() {
     handleFileSelect,
     handleFileRemove,
     uploadFileMutation: { isPending: isUploading },
+    composerMountKey,
   };
 }

@@ -18,14 +18,17 @@ export declare function useWhatsappWidgetLogic(): {
     setSelectedTemplateText: import('react').Dispatch<import('react').SetStateAction<string | undefined>>;
     setSelectedTemplateName: import('react').Dispatch<import('react').SetStateAction<string | undefined>>;
     setSelectedTemplate: import('react').Dispatch<import('react').SetStateAction<WhatsAppTemplateResponse | undefined>>;
-    attachedFile: AttachedFile | null;
+    attachedFiles: AttachedFile[];
     templates: WhatsAppTemplateResponse[];
     isLoadingTemplates: boolean;
-    sendMessage: (text: string, attach?: string, contentType?: string) => Promise<void>;
+    sendMessage: (text: string, attach?: Array<{
+        file: string;
+    }>, contentType?: string) => Promise<void>;
     handleTemplateSelect: (preview: string, apiName: string, template: WhatsAppTemplateResponse) => void;
-    handleFileSelect: (file: File) => Promise<void>;
-    handleFileRemove: () => void;
+    handleFileSelect: (files: File[]) => Promise<void>;
+    handleFileRemove: (index: number) => void;
     uploadFileMutation: {
         isPending: boolean;
     };
+    composerMountKey: number;
 };

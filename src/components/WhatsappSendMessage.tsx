@@ -7,7 +7,14 @@ import Modal from "./common/Modal";
 import { WhatsappChatProvider, useWhatsappChatConfig } from "../context/WhatsappChatContext";
 import { useWhatsappWidgetLogic } from "../hooks/useWhatsappWidgetLogic";
 import { useWhatsappWidgetResolution } from "../hooks/useWhatsappWidgetResolution";
-import type { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, SocketPayload, WhatsappChatLink } from "../types/whatsapp";
+import type {
+  WhatsappWidgetApiAdapter,
+  WhatsappWidgetConfig,
+  SocketAdapter,
+  SocketPayload,
+  WhatsappChatLink,
+  WhatsappAttachItem,
+} from "../types/whatsapp";
 
 export const WhatsappSendMessageWidget = () => {
   const {
@@ -22,7 +29,7 @@ export const WhatsappSendMessageWidget = () => {
     setSelectedTemplateText,
     setSelectedTemplateName,
     setSelectedTemplate,
-    attachedFile,
+    attachedFiles,
     templates,
     isLoadingTemplates,
     sendMessage,
@@ -30,6 +37,7 @@ export const WhatsappSendMessageWidget = () => {
     handleFileSelect,
     handleFileRemove,
     uploadFileMutation,
+    composerMountKey,
   } = useWhatsappWidgetLogic();
 
   const { config } = useWhatsappChatConfig();
@@ -53,6 +61,8 @@ export const WhatsappSendMessageWidget = () => {
         <div className="whatsapp-send-only-spacer" style={{ flex: 1, minHeight: "20px" }}></div>
 
         <MessageInput
+          key={composerMountKey}
+          initialInputText={config.preAddedMessages ?? ""}
           onSend={sendMessage}
           isLoading={isLoading || isSending || uploadFileMutation.isPending}
           isUploading={uploadFileMutation.isPending}
@@ -66,7 +76,7 @@ export const WhatsappSendMessageWidget = () => {
             setSelectedTemplateText(undefined);
             setSelectedTemplate(undefined);
           }}
-          attachedFile={attachedFile}
+          attachedFiles={attachedFiles}
           onFileSelect={handleFileSelect}
           onFileRemove={handleFileRemove}
         />
@@ -98,6 +108,8 @@ export interface WhatsappSendMessageProps {
   refDoctype?: string;
   refName?: string | null;
   links?: WhatsappChatLink[];
+  attach?: WhatsappAttachItem[];
+  preAddedMessages?: string;
   showNotification?: (title: string, message: string) => void;
   showWarning?: (title: string, message: string) => void;
   showError?: (title: string, message: string) => void;
@@ -117,6 +129,8 @@ export const WhatsappSendMessage = ({
   refDoctype = "Contact",
   refName = "",
   links = [],
+  attach,
+  preAddedMessages,
   showNotification,
   showWarning,
   showError,
@@ -135,6 +149,8 @@ export const WhatsappSendMessage = ({
     refName,
     links,
     isChatOpen: true,
+    attach,
+    preAddedMessages,
     showNotification,
     showWarning,
     showError,

@@ -6,6 +6,31 @@ import { useWhatsappIncomingStore } from "../context/WhatsappChatContext";
 import { transformToMessage } from "../utils/whatsapp";
 
 const notifiedMessageIds = new Set<string>();
+const notifiedMessageKeys = new Map<string, number>();
+const NOTIFICATION_DEDUPE_TTL_MS = 60_000;
+
+function buildNotificationDedupeKey(msg: Message): string {
+  const anyMsg = msg as Message & { message_id?: string | null };
+  const messageId = anyMsg.message_id ? String(anyMsg.message_id) : "";
+  if (messageId) return `mid:${messageId}`;
+  if (msg.name) return `name:${String(msg.name)}`;
+  return `fallback:${String(msg.from ?? "")}|${String(msg.creation ?? "")}|${String(msg.message ?? "")}`;
+}
+
+function shouldNotifyForMessage(msg: Message): boolean {
+  const now = Date.now();
+  for (const [key, ts] of notifiedMessageKeys.entries()) {
+    if (now - ts > NOTIFICATION_DEDUPE_TTL_MS) {
+      notifiedMessageKeys.delete(key);
+    }
+  }
+
+  const dedupeKey = buildNotificationDedupeKey(msg);
+  if (!dedupeKey) return true;
+  if (notifiedMessageKeys.has(dedupeKey)) return false;
+  notifiedMessageKeys.set(dedupeKey, now);
+  return true;
+}
 
 /**
  * Hook to manage unread message badge count within the widget package.
@@ -106,7 +131,7 @@ export function useWhatsappBadgeCount(
         // Notify user if:
         // - Chat is closed
         // - Message is NEW (not already notified)
-        if (!isChatOpen && !notifiedMessageIds.has(msg.name)) {
+        if (!isChatOpen && !notifiedMessageIds.has(msg.name) && shouldNotifyForMessage(msg)) {
           notifiedMessageIds.add(msg.name);
           if (apiAdapter.showNotification) {
             const senderInfo = msg.sender || msg.from_name || "Customer";

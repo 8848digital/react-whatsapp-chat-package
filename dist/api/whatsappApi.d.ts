@@ -9,5 +9,6 @@ export declare const createWhatsAppClient: (baseURL: string, token?: string) => 
     sendTemplate: (payload: SendWhatsAppTemplatePayload) => Promise<SendWhatsAppTemplateResponse>;
     sendReadReceipt: (payload: SendReadReceiptPayload) => Promise<SendReadReceiptResponse>;
     uploadFile: (file: File) => Promise<UploadFileResponse>;
+    uploadFiles: (files: File[]) => Promise<UploadFileResponse>;
     getIncomingCommunications: (user: string) => Promise<GetIncomingCommunicationsResponse>;
 };

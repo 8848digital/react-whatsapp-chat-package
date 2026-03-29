@@ -8,8 +8,14 @@ import Modal from "./common/Modal";
 import { WhatsappChatProvider, useWhatsappChatConfig } from "../context/WhatsappChatContext";
 import { useWhatsappWidgetLogic } from "../hooks/useWhatsappWidgetLogic";
 import { useWhatsappWidgetResolution } from "../hooks/useWhatsappWidgetResolution";
-import type { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, SocketPayload, WhatsappChatLink } from "../types/whatsapp";
-import { wrapApiAdapter } from "../utils/adapter";
+import type {
+  WhatsappWidgetApiAdapter,
+  WhatsappWidgetConfig,
+  SocketAdapter,
+  SocketPayload,
+  WhatsappChatLink,
+  WhatsappAttachItem,
+} from "../types/whatsapp";
 
 export const WhatsappChatWidget = () => {
   const {
@@ -26,7 +32,7 @@ export const WhatsappChatWidget = () => {
     setSelectedTemplateText,
     setSelectedTemplateName,
     setSelectedTemplate,
-    attachedFile,
+    attachedFiles,
     templates,
     isLoadingTemplates,
     sendMessage,
@@ -34,6 +40,7 @@ export const WhatsappChatWidget = () => {
     handleFileSelect,
     handleFileRemove,
     uploadFileMutation,
+    composerMountKey,
   } = useWhatsappWidgetLogic();
 
   const { config } = useWhatsappChatConfig();
@@ -56,6 +63,8 @@ export const WhatsappChatWidget = () => {
         <MessageList messages={displayMessages} isLoading={isLoading} error={messagesError} />
 
         <MessageInput
+          key={composerMountKey}
+          initialInputText={config.preAddedMessages ?? ""}
           onSend={sendMessage}
           isLoading={isLoading || isSending || uploadFileMutation.isPending}
           isUploading={uploadFileMutation.isPending}
@@ -69,7 +78,7 @@ export const WhatsappChatWidget = () => {
             setSelectedTemplateText(undefined);
             setSelectedTemplate(undefined);
           }}
-          attachedFile={attachedFile}
+          attachedFiles={attachedFiles}
           onFileSelect={handleFileSelect}
           onFileRemove={handleFileRemove}
         />
@@ -109,6 +118,10 @@ export interface WhatsappChatComponentProps {
   refDoctype?: string;
   refName?: string | null;
   links?: WhatsappChatLink[];
+  /** Pre-seeded file paths (merged into `attach` on send); also in `config.attach` */
+  attach?: WhatsappAttachItem[];
+  /** Prefills composer; also in `config.preAddedMessages` */
+  preAddedMessages?: string;
 
   /** Optional notification overrides */
   showNotification?: (title: string, message: string) => void;
@@ -130,6 +143,8 @@ export const WhatsappChat = ({
   refDoctype = "Contact",
   refName = "",
   links = [],
+  attach,
+  preAddedMessages,
   showNotification,
   showWarning,
   showError,
@@ -148,6 +163,8 @@ export const WhatsappChat = ({
     refName,
     links,
     isChatOpen: true, // Standalone component assumes it is active/open if rendered
+    attach,
+    preAddedMessages,
     showNotification,
     showWarning,
     showError,

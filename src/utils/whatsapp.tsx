@@ -145,7 +145,7 @@ export function transformToMessage(raw: SocketMessageDoc | WhatsAppMessage | any
     sender: fromName || (isOutbound ? "You" : "Customer"),
     creation: raw.creation ?? new Date().toISOString(),
     is_outbound: isOutbound ? 1 : 0,
-    attach: raw.attach ?? undefined,
+    attach: Array.isArray(raw.attach) ? raw.attach : (raw.attach ?? undefined),
     content_type: raw.content_type ?? undefined,
     status,
     header: isTemplate ? (raw.header ?? undefined) : undefined,

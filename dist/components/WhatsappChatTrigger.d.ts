@@ -1,5 +1,5 @@
 import { default as React } from 'react';
-import { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, WhatsappChatLink, SocketPayload } from '../types/whatsapp';
+import { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, WhatsappChatLink, SocketPayload, WhatsappAttachItem } from '../types/whatsapp';
 interface WhatsappChatTriggerProps {
     apiAdapter?: WhatsappWidgetApiAdapter;
     config?: WhatsappWidgetConfig;
@@ -16,6 +16,8 @@ interface WhatsappChatTriggerProps {
     refDoctype?: string;
     refName?: string | null;
     links?: WhatsappChatLink[];
+    attach?: WhatsappAttachItem[];
+    preAddedMessages?: string;
     buttonLabel?: string;
     icon?: React.ReactNode;
     btnClassName?: string;

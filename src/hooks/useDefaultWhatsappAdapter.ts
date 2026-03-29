@@ -37,8 +37,20 @@ export const useDefaultWhatsappAdapter = (baseURL?: string, token?: string, user
       },
       uploadFile: async (file: File) => {
         const res = await client.uploadFile(file);
-        const file_url = res.message?.file_url || res.file_url || "";
+        const first = Array.isArray(res.message) ? res.message[0] : res.message;
+        const file_url = first?.file_url || res.file_url || "";
         return { file_url };
+      },
+      uploadFiles: async (files: File[]) => {
+        const res = await client.uploadFiles(files);
+        const file_urls = Array.isArray(res.message)
+          ? res.message.map((item) => item.file_url).filter((url): url is string => !!url)
+          : res.message?.file_url
+            ? [res.message.file_url]
+            : res.file_url
+              ? [res.file_url]
+              : [];
+        return { file_urls };
       },
       sendReadReceipt: async (messageName: string) => {
         await client.sendReadReceipt({ name: messageName });

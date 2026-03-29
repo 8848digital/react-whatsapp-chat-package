@@ -1,4 +1,4 @@
-import { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, SocketPayload, WhatsappChatLink } from '../types/whatsapp';
+import { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, SocketPayload, WhatsappChatLink, WhatsappAttachItem } from '../types/whatsapp';
 export declare const WhatsappChatWidget: () => import("react/jsx-runtime").JSX.Element;
 export interface WhatsappChatComponentProps {
     apiAdapter?: WhatsappWidgetApiAdapter;
@@ -16,10 +16,14 @@ export interface WhatsappChatComponentProps {
     refDoctype?: string;
     refName?: string | null;
     links?: WhatsappChatLink[];
+    /** Pre-seeded file paths (merged into `attach` on send); also in `config.attach` */
+    attach?: WhatsappAttachItem[];
+    /** Prefills composer; also in `config.preAddedMessages` */
+    preAddedMessages?: string;
     /** Optional notification overrides */
     showNotification?: (title: string, message: string) => void;
     showWarning?: (title: string, message: string) => void;
     showError?: (title: string, message: string) => void;
 }
-export declare const WhatsappChat: ({ apiAdapter: externalApiAdapter, config: externalConfig, socketAdapter: externalSocketAdapter, socketPayload, socketConnected, baseURL, token, currentUserEmail, currentUserFullName, phone, refDoctype, refName, links, showNotification, showWarning, showError, }: WhatsappChatComponentProps) => import("react/jsx-runtime").JSX.Element | null;
+export declare const WhatsappChat: ({ apiAdapter: externalApiAdapter, config: externalConfig, socketAdapter: externalSocketAdapter, socketPayload, socketConnected, baseURL, token, currentUserEmail, currentUserFullName, phone, refDoctype, refName, links, attach, preAddedMessages, showNotification, showWarning, showError, }: WhatsappChatComponentProps) => import("react/jsx-runtime").JSX.Element | null;
 export default WhatsappChat;

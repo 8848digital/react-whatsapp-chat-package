@@ -93,7 +93,7 @@ export const MessageList = ({
       )}
       {transformedMessages.map((msg, index) => {
         const m = msg;
-        const attach = m.attach;
+        const attachList = Array.isArray(m.attach) ? m.attach : m.attach ? [m.attach] : [];
         const contentType = m.content_type;
         const isTemplateCard = m.message_type === "Template";
 
@@ -124,28 +124,29 @@ export const MessageList = ({
             {showIcon && icon && <div className="message-icon-wrapper">{icon}</div>}
             <div className="message-content">
               {parseMessageWithLinks(msg.message) || msg.message}
-              {attach && (
-                <div className="message-attachment">
-                  {contentType === "image" ? (
-                    <img
-                      src={`${apiBaseUrl}/${attach}`}
-                      alt="attachment"
-                      className="message-attachment-image"
-                      style={{ maxWidth: "200px", borderRadius: "4px" }}
-                    />
-                  ) : (
-                    <a
-                      href={`${apiBaseUrl}/${attach}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="message-attachment-link"
-                      title="View attachment"
-                    >
-                      {attach.split("/").pop() || "Attachment"}
-                    </a>
-                  )}
-                </div>
-              )}
+              {attachList.length > 0 &&
+                attachList.map((attach, attachIndex) => (
+                  <div className="message-attachment" key={`${msg.name}-attach-${attachIndex}`}>
+                    {contentType === "image" ? (
+                      <img
+                        src={`${apiBaseUrl}/${attach}`}
+                        alt="attachment"
+                        className="message-attachment-image"
+                        style={{ maxWidth: "200px", borderRadius: "4px" }}
+                      />
+                    ) : (
+                      <a
+                        href={`${apiBaseUrl}/${attach}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="message-attachment-link"
+                        title="View attachment"
+                      >
+                        {attach.split("/").pop() || "Attachment"}
+                      </a>
+                    )}
+                  </div>
+                ))}
               <div className="message-time">
                 {formatTimeLocale(msg.creation)}
                 {renderMessageStatusIcon(msg.status, msg.is_outbound)}

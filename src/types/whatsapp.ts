@@ -54,7 +54,7 @@ export interface Message {
   sender: string;
   creation: string;
   is_outbound: number;
-  attach?: string;
+  attach?: string | string[];
   content_type?: string;
   status?: number; // 1: Sent, 2: Failed, 3: Delivered, 4: Read, 5: Pending
   /** Template message: header (bold title) */
@@ -86,7 +86,7 @@ export interface IncomingSocketDoc {
   type?: string;
   from?: string;
   profile_name?: string;
-  attach?: string | null;
+  attach?: string | string[] | null;
   content_type?: string | null;
 }
 
@@ -102,7 +102,7 @@ export interface SocketMessageDoc {
   reference_name?: string | null;
   profile_name?: string | null;
   from_name?: string | null; // From API results
-  attach?: string | null;
+  attach?: string | string[] | null;
   content_type?: string | null;
   message_type?: string;
   header?: string | null;
@@ -127,7 +127,7 @@ export interface ActivityLikeProps {
   message?: string;
   type?: string;
   is_outbound?: number;
-  attach?: string;
+  attach?: string | string[];
   content_type?: string;
   creation?: string;
   date?: string;
@@ -164,7 +164,7 @@ export interface AttachedFile {
 
 /** MessageInput component props */
 export interface MessageInputProps {
-  onSend: (text: string, attach?: string, contentType?: string) => void;
+  onSend: (text: string, attach?: Array<{ file: string }>, contentType?: string) => void;
   isLoading?: boolean;
   /** Show loading on attach button while file is uploading */
   isUploading?: boolean;
@@ -177,9 +177,11 @@ export interface MessageInputProps {
   /** Full template metadata for preview card */
   selectedTemplate?: WhatsAppTemplateResponse;
   onClearTemplate?: () => void;
-  attachedFile?: AttachedFile | null;
-  onFileRemove?: () => void;
-  onFileSelect?: (file: File) => void;
+  attachedFiles?: AttachedFile[];
+  onFileRemove?: (index: number) => void;
+  onFileSelect?: (files: File[]) => void;
+  /** Initial text when the input mounts (e.g. from `preAddedMessages`); use with `key` to reset on reopen */
+  initialInputText?: string;
   // Preview state
   isPreviewOpen?: boolean;
   setIsPreviewOpen?: (open: boolean) => void;
@@ -250,20 +252,6 @@ export interface WhatsappChatLink {
   link_name: string;
 }
 
-export interface WhatsappChatProps {
-  referenceDoctype?: string;
-  referenceName?: string | null;
-  toPhone?: string;
-  /** When false, skips initial fetch (e.g. modal closed). Fetch runs when this becomes true. */
-  isOpen?: boolean;
-  /** Optional links to associate with the message (e.g. CRM Task from assigned task) */
-  links?: WhatsappChatLink[];
-  /** NEW: Decoupled Props to avoid useAuthStore/useLeadStore inside the component */
-  currentUserEmail?: string;
-  contextDoctype?: string;
-  contextName?: string;
-}
-
 export interface UseWhatsappChatLogicParams {
   referenceDoctype?: string;
   referenceName?: string | null;
@@ -279,6 +267,11 @@ export interface TemplateListReference {
   reference_name: string;
 }
 
+/** Pre-attached file paths (e.g. already on server); merged into `attach` on send */
+export interface WhatsappAttachItem {
+  file: string;
+}
+
 /** Package Configuration */
 export interface WhatsappWidgetConfig {
   currentUser: string;
@@ -292,6 +285,10 @@ export interface WhatsappWidgetConfig {
   isChatOpen: boolean;
   preventHistoryFetch?: boolean;
   apiBaseUrl?: string; // Optional: used by internal default adapter
+  /** Server file paths to include when sending; applied when chat opens */
+  attach?: WhatsappAttachItem[];
+  /** Prefills the composer when the chat opens */
+  preAddedMessages?: string;
 }
 
 /** 
@@ -318,7 +315,7 @@ export interface WhatsappWidgetApiAdapter {
   sendMessage: (payload: {
     to: string;
     message: string;
-    attach?: string;
+    attach?: string | Array<{ file: string }>;
     content_type?: string;
     reference_doctype?: string;
     reference_name?: string;
@@ -336,6 +333,8 @@ export interface WhatsappWidgetApiAdapter {
   getTemplates: (refs: TemplateListReference[]) => Promise<WhatsAppTemplateResponse[]>;
   /** Upload a file and return its URL. */
   uploadFile: (file: File) => Promise<{ file_url: string }>;
+  /** Upload multiple files and return all file URLs. */
+  uploadFiles?: (files: File[]) => Promise<{ file_urls: string[] }>;
   /** Mark a specific message as read. */
   sendReadReceipt: (messageName: string) => Promise<void>;
   /** Fetch current unread count for the contact. */
@@ -379,7 +378,7 @@ export interface WhatsAppMessage {
   from: string | null;
   content_type: string;
   message_type: string;
-  attach: string | null;
+  attach: string | string[] | null;
   template: string | null;
   use_template: number;
   message_id: string;
@@ -417,7 +416,7 @@ export interface SendWhatsAppMessagePayload {
   reference_name?: string;
   message: string;
   to: string;
-  attach?: string;
+  attach?: string | Array<{ file: string }>;
   content_type?: string;
   reply_to?: string;
   links?: WhatsappChatLink[];
@@ -454,13 +453,21 @@ export interface SendReadReceiptResponse {
 }
 
 export interface UploadFileResponse {
-  message?: {
-    name?: string;
-    file_name?: string;
-    file_url?: string;
-    file_size?: number;
-    [key: string]: unknown;
-  };
+  message?:
+    | {
+        name?: string;
+        file_name?: string;
+        file_url?: string;
+        file_size?: number;
+        [key: string]: unknown;
+      }
+    | Array<{
+        name?: string;
+        file_name?: string;
+        file_url?: string;
+        file_size?: number;
+        [key: string]: unknown;
+      }>;
   file_url?: string; // Fallback for older versions
   [key: string]: unknown;
 }

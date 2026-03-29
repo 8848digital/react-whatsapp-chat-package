@@ -6,7 +6,14 @@ import Modal from "./common/Modal";
 import { WhatsAppLogo } from "./common/Icons";
 import { useWhatsappBadgeCount } from "../hooks/useWhatsappBadgeCount";
 import { useWhatsappWidgetResolution } from "../hooks/useWhatsappWidgetResolution";
-import type { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, WhatsappChatLink, SocketPayload } from "../types/whatsapp";
+import type {
+  WhatsappWidgetApiAdapter,
+  WhatsappWidgetConfig,
+  SocketAdapter,
+  WhatsappChatLink,
+  SocketPayload,
+  WhatsappAttachItem,
+} from "../types/whatsapp";
 import "../styles/whatsapp-chat.css";
 
 interface WhatsappChatTriggerProps {
@@ -31,6 +38,8 @@ interface WhatsappChatTriggerProps {
   refDoctype?: string;
   refName?: string | null;
   links?: WhatsappChatLink[];
+  attach?: WhatsappAttachItem[];
+  preAddedMessages?: string;
 
   // --- UI Props ---
   buttonLabel?: string;
@@ -67,6 +76,8 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
   refDoctype = "Contact",
   refName = "",
   links = [],
+  attach,
+  preAddedMessages,
   buttonLabel,
   icon,
   btnClassName = "",
@@ -96,6 +107,8 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
     refName,
     links,
     isChatOpen: isOpen,
+    attach,
+    preAddedMessages,
     showNotification,
     showWarning,
     showError,
@@ -159,6 +172,8 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
           socketAdapter={finalSocketAdapter} 
           socketPayload={socketPayload} 
           currentUserFullName={currentUserFullName}
+          attach={attach}
+          preAddedMessages={preAddedMessages}
         />
       </Modal>
     </>

@@ -1,4 +1,4 @@
-import { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, WhatsappChatLink } from '../types/whatsapp';
+import { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, WhatsappChatLink, WhatsappAttachItem } from '../types/whatsapp';
 export interface WidgetResolutionParams {
     apiAdapter?: WhatsappWidgetApiAdapter;
     config?: WhatsappWidgetConfig;
@@ -13,6 +13,10 @@ export interface WidgetResolutionParams {
     refName?: string | null;
     links?: WhatsappChatLink[];
     isChatOpen: boolean;
+    /** Pre-seeded attachments (server file paths); merged into resolved `config.attach` */
+    attach?: WhatsappAttachItem[];
+    /** Prefills composer; merged into resolved `config.preAddedMessages` */
+    preAddedMessages?: string;
     showNotification?: (title: string, message: string) => void;
     showWarning?: (title: string, message: string) => void;
     showError?: (title: string, message: string) => void;
@@ -23,6 +27,20 @@ export interface WidgetResolutionParams {
  */
 export declare const useWhatsappWidgetResolution: (params: WidgetResolutionParams) => {
     apiAdapter: WhatsappWidgetApiAdapter | null;
-    config: WhatsappWidgetConfig;
+    config: {
+        preAddedMessages?: string;
+        attach?: WhatsappAttachItem[];
+        currentUser: string;
+        currentUserFullName?: string;
+        activeLeadName?: string;
+        activeLeadDoctype?: string;
+        doctype: string;
+        refName: string;
+        phone: string;
+        links?: WhatsappChatLink[];
+        isChatOpen: boolean;
+        preventHistoryFetch?: boolean;
+        apiBaseUrl?: string;
+    };
     finalSocketAdapter: SocketAdapter | undefined;
 };

@@ -5,7 +5,14 @@ import { WhatsappSendMessage } from "./WhatsappSendMessage";
 import Modal from "./common/Modal";
 import { WhatsAppLogo } from "./common/Icons";
 import { useWhatsappWidgetResolution } from "../hooks/useWhatsappWidgetResolution";
-import type { WhatsappWidgetApiAdapter, WhatsappWidgetConfig, SocketAdapter, WhatsappChatLink, SocketPayload } from "../types/whatsapp";
+import type {
+  WhatsappWidgetApiAdapter,
+  WhatsappWidgetConfig,
+  SocketAdapter,
+  WhatsappChatLink,
+  SocketPayload,
+  WhatsappAttachItem,
+} from "../types/whatsapp";
 import "../styles/whatsapp-chat.css";
 
 interface WhatsappSendMessageTriggerProps {
@@ -22,6 +29,8 @@ interface WhatsappSendMessageTriggerProps {
   refDoctype?: string;
   refName?: string | null;
   links?: WhatsappChatLink[];
+  attach?: WhatsappAttachItem[];
+  preAddedMessages?: string;
   buttonLabel?: string;
   icon?: React.ReactNode;
   btnClassName?: string;
@@ -53,6 +62,8 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
   refDoctype = "Contact",
   refName = "",
   links = [],
+  attach,
+  preAddedMessages,
   buttonLabel = "Send WhatsApp",
   icon,
   btnClassName = "",
@@ -82,6 +93,8 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
     refName,
     links,
     isChatOpen: isOpen,
+    attach,
+    preAddedMessages,
     showNotification,
     showWarning,
     showError,
@@ -138,6 +151,8 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
                 socketAdapter={finalSocketAdapter} 
                 socketPayload={socketPayload} 
                 currentUserFullName={currentUserFullName}
+                attach={attach}
+                preAddedMessages={preAddedMessages}
               />
         </div>
       </Modal>

@@ -1,7 +1,5 @@
 # React WhatsApp Chat Package 💬
 
-A professional, fully-decoupled WhatsApp Chat Package for React designed with an adapter-based architecture. Built by **8848 Digital**, this package provides a seamless way to integrate WhatsApp messaging into any React application using your own API and real-time logic.
-
 ## 🚀 Key Features
 
 - **Decoupled Architecture**: Logic is separated from UI for maximum flexibility.
@@ -36,7 +34,7 @@ The easiest way to integrate. The package handles all API calls internally using
 
 ```tsx
 import { WhatsappChatTrigger } from "react-whatsapp-chat-package";
-import "react-whatsapp-chat-package/dist/styles.css";
+import "react-whatsapp-chat-package/styles.css";
 
 const MyComponent = () => {
   return (
@@ -135,7 +133,7 @@ The Trigger component includes everything in the `WhatsappChat` props, plus:
 
 ### `WhatsappChat` / Shared Props
 
-These props are available on both `WhatsappChat` and `WhatsappChatTrigger`.
+These props are available on **`WhatsappChat`**, **`WhatsappChatTrigger`**, **`WhatsappSendMessage`**, and **`WhatsappSendMessageTrigger`** (same underlying `config`).
 
 | Prop                      | Type                 | Default     | Description                                                   |
 | ------------------------- | -------------------- | ----------- | ------------------------------------------------------------- |
@@ -152,10 +150,34 @@ These props are available on both `WhatsappChat` and `WhatsappChatTrigger`.
 | **Real-Time Integration** |                      |             |                                                               |
 | `socketPayload`           | `SocketPayload`      | Optional    | Raw socket event from your host app to trigger unread counts. |
 | `socketConnected`         | `boolean`            | Optional    | Manual override for socket connection status.                 |
+| **Composer presets**      |                      |             |                                                               |
+| `attach`                  | `{ file: string }[]` | Optional    | Server file paths already uploaded; merged into the send payload `attach` when the user sends. Shown as pre-filled attachments when the chat opens. Uses `apiBaseUrl` for image previews when set. |
+| `preAddedMessages`        | `string`             | Optional    | Initial text in the message input when the chat opens. On modal **reopen**, the composer resets and this text is applied again. Embedded (non-modal) usage: prefilled on first mount; change the component `key` to reset the text if the prop updates. |
 | **Notifications**         |                      |             |                                                               |
 | `showNotification`        | `Function`           | Optional    | Callback for success alerts.                                  |
 | `showWarning`             | `Function`           | Optional    | Callback for warning alerts.                                  |
 | `showError`               | `Function`           | Optional    | Callback for error alerts.                                    |
+
+You can also pass `attach` and `preAddedMessages` on a custom `config` object (`WhatsappWidgetConfig`); top-level props with the same names override those fields when both are used.
+
+### Example: prefilled attachments and message
+
+```tsx
+<WhatsappChatTrigger
+  buttonLabel="WhatsApp"
+  baseURL="https://your-api.com"
+  token="your-auth-token"
+  phone="1234567890"
+  currentUserEmail="user@me.com"
+  refName="Contact-001"
+  attach={[
+    { file: "/files/image.png" },
+    { file: "/private/files/doc.pdf" },
+  ]}
+  preAddedMessages="Hello, following up on your request."
+  showNotification={(title, msg) => toast.success(msg)}
+/>
+```
 
 ## 🔔 Notification Handling
 
@@ -194,4 +216,4 @@ npm run build
 
 ## 📄 License
 
-MIT © 8848 Digital
+MIT
