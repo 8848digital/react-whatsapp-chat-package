@@ -1,7 +1,7 @@
 import ve, { useContext as Kt, createContext as Yt, useRef as ae, useMemo as me, useEffect as se, forwardRef as Mn, useImperativeHandle as Un, useState as Y, useCallback as Oe } from "react";
 import { WhatsappLogo as Dn, User as Ln, X as In, Paperclip as $n, FileText as Bn, PaperPlaneTilt as Wn, ArrowSquareOut as qn, Check as zn, Checks as Hn, Warning as Jn, Clock as Vn, Eye as Kn } from "@phosphor-icons/react";
 import { useStore as Yn, createStore as Xn, create as Gn } from "zustand";
-var Ie = { exports: {} }, Ee = {};
+import './index.css';var Ie = { exports: {} }, Ee = {};
 /**
  * @license React
  * react-jsx-runtime.production.js
@@ -690,30 +690,15 @@ const ms = ({
   );
 });
 on.displayName = "FileUpload";
-const Ne = ({
-  open: e,
-  onClose: t,
-  header: n,
-  children: s,
-  width: r = "600px",
-  className: o = ""
-}) => (se(() => (e ? document.body.style.overflow = "hidden" : document.body.style.overflow = "unset", () => {
+const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", className: o = "" }) => (se(() => (e ? document.body.style.overflow = "hidden" : document.body.style.overflow = "unset", () => {
   document.body.style.overflow = "unset";
-}), [e]), e ? /* @__PURE__ */ c.jsx("div", { className: `raw-modal-overlay ${o}`, onClick: t, children: /* @__PURE__ */ c.jsxs(
-  "div",
-  {
-    className: "raw-modal-container",
-    style: { maxWidth: r },
-    onClick: (a) => a.stopPropagation(),
-    children: [
-      /* @__PURE__ */ c.jsxs("div", { className: "raw-modal-header", children: [
-        /* @__PURE__ */ c.jsx("div", { className: "raw-modal-title", children: n }),
-        /* @__PURE__ */ c.jsx("button", { className: "raw-modal-close", onClick: t, children: /* @__PURE__ */ c.jsx(ft, { size: 20 }) })
-      ] }),
-      /* @__PURE__ */ c.jsx("div", { className: "raw-modal-body", children: s })
-    ]
-  }
-) }) : null), hs = ({
+}), [e]), e ? /* @__PURE__ */ c.jsx("div", { className: `raw-modal-overlay ${o}`, onClick: t, children: /* @__PURE__ */ c.jsxs("div", { className: "raw-modal-container", style: { maxWidth: r }, onClick: (a) => a.stopPropagation(), children: [
+  /* @__PURE__ */ c.jsxs("div", { className: "raw-modal-header", children: [
+    /* @__PURE__ */ c.jsx("div", { className: "raw-modal-title", children: n }),
+    /* @__PURE__ */ c.jsx("button", { className: "raw-modal-close", onClick: t, children: /* @__PURE__ */ c.jsx(ft, { size: 20 }) })
+  ] }),
+  /* @__PURE__ */ c.jsx("div", { className: "raw-modal-body", children: s })
+] }) }) : null), hs = ({
   selectedTemplateName: e,
   templateText: t,
   template: n,
@@ -987,7 +972,7 @@ function _s(e, t) {
   };
 }
 function un() {
-  const { config: e, apiAdapter: t, socketAdapter: n, socketPayload: s } = Ce(), r = sn(), o = ue((S) => S.messages), a = ue((S) => S.isLoading), i = ue((S) => S.error), m = ue((S) => S.setMessages), p = ue((S) => S.appendMessage), u = ue((S) => S.replaceMessage), d = ue((S) => S.updateMessageStatus), w = ue((S) => S.setLoading), b = ue((S) => S.setError), [l, h] = Y(!1), y = (n == null ? void 0 : n.isConnected) ?? !0, [_, C] = Y(!1), [O, v] = Y(), [N, M] = Y(), [R, L] = Y(), [q, J] = Y([]), [ce, B] = Y(!1), [H, I] = Y([]), [Q, P] = Y(!1), [re, ee] = Y(0), de = ae(null), le = me(() => {
+  const { config: e, apiAdapter: t, socketAdapter: n, socketPayload: s } = Ce(), r = sn(), o = ue((S) => S.messages), a = ue((S) => S.isLoading), i = ue((S) => S.error), m = ue((S) => S.setMessages), p = ue((S) => S.appendMessage), u = ue((S) => S.replaceMessage), d = ue((S) => S.updateMessageStatus), w = ue((S) => S.setLoading), b = ue((S) => S.setError), [l, h] = Y(!1), y = (n == null ? void 0 : n.isConnected) ?? !1, [_, C] = Y(!1), [O, v] = Y(), [N, M] = Y(), [R, L] = Y(), [q, J] = Y([]), [ce, B] = Y(!1), [H, I] = Y([]), [Q, P] = Y(!1), [re, ee] = Y(0), de = ae(null), le = me(() => {
     var oe;
     const S = e.doctype || "", x = e.refName || "", E = e.activeLeadDoctype || "", z = e.activeLeadName || "";
     let k = S, K = x, W = e.links || [];
@@ -3634,7 +3619,15 @@ const Fo = ({
     showNotification: R,
     showWarning: L,
     showError: q
-  }), P = uo(H, Q, o, p, d || void 0, B, I == null ? void 0 : I.currentUser), re = () => {
+  }), P = uo(
+    H,
+    Q,
+    o,
+    p,
+    d || void 0,
+    B,
+    I == null ? void 0 : I.currentUser
+  ), re = () => {
     v !== void 0 ? B ? M == null || M() : N == null || N() : ce(!J);
   };
   return H ? /* @__PURE__ */ c.jsxs(c.Fragment, { children: [

@@ -14,7 +14,6 @@ import type {
   SocketPayload,
   WhatsappAttachItem,
 } from "../types/whatsapp";
-import "../styles/whatsapp-chat.css";
 
 interface WhatsappChatTriggerProps {
   // --- Decoupled Mode (Inject your own logic) ---
@@ -114,7 +113,15 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
     showError,
   });
 
-  const unreadCount = useWhatsappBadgeCount(apiAdapter!, finalSocketAdapter, socketPayload, phone, refName || undefined, isOpen, config?.currentUser);
+  const unreadCount = useWhatsappBadgeCount(
+    apiAdapter!,
+    finalSocketAdapter,
+    socketPayload,
+    phone,
+    refName || undefined,
+    isOpen,
+    config?.currentUser
+  );
 
   const toggleModal = () => {
     if (externalIsOpen !== undefined) {
@@ -166,11 +173,11 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
         width={modalSize}
         header={<h3 style={{ margin: 0, fontSize: "1.1rem" }}>WhatsApp Chat</h3>}
       >
-        <WhatsappChat 
-          apiAdapter={apiAdapter} 
-          config={config} 
-          socketAdapter={finalSocketAdapter} 
-          socketPayload={socketPayload} 
+        <WhatsappChat
+          apiAdapter={apiAdapter}
+          config={config}
+          socketAdapter={finalSocketAdapter}
+          socketPayload={socketPayload}
           currentUserFullName={currentUserFullName}
           attach={attach}
           preAddedMessages={preAddedMessages}

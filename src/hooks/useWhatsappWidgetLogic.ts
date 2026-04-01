@@ -84,7 +84,7 @@ export function useWhatsappWidgetLogic() {
   const setError = useWhatsappWidgetZustand((s) => s.setError);
 
   const [isSending, setIsSending] = useState(false);
-  const isConnected = socketAdapter?.isConnected ?? true;
+  const isConnected = socketAdapter?.isConnected ?? false;
 
   // Local Template Selection State
   const [isTemplateModalOpen, setIsTemplateModalOpen] = useState(false);
