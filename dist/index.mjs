@@ -1,7 +1,7 @@
 import ve, { useContext as Kt, createContext as Yt, useRef as ae, useMemo as me, useEffect as se, forwardRef as Mn, useImperativeHandle as Un, useState as Y, useCallback as Oe } from "react";
 import { WhatsappLogo as Dn, User as Ln, X as In, Paperclip as $n, FileText as Bn, PaperPlaneTilt as Wn, ArrowSquareOut as qn, Check as zn, Checks as Hn, Warning as Jn, Clock as Vn, Eye as Kn } from "@phosphor-icons/react";
 import { useStore as Yn, createStore as Xn, create as Gn } from "zustand";
-import './index.css';var Ie = { exports: {} }, Ee = {};
+var Ie = { exports: {} }, Ee = {};
 /**
  * @license React
  * react-jsx-runtime.production.js

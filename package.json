@@ -1,6 +1,6 @@
 {
   "name": "react-whatsapp-chat-package",
-  "version": "1.0.13",
+  "version": "1.0.12",
   "description": "Professional decoupled WhatsApp Chat Widget for React with Adapter-based architecture.",
   "license": "MIT",
   "author": "8848 Digital",
@@ -40,14 +40,12 @@
   },
   "peerDependencies": {
     "@phosphor-icons/react": "^2.x",
-    "@tanstack/react-query": "^5.x",
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0",
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0",
     "zustand": "^5.x"
   },
   "devDependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "@tanstack/react-query": "^5.62.7",
     "@types/node": "^22.10.2",
     "@types/react": "^19.0.1",
     "@types/react-dom": "^19.0.2",
@@ -59,7 +57,6 @@
     "typescript": "^5.7.2",
     "vite": "^6.0.3",
     "vite-plugin-dts": "^4.4.0",
-    "vite-plugin-lib-inject-css": "^2.2.2",
     "zustand": "^5.0.2"
   },
   "dependencies": {

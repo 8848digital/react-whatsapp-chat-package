@@ -23,7 +23,7 @@ npm install https://github.com/8848digital/react-whatsapp-chat-package.git
 This package requires the following peers to be installed in your project:
 
 ```bash
-npm install react react-dom zustand @tanstack/react-query @phosphor-icons/react
+npm install react react-dom zustand @phosphor-icons/react
 ```
 
 ## 📋 Usage

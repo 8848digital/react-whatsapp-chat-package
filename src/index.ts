@@ -1,3 +1,5 @@
+"use client";
+
 export * from "./components/WhatsappChat";
 export * from "./components/WhatsappSendMessage";
 export * from "./components/WhatsappChatTrigger";
