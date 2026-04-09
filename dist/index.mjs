@@ -1,6 +1,6 @@
-import ve, { useContext as Kt, createContext as Yt, useRef as ae, useMemo as me, useEffect as se, forwardRef as Mn, useImperativeHandle as Un, useState as Y, useCallback as Oe } from "react";
-import { WhatsappLogo as Dn, User as Ln, X as In, Paperclip as $n, FileText as Bn, PaperPlaneTilt as Wn, ArrowSquareOut as qn, Check as zn, Checks as Hn, Warning as Jn, Clock as Vn, Eye as Kn } from "@phosphor-icons/react";
-import { useStore as Yn, createStore as Xn, create as Gn } from "zustand";
+import Oe, { useContext as Kt, createContext as Yt, useRef as ie, useMemo as me, useEffect as re, forwardRef as Un, useImperativeHandle as Dn, useState as Y, useCallback as ve } from "react";
+import { WhatsappLogo as Ln, User as In, X as $n, Paperclip as Bn, FileText as Wn, PaperPlaneTilt as qn, ArrowSquareOut as zn, Check as Hn, Checks as Jn, Warning as Vn, Clock as Kn, Eye as Yn } from "@phosphor-icons/react";
+import { useStore as Xn, createStore as Gn, create as Zn } from "zustand";
 import './index.css';var Ie = { exports: {} }, Ee = {};
 /**
  * @license React
@@ -12,7 +12,7 @@ import './index.css';var Ie = { exports: {} }, Ee = {};
  * LICENSE file in the root directory of this source tree.
  */
 var Et;
-function Zn() {
+function Qn() {
   if (Et) return Ee;
   Et = 1;
   var e = Symbol.for("react.transitional.element"), t = Symbol.for("react.fragment");
@@ -44,25 +44,25 @@ var Te = {};
  * LICENSE file in the root directory of this source tree.
  */
 var Tt;
-function Qn() {
+function es() {
   return Tt || (Tt = 1, process.env.NODE_ENV !== "production" && (function() {
     function e(g) {
       if (g == null) return null;
       if (typeof g == "function")
-        return g.$$typeof === ce ? null : g.displayName || g.name || null;
+        return g.$$typeof === P ? null : g.displayName || g.name || null;
       if (typeof g == "string") return g;
       switch (g) {
         case y:
           return "Fragment";
-        case C:
+        case O:
           return "Profiler";
         case _:
           return "StrictMode";
-        case M:
+        case F:
           return "Suspense";
-        case R:
+        case C:
           return "SuspenseList";
-        case J:
+        case X:
           return "Activity";
       }
       if (typeof g == "object")
@@ -71,19 +71,19 @@ function Qn() {
         ), g.$$typeof) {
           case h:
             return "Portal";
-          case v:
+          case j:
             return g.displayName || "Context";
-          case O:
+          case v:
             return (g._context.displayName || "Context") + ".Consumer";
           case N:
-            var T = g.render;
-            return g = g.displayName, g || (g = T.displayName || T.name || "", g = g !== "" ? "ForwardRef(" + g + ")" : "ForwardRef"), g;
-          case L:
-            return T = g.displayName || null, T !== null ? T : e(g.type) || "Memo";
-          case q:
-            T = g._payload, g = g._init;
+            var E = g.render;
+            return g = g.displayName, g || (g = E.displayName || E.name || "", g = g !== "" ? "ForwardRef(" + g + ")" : "ForwardRef"), g;
+          case J:
+            return E = g.displayName || null, E !== null ? E : e(g.type) || "Memo";
+          case z:
+            E = g._payload, g = g._init;
             try {
-              return e(g(T));
+              return e(g(E));
             } catch {
             }
         }
@@ -95,50 +95,50 @@ function Qn() {
     function n(g) {
       try {
         t(g);
-        var T = !1;
+        var E = !1;
       } catch {
-        T = !0;
+        E = !0;
       }
-      if (T) {
-        T = console;
-        var A = T.error, F = typeof Symbol == "function" && Symbol.toStringTag && g[Symbol.toStringTag] || g.constructor.name || "Object";
+      if (E) {
+        E = console;
+        var A = E.error, U = typeof Symbol == "function" && Symbol.toStringTag && g[Symbol.toStringTag] || g.constructor.name || "Object";
         return A.call(
-          T,
+          E,
           "The provided key is an unsupported type %s. This value must be coerced to a string before using it here.",
-          F
+          U
         ), t(g);
       }
     }
     function s(g) {
       if (g === y) return "<>";
-      if (typeof g == "object" && g !== null && g.$$typeof === q)
+      if (typeof g == "object" && g !== null && g.$$typeof === z)
         return "<...>";
       try {
-        var T = e(g);
-        return T ? "<" + T + ">" : "<...>";
+        var E = e(g);
+        return E ? "<" + E + ">" : "<...>";
       } catch {
         return "<...>";
       }
     }
     function r() {
-      var g = B.A;
+      var g = D.A;
       return g === null ? null : g.getOwner();
     }
     function o() {
       return Error("react-stack-top-frame");
     }
     function a(g) {
-      if (H.call(g, "key")) {
-        var T = Object.getOwnPropertyDescriptor(g, "key").get;
-        if (T && T.isReactWarning) return !1;
+      if (W.call(g, "key")) {
+        var E = Object.getOwnPropertyDescriptor(g, "key").get;
+        if (E && E.isReactWarning) return !1;
       }
       return g.key !== void 0;
     }
-    function i(g, T) {
+    function i(g, E) {
       function A() {
-        P || (P = !0, console.error(
+        M || (M = !0, console.error(
           "%s: `key` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://react.dev/link/special-props)",
-          T
+          E
         ));
       }
       A.isReactWarning = !0, Object.defineProperty(g, "key", {
@@ -148,19 +148,19 @@ function Qn() {
     }
     function m() {
       var g = e(this.type);
-      return re[g] || (re[g] = !0, console.error(
+      return oe[g] || (oe[g] = !0, console.error(
         "Accessing element.ref was removed in React 19. ref is now a regular prop. It will be removed from the JSX Element type in a future release."
       )), g = this.props.ref, g !== void 0 ? g : null;
     }
-    function p(g, T, A, F, te, Re) {
-      var D = A.ref;
+    function p(g, E, A, U, ne, Re) {
+      var $ = A.ref;
       return g = {
         $$typeof: l,
         type: g,
-        key: T,
+        key: E,
         props: A,
-        _owner: F
-      }, (D !== void 0 ? D : null) !== null ? Object.defineProperty(g, "ref", {
+        _owner: U
+      }, ($ !== void 0 ? $ : null) !== null ? Object.defineProperty(g, "ref", {
         enumerable: !1,
         get: m
       }) : Object.defineProperty(g, "ref", { enumerable: !1, value: null }), g._store = {}, Object.defineProperty(g._store, "validated", {
@@ -177,7 +177,7 @@ function Qn() {
         configurable: !1,
         enumerable: !1,
         writable: !0,
-        value: te
+        value: ne
       }), Object.defineProperty(g, "_debugTask", {
         configurable: !1,
         enumerable: !1,
@@ -185,108 +185,108 @@ function Qn() {
         value: Re
       }), Object.freeze && (Object.freeze(g.props), Object.freeze(g)), g;
     }
-    function u(g, T, A, F, te, Re) {
-      var D = T.children;
-      if (D !== void 0)
-        if (F)
-          if (I(D)) {
-            for (F = 0; F < D.length; F++)
-              d(D[F]);
-            Object.freeze && Object.freeze(D);
+    function u(g, E, A, U, ne, Re) {
+      var $ = E.children;
+      if ($ !== void 0)
+        if (U)
+          if (L($)) {
+            for (U = 0; U < $.length; U++)
+              d($[U]);
+            Object.freeze && Object.freeze($);
           } else
             console.error(
               "React.jsx: Static children should always be an array. You are likely explicitly calling React.jsxs or React.jsxDEV. Use the Babel transform instead."
             );
-        else d(D);
-      if (H.call(T, "key")) {
-        D = e(g);
-        var fe = Object.keys(T).filter(function(Qe) {
+        else d($);
+      if (W.call(E, "key")) {
+        $ = e(g);
+        var fe = Object.keys(E).filter(function(Qe) {
           return Qe !== "key";
         });
-        F = 0 < fe.length ? "{key: someKey, " + fe.join(": ..., ") + ": ...}" : "{key: someKey}", le[D + F] || (fe = 0 < fe.length ? "{" + fe.join(": ..., ") + ": ...}" : "{}", console.error(
+        U = 0 < fe.length ? "{key: someKey, " + fe.join(": ..., ") + ": ...}" : "{key: someKey}", le[$ + U] || (fe = 0 < fe.length ? "{" + fe.join(": ..., ") + ": ...}" : "{}", console.error(
           `A props object containing a "key" prop is being spread into JSX:
   let props = %s;
   <%s {...props} />
 React keys must be passed directly to JSX without using spread:
   let props = %s;
   <%s key={someKey} {...props} />`,
-          F,
-          D,
+          U,
+          $,
           fe,
-          D
-        ), le[D + F] = !0);
+          $
+        ), le[$ + U] = !0);
       }
-      if (D = null, A !== void 0 && (n(A), D = "" + A), a(T) && (n(T.key), D = "" + T.key), "key" in T) {
+      if ($ = null, A !== void 0 && (n(A), $ = "" + A), a(E) && (n(E.key), $ = "" + E.key), "key" in E) {
         A = {};
-        for (var Se in T)
-          Se !== "key" && (A[Se] = T[Se]);
-      } else A = T;
-      return D && i(
+        for (var Se in E)
+          Se !== "key" && (A[Se] = E[Se]);
+      } else A = E;
+      return $ && i(
         A,
         typeof g == "function" ? g.displayName || g.name || "Unknown" : g
       ), p(
         g,
-        D,
+        $,
         A,
         r(),
-        te,
+        ne,
         Re
       );
     }
     function d(g) {
-      w(g) ? g._store && (g._store.validated = 1) : typeof g == "object" && g !== null && g.$$typeof === q && (g._payload.status === "fulfilled" ? w(g._payload.value) && g._payload.value._store && (g._payload.value._store.validated = 1) : g._store && (g._store.validated = 1));
+      w(g) ? g._store && (g._store.validated = 1) : typeof g == "object" && g !== null && g.$$typeof === z && (g._payload.status === "fulfilled" ? w(g._payload.value) && g._payload.value._store && (g._payload.value._store.validated = 1) : g._store && (g._store.validated = 1));
     }
     function w(g) {
       return typeof g == "object" && g !== null && g.$$typeof === l;
     }
-    var b = ve, l = Symbol.for("react.transitional.element"), h = Symbol.for("react.portal"), y = Symbol.for("react.fragment"), _ = Symbol.for("react.strict_mode"), C = Symbol.for("react.profiler"), O = Symbol.for("react.consumer"), v = Symbol.for("react.context"), N = Symbol.for("react.forward_ref"), M = Symbol.for("react.suspense"), R = Symbol.for("react.suspense_list"), L = Symbol.for("react.memo"), q = Symbol.for("react.lazy"), J = Symbol.for("react.activity"), ce = Symbol.for("react.client.reference"), B = b.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, H = Object.prototype.hasOwnProperty, I = Array.isArray, Q = console.createTask ? console.createTask : function() {
+    var x = Oe, l = Symbol.for("react.transitional.element"), h = Symbol.for("react.portal"), y = Symbol.for("react.fragment"), _ = Symbol.for("react.strict_mode"), O = Symbol.for("react.profiler"), v = Symbol.for("react.consumer"), j = Symbol.for("react.context"), N = Symbol.for("react.forward_ref"), F = Symbol.for("react.suspense"), C = Symbol.for("react.suspense_list"), J = Symbol.for("react.memo"), z = Symbol.for("react.lazy"), X = Symbol.for("react.activity"), P = Symbol.for("react.client.reference"), D = x.__CLIENT_INTERNALS_DO_NOT_USE_OR_WARN_USERS_THEY_CANNOT_UPGRADE, W = Object.prototype.hasOwnProperty, L = Array.isArray, ee = console.createTask ? console.createTask : function() {
       return null;
     };
-    b = {
+    x = {
       react_stack_bottom_frame: function(g) {
         return g();
       }
     };
-    var P, re = {}, ee = b.react_stack_bottom_frame.bind(
-      b,
+    var M, oe = {}, te = x.react_stack_bottom_frame.bind(
+      x,
       o
-    )(), de = Q(s(o)), le = {};
-    Te.Fragment = y, Te.jsx = function(g, T, A) {
-      var F = 1e4 > B.recentlyCreatedOwnerStacks++;
+    )(), de = ee(s(o)), le = {};
+    Te.Fragment = y, Te.jsx = function(g, E, A) {
+      var U = 1e4 > D.recentlyCreatedOwnerStacks++;
       return u(
         g,
-        T,
+        E,
         A,
         !1,
-        F ? Error("react-stack-top-frame") : ee,
-        F ? Q(s(g)) : de
+        U ? Error("react-stack-top-frame") : te,
+        U ? ee(s(g)) : de
       );
-    }, Te.jsxs = function(g, T, A) {
-      var F = 1e4 > B.recentlyCreatedOwnerStacks++;
+    }, Te.jsxs = function(g, E, A) {
+      var U = 1e4 > D.recentlyCreatedOwnerStacks++;
       return u(
         g,
-        T,
+        E,
         A,
         !0,
-        F ? Error("react-stack-top-frame") : ee,
-        F ? Q(s(g)) : de
+        U ? Error("react-stack-top-frame") : te,
+        U ? ee(s(g)) : de
       );
     };
   })()), Te;
 }
 var jt;
-function es() {
-  return jt || (jt = 1, process.env.NODE_ENV === "production" ? Ie.exports = Zn() : Ie.exports = Qn()), Ie.exports;
+function ts() {
+  return jt || (jt = 1, process.env.NODE_ENV === "production" ? Ie.exports = Qn() : Ie.exports = es()), Ie.exports;
 }
-var c = es();
-const ts = (e) => /* @__PURE__ */ c.jsx(Ln, { ...e }), ns = (e) => /* @__PURE__ */ c.jsx($n, { ...e }), ss = (e) => /* @__PURE__ */ c.jsx(Wn, { ...e }), ft = (e) => /* @__PURE__ */ c.jsx(In, { ...e }), rs = (e) => /* @__PURE__ */ c.jsx(Kn, { ...e }), Ot = (e) => /* @__PURE__ */ c.jsx(Hn, { ...e }), vt = (e) => /* @__PURE__ */ c.jsx(zn, { ...e }), os = (e) => /* @__PURE__ */ c.jsx(qn, { ...e }), Xt = (e) => /* @__PURE__ */ c.jsx(Bn, { ...e }), as = (e) => /* @__PURE__ */ c.jsx(Vn, { ...e }), is = (e) => /* @__PURE__ */ c.jsx(Jn, { ...e }), Gt = (e) => /* @__PURE__ */ c.jsx(Dn, { ...e }), Zt = (e) => {
+var c = ts();
+const Xt = (e) => /* @__PURE__ */ c.jsx(In, { ...e }), ns = (e) => /* @__PURE__ */ c.jsx(Bn, { ...e }), ss = (e) => /* @__PURE__ */ c.jsx(qn, { ...e }), ft = (e) => /* @__PURE__ */ c.jsx($n, { ...e }), rs = (e) => /* @__PURE__ */ c.jsx(Yn, { ...e }), vt = (e) => /* @__PURE__ */ c.jsx(Jn, { ...e }), Ot = (e) => /* @__PURE__ */ c.jsx(Hn, { ...e }), os = (e) => /* @__PURE__ */ c.jsx(zn, { ...e }), Gt = (e) => /* @__PURE__ */ c.jsx(Wn, { ...e }), as = (e) => /* @__PURE__ */ c.jsx(Kn, { ...e }), is = (e) => /* @__PURE__ */ c.jsx(Vn, { ...e }), Zt = (e) => /* @__PURE__ */ c.jsx(Ln, { ...e }), Qt = (e) => {
   if (!e) return "";
   try {
     return new Date(e).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
   } catch {
     return "";
   }
-}, Qt = (e, t) => {
+}, en = (e, t) => {
   if (t !== 1) return null;
   const n = (s) => ({
     size: 14,
@@ -298,13 +298,13 @@ const ts = (e) => /* @__PURE__ */ c.jsx(Ln, { ...e }), ns = (e) => /* @__PURE__ 
     case 2:
       return /* @__PURE__ */ c.jsx(is, { ...n("#ff4444") });
     case 1:
-      return /* @__PURE__ */ c.jsx(vt, { ...n("#999") });
+      return /* @__PURE__ */ c.jsx(Ot, { ...n("#999") });
     case 3:
-      return /* @__PURE__ */ c.jsx(Ot, { ...n("#999"), weight: "bold" });
+      return /* @__PURE__ */ c.jsx(vt, { ...n("#999"), weight: "bold" });
     case 4:
-      return /* @__PURE__ */ c.jsx(Ot, { ...n("#53bdeb"), weight: "bold" });
+      return /* @__PURE__ */ c.jsx(vt, { ...n("#53bdeb"), weight: "bold" });
     default:
-      return /* @__PURE__ */ c.jsx(vt, { ...n("#999") });
+      return /* @__PURE__ */ c.jsx(Ot, { ...n("#999") });
   }
 }, cs = (e) => {
   if (!e) return null;
@@ -327,7 +327,7 @@ const ts = (e) => /* @__PURE__ */ c.jsx(Ln, { ...e }), ns = (e) => /* @__PURE__ 
       )
     ), s = r.index + r[0].length;
   }
-  return s < e.length && n.push(e.substring(s)), n.length > 0 ? /* @__PURE__ */ c.jsx(ve.Fragment, { children: n }) : e;
+  return s < e.length && n.push(e.substring(s)), n.length > 0 ? /* @__PURE__ */ c.jsx(Oe.Fragment, { children: n }) : e;
 };
 function ls(e) {
   if (!e) return;
@@ -365,7 +365,7 @@ function pt(e) {
     sample: r ? e.sample ?? void 0 : void 0
   };
 }
-const $e = Gn((e) => ({
+const $e = Zn((e) => ({
   incomingData: [],
   setIncomingData: (t) => e({ incomingData: t }),
   handleIncomingMessage: (t) => e((n) => {
@@ -386,9 +386,7 @@ const $e = Gn((e) => ({
       var d;
       return (d = u.names) == null ? void 0 : d.includes(r);
     })) return n;
-    const p = s.findIndex(
-      (u) => u.type === "whatsapp" && (o && u.from === o || a && u.customer === a)
-    );
+    const p = s.findIndex((u) => u.type === "whatsapp" && (o && u.from === o || a && u.customer === a));
     if (p !== -1)
       return s[p] = {
         ...s[p],
@@ -410,7 +408,7 @@ const $e = Gn((e) => ({
     }
   }),
   clearContact: (t, n) => e((s) => ({ incomingData: s.incomingData.filter((o) => o.type !== "whatsapp" ? !0 : !(t && o.from === t || n && o.customer === n)) }))
-})), us = () => Xn((e) => ({
+})), us = () => Gn((e) => ({
   messages: [],
   isLoading: !1,
   error: null,
@@ -425,31 +423,31 @@ const $e = Gn((e) => ({
   clearMessages: () => e({ messages: [], error: null }),
   setLoading: (t) => e({ isLoading: t }),
   setError: (t) => e({ error: t })
-})), en = Yt(void 0), tn = Yt(void 0), nn = ({
+})), tn = Yt(void 0), nn = Yt(void 0), sn = ({
   apiAdapter: e,
   config: t,
   socketAdapter: n,
   socketPayload: s,
   children: r
 }) => {
-  const [o] = ve.useState(() => us());
-  return /* @__PURE__ */ c.jsx(en.Provider, { value: { apiAdapter: e, config: t, socketAdapter: n, socketPayload: s }, children: /* @__PURE__ */ c.jsx(tn.Provider, { value: o, children: r }) });
-}, Ce = () => {
-  const e = Kt(en);
-  if (!e) throw new Error("Missing WhatsappChatProvider");
-  return e;
-}, sn = () => {
+  const [o] = Oe.useState(() => us());
+  return /* @__PURE__ */ c.jsx(tn.Provider, { value: { apiAdapter: e, config: t, socketAdapter: n, socketPayload: s }, children: /* @__PURE__ */ c.jsx(nn.Provider, { value: o, children: r }) });
+}, Ne = () => {
   const e = Kt(tn);
   if (!e) throw new Error("Missing WhatsappChatProvider");
   return e;
+}, rn = () => {
+  const e = Kt(nn);
+  if (!e) throw new Error("Missing WhatsappChatProvider");
+  return e;
 }, ue = (e) => {
-  const t = sn();
-  return Yn(t, e);
+  const t = rn();
+  return Xn(t, e);
 };
 function ds(e) {
   return e.startsWith("/") ? e.slice(1) : e;
 }
-const rn = ({
+const on = ({
   header: e,
   message: t,
   footer: n,
@@ -461,9 +459,9 @@ const rn = ({
   sample: m,
   isPreview: p = !1
 }) => {
-  const { config: u } = Ce(), d = u.apiBaseUrl || "", w = m ? `${d}/${ds(m)}` : void 0, b = i === "IMAGE" && w, l = i === "DOCUMENT" && w, h = !i || i === "TEXT";
+  const { config: u } = Ne(), d = u.apiBaseUrl || "", w = m ? `${d}/${ds(m)}` : void 0, x = i === "IMAGE" && w, l = i === "DOCUMENT" && w, h = !i || i === "TEXT";
   return /* @__PURE__ */ c.jsx("div", { className: "whatsapp-template-message-card", children: /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-template-card-inner", children: [
-    b && /* @__PURE__ */ c.jsx(
+    x && /* @__PURE__ */ c.jsx(
       "a",
       {
         href: w,
@@ -490,7 +488,7 @@ const rn = ({
         className: "whatsapp-template-card-header-media whatsapp-template-card-header-document",
         title: "Open document in new tab",
         children: [
-          /* @__PURE__ */ c.jsx(Xt, { size: 24, color: "#e74c3c" }),
+          /* @__PURE__ */ c.jsx(Gt, { size: 24, color: "#e74c3c" }),
           /* @__PURE__ */ c.jsx("span", { children: (m == null ? void 0 : m.split("/").pop()) || "Untitled" })
         ]
       }
@@ -503,11 +501,11 @@ const rn = ({
       /* @__PURE__ */ c.jsx("span", { children: y.button_label })
     ] }, _)) }),
     /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-template-card-meta", children: [
-      /* @__PURE__ */ c.jsx("span", { children: Zt(r) }),
-      !p && o === 1 && Qt(a, o)
+      /* @__PURE__ */ c.jsx("span", { children: Qt(r) }),
+      !p && o === 1 && en(a, o)
     ] })
   ] }) });
-}, X = ({ width: e, height: t, className: n, style: s }) => /* @__PURE__ */ c.jsx(
+}, G = ({ width: e, height: t, className: n, style: s }) => /* @__PURE__ */ c.jsx(
   "div",
   {
     className: `whatsapp-skeleton ${n || ""}`,
@@ -521,24 +519,24 @@ const rn = ({
   const e = { marginBottom: 8 };
   return /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-message-list", children: [
     /* @__PURE__ */ c.jsxs("div", { className: "message-bubble received", style: e, children: [
-      /* @__PURE__ */ c.jsx(X, { width: "140px", height: "1rem", style: { marginBottom: 8 } }),
-      /* @__PURE__ */ c.jsx(X, { width: "60px", height: "0.75rem" })
+      /* @__PURE__ */ c.jsx(G, { width: "140px", height: "1rem", style: { marginBottom: 8 } }),
+      /* @__PURE__ */ c.jsx(G, { width: "60px", height: "0.75rem" })
     ] }),
     /* @__PURE__ */ c.jsxs("div", { className: "message-bubble sent", style: e, children: [
-      /* @__PURE__ */ c.jsx(X, { width: "100px", height: "1rem", style: { marginBottom: 8 } }),
-      /* @__PURE__ */ c.jsx(X, { width: "55px", height: "0.75rem" })
+      /* @__PURE__ */ c.jsx(G, { width: "100px", height: "1rem", style: { marginBottom: 8 } }),
+      /* @__PURE__ */ c.jsx(G, { width: "55px", height: "0.75rem" })
     ] }),
     /* @__PURE__ */ c.jsxs("div", { className: "message-bubble received", style: e, children: [
-      /* @__PURE__ */ c.jsx(X, { width: "180px", height: "1rem", style: { marginBottom: 8 } }),
-      /* @__PURE__ */ c.jsx(X, { width: "60px", height: "0.75rem" })
+      /* @__PURE__ */ c.jsx(G, { width: "180px", height: "1rem", style: { marginBottom: 8 } }),
+      /* @__PURE__ */ c.jsx(G, { width: "60px", height: "0.75rem" })
     ] }),
     /* @__PURE__ */ c.jsxs("div", { className: "message-bubble sent", style: e, children: [
-      /* @__PURE__ */ c.jsx(X, { width: "120px", height: "1rem", style: { marginBottom: 8 } }),
-      /* @__PURE__ */ c.jsx(X, { width: "55px", height: "0.75rem" })
+      /* @__PURE__ */ c.jsx(G, { width: "120px", height: "1rem", style: { marginBottom: 8 } }),
+      /* @__PURE__ */ c.jsx(G, { width: "55px", height: "0.75rem" })
     ] }),
     /* @__PURE__ */ c.jsxs("div", { className: "message-bubble received", style: e, children: [
-      /* @__PURE__ */ c.jsx(X, { width: "90px", height: "1rem", style: { marginBottom: 8 } }),
-      /* @__PURE__ */ c.jsx(X, { width: "60px", height: "0.75rem" })
+      /* @__PURE__ */ c.jsx(G, { width: "90px", height: "1rem", style: { marginBottom: 8 } }),
+      /* @__PURE__ */ c.jsx(G, { width: "60px", height: "0.75rem" })
     ] })
   ] });
 };
@@ -566,10 +564,10 @@ const ms = ({
   showIcon: o = !1,
   enableScroll: a = !0
 }) => {
-  const { config: i } = Ce(), m = i.apiBaseUrl || "", p = ae(null), u = me(() => {
+  const { config: i } = Ne(), m = i.apiBaseUrl || "", p = ie(null), u = me(() => {
     var d;
     if (s) {
-      const w = s.creation || (s.date && s.time ? `${s.date} ${s.time}` : (/* @__PURE__ */ new Date()).toISOString()), b = s.type === "Outgoing" || s.is_outbound === 1, l = ((d = s.links) == null ? void 0 : d.map((h) => ({
+      const w = s.creation || (s.date && s.time ? `${s.date} ${s.time}` : (/* @__PURE__ */ new Date()).toISOString()), x = s.type === "Outgoing" || s.is_outbound === 1, l = ((d = s.links) == null ? void 0 : d.map((h) => ({
         button_label: h.button_label ?? "",
         link: h.link ?? h.website_url ?? ""
       }))) ?? void 0;
@@ -579,10 +577,10 @@ const ms = ({
           message: s.message || "",
           sender: s.type === "Outgoing" ? "You" : "Customer",
           creation: w,
-          is_outbound: b ? 1 : 0,
+          is_outbound: x ? 1 : 0,
           attach: s.attach,
           content_type: s.content_type,
-          status: ps(s.status, b),
+          status: ps(s.status, x),
           message_type: s.message_type,
           header: s.header,
           footer: s.footer,
@@ -594,31 +592,31 @@ const ms = ({
     }
     return e || [];
   }, [s, e]);
-  return se(() => {
+  return re(() => {
     var d;
     a && ((d = p.current) == null || d.scrollIntoView({ behavior: "smooth" }));
   }, [u, a]), t ? /* @__PURE__ */ c.jsx(fs, {}) : n ? /* @__PURE__ */ c.jsx("div", { className: "whatsapp-message-list", style: { textAlign: "center", color: "#c53030", padding: "20px" }, children: n }) : /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-message-list", children: [
     u.length === 0 && /* @__PURE__ */ c.jsx("div", { style: { textAlign: "center", color: "#888", padding: "20px" }, children: "No messages yet. Start the conversation!" }),
     u.map((d, w) => {
-      const b = d, l = Array.isArray(b.attach) ? b.attach : b.attach ? [b.attach] : [], h = b.content_type;
-      return b.message_type === "Template" ? /* @__PURE__ */ c.jsxs(
+      const x = d, l = Array.isArray(x.attach) ? x.attach : x.attach ? [x.attach] : [], h = x.content_type;
+      return x.message_type === "Template" ? /* @__PURE__ */ c.jsxs(
         "div",
         {
           className: `message-bubble ${d.is_outbound ? "sent" : "received"} message-bubble--template`,
           children: [
             o && r && /* @__PURE__ */ c.jsx("div", { className: "message-icon-wrapper", children: r }),
             /* @__PURE__ */ c.jsx(
-              rn,
+              on,
               {
-                header: b.header,
+                header: x.header,
                 message: d.message,
-                footer: b.footer,
-                template_links: b.template_links,
+                footer: x.footer,
+                template_links: x.template_links,
                 creation: d.creation,
                 is_outbound: d.is_outbound,
                 status: d.status,
-                header_type: b.header_type,
-                sample: b.sample
+                header_type: x.header_type,
+                sample: x.sample
               }
             )
           ]
@@ -628,7 +626,7 @@ const ms = ({
         o && r && /* @__PURE__ */ c.jsx("div", { className: "message-icon-wrapper", children: r }),
         /* @__PURE__ */ c.jsxs("div", { className: "message-content", children: [
           cs(d.message) || d.message,
-          l.length > 0 && l.map((_, C) => /* @__PURE__ */ c.jsx("div", { className: "message-attachment", children: h === "image" ? /* @__PURE__ */ c.jsx(
+          l.length > 0 && l.map((_, O) => /* @__PURE__ */ c.jsx("div", { className: "message-attachment", children: h === "image" ? /* @__PURE__ */ c.jsx(
             "img",
             {
               src: `${m}/${_}`,
@@ -646,19 +644,19 @@ const ms = ({
               title: "View attachment",
               children: _.split("/").pop() || "Attachment"
             }
-          ) }, `${d.name}-attach-${C}`)),
+          ) }, `${d.name}-attach-${O}`)),
           /* @__PURE__ */ c.jsxs("div", { className: "message-time", children: [
-            Zt(d.creation),
-            Qt(d.status, d.is_outbound)
+            Qt(d.creation),
+            en(d.status, d.is_outbound)
           ] })
         ] })
       ] }, `${d.name}-${w}`);
     }),
     /* @__PURE__ */ c.jsx("div", { ref: p })
   ] });
-}, on = Mn(({ onSelect: e, multiple: t = !0, accept: n, maxFileSize: s, className: r = "" }, o) => {
-  const a = ae(null);
-  Un(o, () => ({
+}, an = Un(({ onSelect: e, multiple: t = !0, accept: n, maxFileSize: s, className: r = "" }, o) => {
+  const a = ie(null);
+  Dn(o, () => ({
     click: () => {
       var m;
       (m = a.current) == null || m.click();
@@ -689,8 +687,8 @@ const ms = ({
     }
   );
 });
-on.displayName = "FileUpload";
-const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", className: o = "" }) => (se(() => (e ? document.body.style.overflow = "hidden" : document.body.style.overflow = "unset", () => {
+an.displayName = "FileUpload";
+const Ce = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", className: o = "" }) => (re(() => (e ? document.body.style.overflow = "hidden" : document.body.style.overflow = "unset", () => {
   document.body.style.overflow = "unset";
 }), [e]), e ? /* @__PURE__ */ c.jsx("div", { className: `raw-modal-overlay ${o}`, onClick: t, children: /* @__PURE__ */ c.jsxs("div", { className: "raw-modal-container", style: { maxWidth: r }, onClick: (a) => a.stopPropagation(), children: [
   /* @__PURE__ */ c.jsxs("div", { className: "raw-modal-header", children: [
@@ -704,10 +702,10 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
   template: n,
   onClearTemplate: s
 }) => {
-  var b;
+  var x;
   const [r, o] = Y(!1), a = () => {
     s(), o(!1);
-  }, i = e.split("-")[0], m = (n == null ? void 0 : n.template) ?? t ?? "", p = (n == null ? void 0 : n.header) ?? null, u = (n == null ? void 0 : n.footer) ?? null, d = ((b = n == null ? void 0 : n.links) == null ? void 0 : b.map((l) => ({
+  }, i = e.split("-")[0], m = (n == null ? void 0 : n.template) ?? t ?? "", p = (n == null ? void 0 : n.header) ?? null, u = (n == null ? void 0 : n.footer) ?? null, d = ((x = n == null ? void 0 : n.links) == null ? void 0 : x.map((l) => ({
     button_label: l.button_label ?? "",
     link: l.link ?? ""
   }))) || [], w = (n == null ? void 0 : n.modified) || (n == null ? void 0 : n.creation) || (/* @__PURE__ */ new Date()).toISOString();
@@ -721,13 +719,13 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
       /* @__PURE__ */ c.jsx("button", { type: "button", onClick: a, className: "whatsapp-template-chip-clear", title: "Send as normal message instead", children: /* @__PURE__ */ c.jsx(ft, { size: 20, color: "currentColor" }) })
     ] }),
     /* @__PURE__ */ c.jsx(
-      Ne,
+      Ce,
       {
         open: r,
         onClose: () => o(!1),
         header: /* @__PURE__ */ c.jsx("h4", { className: "text-base font-semibold", children: "Template Preview" }),
         children: /* @__PURE__ */ c.jsx("div", { style: { padding: "20px 0" }, children: n ? /* @__PURE__ */ c.jsx(
-          rn,
+          on,
           {
             header: p,
             message: m,
@@ -748,7 +746,7 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
     /* @__PURE__ */ c.jsx("span", { className: "whatsapp-attachment-name", children: e.file.name }),
     t && /* @__PURE__ */ c.jsx("button", { onClick: t, type: "button", className: "whatsapp-attachment-remove", title: "Remove attachment", children: /* @__PURE__ */ c.jsx(ft, { size: 14, color: "#666" }) })
   ] })
-] }), Ct = () => /* @__PURE__ */ c.jsx("div", { className: "whatsapp-spinner" }), an = ({
+] }), Nt = () => /* @__PURE__ */ c.jsx("div", { className: "whatsapp-spinner" }), cn = ({
   onSend: e,
   isLoading: t,
   isUploading: n = !1,
@@ -761,44 +759,48 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
   attachedFiles: p = [],
   onFileRemove: u,
   onFileSelect: d,
-  initialInputText: w = ""
+  initialInputText: w = "",
+  isPreviewOpen: x,
+  setIsPreviewOpen: l,
+  style: h,
+  className: y
 }) => {
-  const [b, l] = Y(w), h = ae(null), y = ae(null), _ = !!a;
-  ve.useEffect(() => {
-    var R;
-    _ && ((R = h.current) == null || R.focus());
-  }, [_]), ve.useEffect(() => {
-    o !== void 0 && o !== "" ? l(o) : a || l(w ?? "");
+  const [_, O] = Y(w), v = ie(null), j = ie(null), N = !!a;
+  Oe.useEffect(() => {
+    var P;
+    N && ((P = v.current) == null || P.focus());
+  }, [N]), Oe.useEffect(() => {
+    o !== void 0 && o !== "" ? O(o) : a || O(w ?? "");
   }, [o, a, w]);
-  const C = () => {
-    var q;
-    const R = p.map((J) => J.fileUrl).filter(Boolean).map((J) => ({ file: J })), L = (q = p[0]) == null ? void 0 : q.contentType;
-    (b.trim() || R.length > 0 || _) && (e(b, R, L), _ || l(""));
-  }, O = () => {
-    var R;
-    (R = y.current) == null || R.click();
-  }, v = (R) => {
-    R != null && R.length && d && d(R);
-  }, N = (R) => {
-    R.key === "Enter" && !t && C();
-  }, M = (R) => {
-    const L = R.target.value;
-    l(L), !L.trim() && a && m && m();
+  const F = () => {
+    var W;
+    const P = p.map((L) => L.fileUrl).filter(Boolean).map((L) => ({ file: L })), D = (W = p[0]) == null ? void 0 : W.contentType;
+    (_.trim() || P.length > 0 || N) && (e(_, P, D), N || O(""));
+  }, C = () => {
+    var P;
+    (P = j.current) == null || P.click();
+  }, J = (P) => {
+    P != null && P.length && d && d(P);
+  }, z = (P) => {
+    P.key === "Enter" && !t && F();
+  }, X = (P) => {
+    const D = P.target.value;
+    O(D), !D.trim() && a && m && m();
   };
   return /* @__PURE__ */ c.jsxs(
     "div",
     {
-      ref: h,
-      className: "whatsapp-input-container",
-      onKeyDown: N,
-      tabIndex: _ ? 0 : void 0,
-      style: { outline: "none" },
+      ref: v,
+      className: `whatsapp-input-container ${y || ""}`,
+      onKeyDown: z,
+      tabIndex: N ? 0 : void 0,
+      style: { outline: "none", ...h },
       children: [
-        /* @__PURE__ */ c.jsx(on, { ref: y, onSelect: v, multiple: !0, accept: "image/*,video/*,audio/*,.pdf,.doc,.docx" }),
+        /* @__PURE__ */ c.jsx(an, { ref: j, onSelect: J, multiple: !0, accept: "image/*,video/*,audio/*,.pdf,.doc,.docx" }),
         /* @__PURE__ */ c.jsx(
           "button",
           {
-            onClick: O,
+            onClick: C,
             type: "button",
             className: "whatsapp-input-btn",
             disabled: t,
@@ -813,7 +815,7 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
               alignItems: "center",
               justifyContent: "center"
             },
-            children: n ? /* @__PURE__ */ c.jsx(Ct, {}) : /* @__PURE__ */ c.jsx(ns, { size: 20, color: "#175353" })
+            children: n ? /* @__PURE__ */ c.jsx(Nt, {}) : /* @__PURE__ */ c.jsx(ns, { size: 20, color: "#175353" })
           }
         ),
         r && /* @__PURE__ */ c.jsx(
@@ -834,7 +836,7 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
               alignItems: "center",
               justifyContent: "center"
             },
-            children: /* @__PURE__ */ c.jsx(Xt, { size: 20, color: "#175353" })
+            children: /* @__PURE__ */ c.jsx(Gt, { size: 20, color: "#175353" })
           }
         ),
         a && m && /* @__PURE__ */ c.jsx(
@@ -844,37 +846,37 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
             templateText: o,
             template: i,
             onClearTemplate: () => {
-              m(), l("");
+              m(), O("");
             }
           }
         ),
         /* @__PURE__ */ c.jsx(
           "input",
           {
-            value: b,
-            onChange: M,
+            value: _,
+            onChange: X,
             placeholder: "Type a message...",
             className: "whatsapp-input-field",
-            disabled: t || _
+            disabled: t || N
           }
         ),
         /* @__PURE__ */ c.jsx(
           "button",
           {
-            onClick: C,
+            onClick: F,
             className: "whatsapp-send-btn",
-            disabled: t || !_ && !b.trim() && p.length === 0,
+            disabled: t || !N && !_.trim() && p.length === 0,
             title: s ? "Sending..." : "Send",
-            children: s ? /* @__PURE__ */ c.jsx(Ct, {}) : /* @__PURE__ */ c.jsx(ss, { size: 20, color: "white" })
+            children: s ? /* @__PURE__ */ c.jsx(Nt, {}) : /* @__PURE__ */ c.jsx(ss, { size: 20, color: "white" })
           }
         ),
-        p.length > 0 && /* @__PURE__ */ c.jsx("div", { className: "whatsapp-input-attachments-row", children: p.map((R, L) => /* @__PURE__ */ c.jsx(
+        p.length > 0 && /* @__PURE__ */ c.jsx("div", { className: "whatsapp-input-attachments-row", children: p.map((P, D) => /* @__PURE__ */ c.jsx(
           gs,
           {
-            attachedFile: R,
-            onFileRemove: u ? () => u(L) : void 0
+            attachedFile: P,
+            onFileRemove: u ? () => u(D) : void 0
           },
-          `${R.file.name}-${L}`
+          `${P.file.name}-${D}`
         )) })
       ]
     }
@@ -884,11 +886,11 @@ const Ne = ({ open: e, onClose: t, header: n, children: s, width: r = "600px", c
   {
     className: "whatsapp-template-skeleton-item",
     children: [
-      /* @__PURE__ */ c.jsx(X, { width: "40%", height: "12px", style: { marginBottom: "8px" } }),
+      /* @__PURE__ */ c.jsx(G, { width: "40%", height: "12px", style: { marginBottom: "8px" } }),
       /* @__PURE__ */ c.jsx("div", { className: "whatsapp-item-divider" }),
-      /* @__PURE__ */ c.jsx(X, { width: "100%", height: "14px", style: { marginBottom: "8px" } }),
-      /* @__PURE__ */ c.jsx(X, { width: "90%", height: "14px", style: { marginBottom: "8px" } }),
-      /* @__PURE__ */ c.jsx(X, { width: "60%", height: "14px" })
+      /* @__PURE__ */ c.jsx(G, { width: "100%", height: "14px", style: { marginBottom: "8px" } }),
+      /* @__PURE__ */ c.jsx(G, { width: "90%", height: "14px", style: { marginBottom: "8px" } }),
+      /* @__PURE__ */ c.jsx(G, { width: "60%", height: "14px" })
     ]
   },
   t
@@ -901,7 +903,7 @@ function ws(e) {
 
 ${e.footer}`), t;
 }
-const cn = ({ templates: e, onSelect: t, isLoading: n = !1 }) => {
+const ln = ({ templates: e, onSelect: t, isLoading: n = !1 }) => {
   const [s, r] = Y(null);
   return n ? /* @__PURE__ */ c.jsx(ys, {}) : e.length === 0 ? /* @__PURE__ */ c.jsx("section", { style: { padding: "1rem", textAlign: "center" }, children: /* @__PURE__ */ c.jsx("p", { style: { color: "#666", fontSize: "0.875rem" }, children: "No templates available" }) }) : /* @__PURE__ */ c.jsx("section", { style: { padding: "1rem" }, children: /* @__PURE__ */ c.jsx("div", { className: "template-scroll-container", children: /* @__PURE__ */ c.jsx("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "1rem" }, children: e.map((o) => {
     const a = ws(o), i = s === o.name;
@@ -949,19 +951,19 @@ const cn = ({ templates: e, onSelect: t, isLoading: n = !1 }) => {
 function bs(e) {
   return e.type.startsWith("image/") ? "image" : e.type.startsWith("video/") ? "video" : e.type.startsWith("audio/") ? "audio" : "document";
 }
-function ln(e) {
+function un(e) {
   const t = e.toLowerCase();
   return /\.(png|jpe?g|gif|webp|bmp|svg)$/.test(t) ? "image" : /\.(mp4|webm|mov|mkv)$/.test(t) ? "video" : /\.(mp3|wav|ogg|m4a)$/.test(t) ? "audio" : "document";
 }
 function xs(e, t) {
-  if (ln(e) !== "image") return;
+  if (un(e) !== "image") return;
   const n = e.trim();
   if (n.startsWith("http://") || n.startsWith("https://")) return n;
   const s = (t || "").replace(/\/$/, ""), r = n.startsWith("/") ? n : `/${n}`;
   return s ? `${s}${r}` : n;
 }
 function _s(e, t) {
-  const n = e.file.trim(), s = n.split("/").filter(Boolean).pop() || "attachment", r = ln(n);
+  const n = e.file.trim(), s = n.split("/").filter(Boolean).pop() || "attachment", r = un(n);
   return {
     file: new File([], s, {
       type: r === "image" ? "image/png" : r === "video" ? "video/mp4" : "application/octet-stream"
@@ -971,119 +973,119 @@ function _s(e, t) {
     preview: xs(n, t)
   };
 }
-function un() {
-  const { config: e, apiAdapter: t, socketAdapter: n, socketPayload: s } = Ce(), r = sn(), o = ue((S) => S.messages), a = ue((S) => S.isLoading), i = ue((S) => S.error), m = ue((S) => S.setMessages), p = ue((S) => S.appendMessage), u = ue((S) => S.replaceMessage), d = ue((S) => S.updateMessageStatus), w = ue((S) => S.setLoading), b = ue((S) => S.setError), [l, h] = Y(!1), y = (n == null ? void 0 : n.isConnected) ?? !1, [_, C] = Y(!1), [O, v] = Y(), [N, M] = Y(), [R, L] = Y(), [q, J] = Y([]), [ce, B] = Y(!1), [H, I] = Y([]), [Q, P] = Y(!1), [re, ee] = Y(0), de = ae(null), le = me(() => {
-    var oe;
-    const S = e.doctype || "", x = e.refName || "", E = e.activeLeadDoctype || "", z = e.activeLeadName || "";
-    let k = S, K = x, W = e.links || [];
-    if (z)
-      k = E, K = z, W = S ? [{ link_doctype: S, link_name: x }] : [];
+function dn() {
+  const { config: e, apiAdapter: t, socketAdapter: n, socketPayload: s } = Ne(), r = rn(), o = ue((R) => R.messages), a = ue((R) => R.isLoading), i = ue((R) => R.error), m = ue((R) => R.setMessages), p = ue((R) => R.appendMessage), u = ue((R) => R.replaceMessage), d = ue((R) => R.updateMessageStatus), w = ue((R) => R.setLoading), x = ue((R) => R.setError), [l, h] = Y(!1), y = (n == null ? void 0 : n.isConnected) ?? !1, [_, O] = Y(!1), [v, j] = Y(), [N, F] = Y(), [C, J] = Y(), [z, X] = Y([]), [P, D] = Y(!1), [W, L] = Y([]), [ee, M] = Y(!1), [oe, te] = Y(0), de = ie(null), le = me(() => {
+    var ae;
+    const R = e.doctype || "", b = e.refName || "", S = e.activeLeadDoctype || "", H = e.activeLeadName || "";
+    let k = R, K = b, q = e.links || [];
+    if (H)
+      k = S, K = H, q = R ? [{ link_doctype: R, link_name: b }] : [];
     else {
-      const pe = (oe = e.links) == null ? void 0 : oe.find((Ue) => {
+      const pe = (ae = e.links) == null ? void 0 : ae.find((Ue) => {
         var we;
         return (we = Ue.link_doctype) == null ? void 0 : we.includes("Lead");
       });
-      pe && (k = pe.link_doctype, K = pe.link_name, W = S ? [{ link_doctype: S, link_name: x }] : []);
+      pe && (k = pe.link_doctype, K = pe.link_name, q = R ? [{ link_doctype: R, link_name: b }] : []);
     }
-    const U = z ? [{ reference_doctype: E, reference_name: z }] : [{ reference_doctype: S, reference_name: x }, ...(e.links || []).map((pe) => ({ reference_doctype: pe.link_doctype, reference_name: pe.link_name }))];
+    const I = H ? [{ reference_doctype: S, reference_name: H }] : [{ reference_doctype: R, reference_name: b }, ...(e.links || []).map((pe) => ({ reference_doctype: pe.link_doctype, reference_name: pe.link_name }))];
     return {
       primaryDoctype: k,
       primaryName: K,
-      secondaryLinks: W,
-      templateRefs: U,
-      baseDoctype: S,
-      baseName: x,
-      activeLeadDoctype: E,
-      activeLeadName: z
+      secondaryLinks: q,
+      templateRefs: I,
+      baseDoctype: R,
+      baseName: b,
+      activeLeadDoctype: S,
+      activeLeadName: H
     };
-  }, [e]), g = ae(t.getMessages);
-  se(() => {
+  }, [e]), g = ie(t.getMessages);
+  re(() => {
     g.current = t.getMessages;
-  }, [t.getMessages]), se(() => {
-    var E;
-    const S = e.isChatOpen, x = de.current;
-    de.current = S, S && (x === !1 && ee((z) => z + 1), (x === !1 || x === null) && ((E = e.attach) != null && E.length ? I(e.attach.map((z) => _s(z, e.apiBaseUrl))) : I([])));
-  }, [e.isChatOpen, e.attach, e.apiBaseUrl]), se(() => {
+  }, [t.getMessages]), re(() => {
+    var S;
+    const R = e.isChatOpen, b = de.current;
+    de.current = R, R && (b === !1 && te((H) => H + 1), (b === !1 || b === null) && ((S = e.attach) != null && S.length ? L(e.attach.map((H) => _s(H, e.apiBaseUrl))) : L([])));
+  }, [e.isChatOpen, e.attach, e.apiBaseUrl]), re(() => {
     if (!e.isChatOpen || e.preventHistoryFetch) return;
     (async () => {
-      var x;
-      w(!0), b(null);
+      var b;
+      w(!0), x(null);
       try {
-        const E = await ((x = g.current) == null ? void 0 : x.call(g, e.doctype || "", e.refName || ""));
-        E && m([...E].reverse());
-      } catch (E) {
-        b(E instanceof Error ? E.message : "Failed to fetch");
+        const S = await ((b = g.current) == null ? void 0 : b.call(g, e.doctype || "", e.refName || ""));
+        S && m([...S].reverse());
+      } catch (S) {
+        x(S instanceof Error ? S.message : "Failed to fetch");
       } finally {
         w(!1);
       }
     })();
-  }, [e.isChatOpen, e.doctype, e.refName, w, b, m]), se(() => {
-    if (!_ || q.length > 0) return;
+  }, [e.isChatOpen, e.doctype, e.refName, w, x, m]), re(() => {
+    if (!_ || z.length > 0) return;
     (async () => {
-      var x;
-      B(!0);
+      var b;
+      D(!0);
       try {
-        const E = await ((x = t.getTemplates) == null ? void 0 : x.call(t, le.templateRefs));
-        E && J(E);
-      } catch (E) {
-        console.error("Template fetch failed", E);
+        const S = await ((b = t.getTemplates) == null ? void 0 : b.call(t, le.templateRefs));
+        S && X(S);
+      } catch (S) {
+        console.error("Template fetch failed", S);
       } finally {
-        B(!1);
+        D(!1);
       }
     })();
-  }, [_, t, le.templateRefs, q.length]);
-  const T = ae(!1), A = ae(/* @__PURE__ */ new Set()), F = ae(null), te = ae(null);
-  se(() => {
+  }, [_, t, le.templateRefs, z.length]);
+  const E = ie(!1), A = ie(/* @__PURE__ */ new Set()), U = ie(null), ne = ie(null);
+  re(() => {
     if (!e.isChatOpen) {
-      T.current = !1, A.current.clear();
+      E.current = !1, A.current.clear();
       return;
     }
-    if (T.current || !o.length || !t.sendReadReceipt)
+    if (E.current || !o.length || !t.sendReadReceipt)
       return;
-    const S = o.findLast((x) => x.is_outbound === 0 && (x.status === null || x.status === void 0));
-    S != null && S.name && !A.current.has(S.name) ? (t.sendReadReceipt(S.name), A.current.add(S.name), T.current = !0) : o.length > 0 && (T.current = !0);
+    const R = o.findLast((b) => b.is_outbound === 0 && (b.status === null || b.status === void 0));
+    R != null && R.name && !A.current.has(R.name) ? (t.sendReadReceipt(R.name), A.current.add(R.name), E.current = !0) : o.length > 0 && (E.current = !0);
   }, [e.isChatOpen, o, t]);
-  const Re = Oe((S) => {
-    I((x) => {
-      const E = x[S];
-      return E != null && E.preview && URL.revokeObjectURL(E.preview), x.filter((z, k) => k !== S);
+  const Re = ve((R) => {
+    L((b) => {
+      const S = b[R];
+      return S != null && S.preview && URL.revokeObjectURL(S.preview), b.filter((H, k) => k !== R);
     });
-  }, []), D = Oe(() => {
-    I((S) => (S.forEach((x) => {
-      x.preview && URL.revokeObjectURL(x.preview);
+  }, []), $ = ve(() => {
+    L((R) => (R.forEach((b) => {
+      b.preview && URL.revokeObjectURL(b.preview);
     }), []));
-  }, []), fe = Oe(
-    async (S, x, E) => {
+  }, []), fe = ve(
+    async (R, b, S) => {
       var xt, _t, Rt, St;
       const {
-        primaryDoctype: z,
+        primaryDoctype: H,
         primaryName: k,
         secondaryLinks: K,
-        baseDoctype: W,
-        baseName: U,
-        activeLeadDoctype: oe,
+        baseDoctype: q,
+        baseName: I,
+        activeLeadDoctype: ae,
         activeLeadName: pe
       } = le, Ue = {
         to: e.phone
       };
       if (N) {
-        const be = ((R == null ? void 0 : R.for_doctype) ?? "").trim();
-        let tt = z, nt = k, st = K;
-        be.includes("Lead") ? (tt = oe || be, nt = pe || k, st = W ? [{ link_doctype: W, link_name: U }] : []) : (tt = W || z, nt = U || k, st = e.links || []);
+        const be = ((C == null ? void 0 : C.for_doctype) ?? "").trim();
+        let tt = H, nt = k, st = K;
+        be.includes("Lead") ? (tt = ae || be, nt = pe || k, st = q ? [{ link_doctype: q, link_name: I }] : []) : (tt = q || H, nt = I || k, st = e.links || []);
         const Le = `temp-${Date.now()}`;
-        te.current = Le;
-        const Pn = {
+        ne.current = Le;
+        const Fn = {
           name: Le,
-          message: O ?? (R == null ? void 0 : R.template) ?? "",
+          message: v ?? (C == null ? void 0 : C.template) ?? "",
           sender: "You",
           creation: (/* @__PURE__ */ new Date()).toISOString(),
           is_outbound: 1,
           status: 5,
           message_type: "Template",
-          header: R == null ? void 0 : R.header,
-          footer: R == null ? void 0 : R.footer
+          header: C == null ? void 0 : C.header,
+          footer: C == null ? void 0 : C.footer
         };
-        p(Pn), h(!0);
+        p(Fn), h(!0);
         try {
           await t.sendTemplate({
             ...Ue,
@@ -1091,19 +1093,19 @@ function un() {
             reference_name: nt,
             template: N,
             links: st
-          }), d(Le, 1), (xt = t.showNotification) == null || xt.call(t, "WhatsApp", "Template sent successfully"), M(void 0), v(void 0), L(void 0), D(), t.onMessageSent && t.onMessageSent();
-        } catch (Fn) {
-          console.error(Fn), d(Le, 2), (_t = t.showError) == null || _t.call(t, "WhatsApp", "Failed to send template message");
+          }), d(Le, 1), (xt = t.showNotification) == null || xt.call(t, "WhatsApp", "Template sent successfully"), F(void 0), j(void 0), J(void 0), $(), t.onMessageSent && t.onMessageSent();
+        } catch (Mn) {
+          console.error(Mn), d(Le, 2), (_t = t.showError) == null || _t.call(t, "WhatsApp", "Failed to send template message");
         } finally {
           h(!1);
         }
         return;
       }
-      const we = (S || "").trim();
-      if (!we && (!x || x.length === 0)) return;
+      const we = (R || "").trim();
+      if (!we && (!b || b.length === 0)) return;
       const De = `temp-${Date.now()}`;
-      F.current = De;
-      const et = (x == null ? void 0 : x.map((be) => be.file).filter(Boolean)) || [], bt = et[0];
+      U.current = De;
+      const et = (b == null ? void 0 : b.map((be) => be.file).filter(Boolean)) || [], bt = et[0];
       p({
         name: De,
         message: we,
@@ -1111,97 +1113,97 @@ function un() {
         creation: (/* @__PURE__ */ new Date()).toISOString(),
         is_outbound: 1,
         attach: et.length ? et : void 0,
-        content_type: bt ? E || "document" : void 0,
+        content_type: bt ? S || "document" : void 0,
         status: 5
       }), h(!0);
       try {
         await t.sendMessage({
           ...Ue,
-          reference_doctype: z,
+          reference_doctype: H,
           reference_name: k,
           message: we,
-          attach: x && x.length ? x : "",
-          content_type: bt ? E : void 0,
+          attach: b && b.length ? b : "",
+          content_type: bt ? S : void 0,
           links: K
-        }), d(De, 1), (Rt = t.showNotification) == null || Rt.call(t, "WhatsApp", "Message sent successfully"), D(), t.onMessageSent && t.onMessageSent();
+        }), d(De, 1), (Rt = t.showNotification) == null || Rt.call(t, "WhatsApp", "Message sent successfully"), $(), t.onMessageSent && t.onMessageSent();
       } catch (be) {
         console.error(be), d(De, 2), (St = t.showError) == null || St.call(t, "WhatsApp", "Failed to send message");
       } finally {
         h(!1);
       }
     },
-    [N, t, e.phone, e.links, R, O, p, d, le, D]
-  ), Se = (S, x, E) => {
-    v(S), M(x), L(E), C(!1);
-  }, Qe = Oe(async (S) => {
-    var x;
-    if (!(!t.uploadFiles && !t.uploadFile || !S.length)) {
-      P(!0);
+    [N, t, e.phone, e.links, C, v, p, d, le, $]
+  ), Se = (R, b, S) => {
+    j(R), F(b), J(S), O(!1);
+  }, Qe = ve(async (R) => {
+    var b;
+    if (!(!t.uploadFiles && !t.uploadFile || !R.length)) {
+      M(!0);
       try {
-        let E = [];
-        t.uploadFiles ? E = (await t.uploadFiles(S)).file_urls || [] : E = (await Promise.all(S.map((K) => t.uploadFile(K)))).map((K) => K.file_url).filter(Boolean);
-        const z = S.map((k, K) => ({
+        let S = [];
+        t.uploadFiles ? S = (await t.uploadFiles(R)).file_urls || [] : S = (await Promise.all(R.map((K) => t.uploadFile(K)))).map((K) => K.file_url).filter(Boolean);
+        const H = R.map((k, K) => ({
           file: k,
-          fileUrl: E[K] || "",
+          fileUrl: S[K] || "",
           contentType: bs(k),
           preview: k.type.startsWith("image/") ? URL.createObjectURL(k) : void 0
         })).filter((k) => !!k.fileUrl);
-        I((k) => [...k, ...z]);
-      } catch (E) {
-        console.error(E), (x = t.showError) == null || x.call(t, "WhatsApp", "Failed to upload file");
+        L((k) => [...k, ...H]);
+      } catch (S) {
+        console.error(S), (b = t.showError) == null || b.call(t, "WhatsApp", "Failed to upload file");
       } finally {
-        P(!1);
+        M(!1);
       }
     }
   }, [t]);
-  return se(() => {
-    const S = (x) => {
+  return re(() => {
+    const R = (b) => {
       var K;
-      if (!x || !x.name) return;
-      const E = r.getState().messages, z = x.status !== null && x.status !== void 0;
+      if (!b || !b.name) return;
+      const S = r.getState().messages, H = b.status !== null && b.status !== void 0;
       let k = -1;
-      if (x.is_outbound === 0 && z) {
-        E.some((U) => U.name === x.name) && typeof x.status == "number" && d(x.name, x.status);
+      if (b.is_outbound === 0 && H) {
+        S.some((I) => I.name === b.name) && typeof b.status == "number" && d(b.name, b.status);
         return;
       }
-      if (e.isChatOpen && x.is_outbound === 0 && x.name && e.phone === x.from && !(x.status === 4) && !A.current.has(x.name) && ((K = t.sendReadReceipt) == null || K.call(t, x.name), A.current.add(x.name)), x.is_outbound === 1)
-        if (x.message_type === "Template") {
-          const W = te.current;
-          if (W && (k = E.findIndex((U) => U.name === W)), k === -1)
-            for (let U = E.length - 1; U >= 0; U--) {
-              const oe = E[U];
-              if (oe.name.startsWith("temp-") && oe.message_type === "Template") {
-                k = U;
+      if (e.isChatOpen && b.is_outbound === 0 && b.name && e.phone === b.from && !(b.status === 4) && !A.current.has(b.name) && ((K = t.sendReadReceipt) == null || K.call(t, b.name), A.current.add(b.name)), b.is_outbound === 1)
+        if (b.message_type === "Template") {
+          const q = ne.current;
+          if (q && (k = S.findIndex((I) => I.name === q)), k === -1)
+            for (let I = S.length - 1; I >= 0; I--) {
+              const ae = S[I];
+              if (ae.name.startsWith("temp-") && ae.message_type === "Template") {
+                k = I;
                 break;
               }
             }
         } else {
-          const W = F.current;
-          if (W && (k = E.findIndex((U) => U.name === W)), k === -1 && (x.message && (k = E.findIndex((U) => U.name.startsWith("temp-") && U.is_outbound === 1 && U.message === x.message)), k === -1))
-            for (let U = E.length - 1; U >= 0; U--) {
-              const oe = E[U];
-              if (oe.name.startsWith("temp-") && oe.is_outbound === 1 && oe.message_type !== "Template") {
-                k = U;
+          const q = U.current;
+          if (q && (k = S.findIndex((I) => I.name === q)), k === -1 && (b.message && (k = S.findIndex((I) => I.name.startsWith("temp-") && I.is_outbound === 1 && I.message === b.message)), k === -1))
+            for (let I = S.length - 1; I >= 0; I--) {
+              const ae = S[I];
+              if (ae.name.startsWith("temp-") && ae.is_outbound === 1 && ae.message_type !== "Template") {
+                k = I;
                 break;
               }
             }
         }
       if (k !== -1) {
-        const W = E[k];
-        u(W.name, x), W.name === F.current && (F.current = null), W.name === te.current && (te.current = null);
+        const q = S[k];
+        u(q.name, b), q.name === U.current && (U.current = null), q.name === ne.current && (ne.current = null);
       } else
-        E.some((U) => U.name === x.name) ? typeof x.status == "number" && d(x.name, x.status) : p(x);
+        S.some((I) => I.name === b.name) ? typeof b.status == "number" && d(b.name, b.status) : p(b);
     };
     if (n != null && n.onMessage) {
-      const x = (E) => S(E);
-      return n.onMessage(x), () => {
-        var E;
-        return (E = n.offMessage) == null ? void 0 : E.call(n, x);
+      const b = (S) => R(S);
+      return n.onMessage(b), () => {
+        var S;
+        return (S = n.offMessage) == null ? void 0 : S.call(n, b);
       };
     }
     if (s && s.event === "whatsapp_message") {
-      const x = s.message, E = pt(x);
-      S(E);
+      const b = s.message, S = pt(b);
+      R(S);
     }
   }, [n, s, e.phone, e.isChatOpen, t, r, u, p, d]), {
     displayMessages: o,
@@ -1210,46 +1212,46 @@ function un() {
     isConnected: y,
     isSending: l,
     isTemplateModalOpen: _,
-    setIsTemplateModalOpen: C,
-    selectedTemplateText: O,
+    setIsTemplateModalOpen: O,
+    selectedTemplateText: v,
     selectedTemplateName: N,
-    selectedTemplate: R,
-    setSelectedTemplateText: v,
-    setSelectedTemplateName: M,
-    setSelectedTemplate: L,
-    attachedFiles: H,
-    templates: q,
-    isLoadingTemplates: ce,
+    selectedTemplate: C,
+    setSelectedTemplateText: j,
+    setSelectedTemplateName: F,
+    setSelectedTemplate: J,
+    attachedFiles: W,
+    templates: z,
+    isLoadingTemplates: P,
     sendMessage: fe,
     handleTemplateSelect: Se,
     handleFileSelect: Qe,
     handleFileRemove: Re,
-    uploadFileMutation: { isPending: Q },
-    composerMountKey: re
+    uploadFileMutation: { isPending: ee },
+    composerMountKey: oe
   };
 }
-function dn(e, t) {
+function fn(e, t) {
   return function() {
     return e.apply(t, arguments);
   };
 }
-const { toString: Rs } = Object.prototype, { getPrototypeOf: mt } = Object, { iterator: Ve, toStringTag: fn } = Symbol, Ke = /* @__PURE__ */ ((e) => (t) => {
+const { toString: Rs } = Object.prototype, { getPrototypeOf: mt } = Object, { iterator: Ve, toStringTag: pn } = Symbol, Ke = /* @__PURE__ */ ((e) => (t) => {
   const n = Rs.call(t);
   return e[n] || (e[n] = n.slice(8, -1).toLowerCase());
-})(/* @__PURE__ */ Object.create(null)), ie = (e) => (e = e.toLowerCase(), (t) => Ke(t) === e), Ye = (e) => (t) => typeof t === e, { isArray: _e } = Array, xe = Ye("undefined");
+})(/* @__PURE__ */ Object.create(null)), ce = (e) => (e = e.toLowerCase(), (t) => Ke(t) === e), Ye = (e) => (t) => typeof t === e, { isArray: _e } = Array, xe = Ye("undefined");
 function Ae(e) {
-  return e !== null && !xe(e) && e.constructor !== null && !xe(e.constructor) && G(e.constructor.isBuffer) && e.constructor.isBuffer(e);
+  return e !== null && !xe(e) && e.constructor !== null && !xe(e.constructor) && Z(e.constructor.isBuffer) && e.constructor.isBuffer(e);
 }
-const pn = ie("ArrayBuffer");
+const mn = ce("ArrayBuffer");
 function Ss(e) {
   let t;
-  return typeof ArrayBuffer < "u" && ArrayBuffer.isView ? t = ArrayBuffer.isView(e) : t = e && e.buffer && pn(e.buffer), t;
+  return typeof ArrayBuffer < "u" && ArrayBuffer.isView ? t = ArrayBuffer.isView(e) : t = e && e.buffer && mn(e.buffer), t;
 }
-const Es = Ye("string"), G = Ye("function"), mn = Ye("number"), ke = (e) => e !== null && typeof e == "object", Ts = (e) => e === !0 || e === !1, qe = (e) => {
+const Es = Ye("string"), Z = Ye("function"), hn = Ye("number"), ke = (e) => e !== null && typeof e == "object", Ts = (e) => e === !0 || e === !1, qe = (e) => {
   if (Ke(e) !== "object")
     return !1;
   const t = mt(e);
-  return (t === null || t === Object.prototype || Object.getPrototypeOf(t) === null) && !(fn in e) && !(Ve in e);
+  return (t === null || t === Object.prototype || Object.getPrototypeOf(t) === null) && !(pn in e) && !(Ve in e);
 }, js = (e) => {
   if (!ke(e) || Ae(e))
     return !1;
@@ -1258,20 +1260,20 @@ const Es = Ye("string"), G = Ye("function"), mn = Ye("number"), ke = (e) => e !=
   } catch {
     return !1;
   }
-}, Os = ie("Date"), vs = ie("File"), Cs = (e) => !!(e && typeof e.uri < "u"), Ns = (e) => e && typeof e.getParts < "u", As = ie("Blob"), ks = ie("FileList"), Ps = (e) => ke(e) && G(e.pipe);
+}, vs = ce("Date"), Os = ce("File"), Ns = (e) => !!(e && typeof e.uri < "u"), Cs = (e) => e && typeof e.getParts < "u", As = ce("Blob"), ks = ce("FileList"), Ps = (e) => ke(e) && Z(e.pipe);
 function Fs() {
   return typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : typeof global < "u" ? global : {};
 }
-const Nt = Fs(), At = typeof Nt.FormData < "u" ? Nt.FormData : void 0, Ms = (e) => {
+const Ct = Fs(), At = typeof Ct.FormData < "u" ? Ct.FormData : void 0, Ms = (e) => {
   let t;
-  return e && (At && e instanceof At || G(e.append) && ((t = Ke(e)) === "formdata" || // detect form-data instance
-  t === "object" && G(e.toString) && e.toString() === "[object FormData]"));
-}, Us = ie("URLSearchParams"), [Ds, Ls, Is, $s] = [
+  return e && (At && e instanceof At || Z(e.append) && ((t = Ke(e)) === "formdata" || // detect form-data instance
+  t === "object" && Z(e.toString) && e.toString() === "[object FormData]"));
+}, Us = ce("URLSearchParams"), [Ds, Ls, Is, $s] = [
   "ReadableStream",
   "Request",
   "Response",
   "Headers"
-].map(ie), Bs = (e) => e.trim ? e.trim() : e.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
+].map(ce), Bs = (e) => e.trim ? e.trim() : e.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, "");
 function Pe(e, t, { allOwnKeys: n = !1 } = {}) {
   if (e === null || typeof e > "u")
     return;
@@ -1288,7 +1290,7 @@ function Pe(e, t, { allOwnKeys: n = !1 } = {}) {
       i = o[s], t.call(null, e[i], i, e);
   }
 }
-function hn(e, t) {
+function gn(e, t) {
   if (Ae(e))
     return null;
   t = t.toLowerCase();
@@ -1299,12 +1301,12 @@ function hn(e, t) {
       return r;
   return null;
 }
-const he = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : global, gn = (e) => !xe(e) && e !== he;
+const he = typeof globalThis < "u" ? globalThis : typeof self < "u" ? self : typeof window < "u" ? window : global, yn = (e) => !xe(e) && e !== he;
 function ct() {
-  const { caseless: e, skipUndefined: t } = gn(this) && this || {}, n = {}, s = (r, o) => {
+  const { caseless: e, skipUndefined: t } = yn(this) && this || {}, n = {}, s = (r, o) => {
     if (o === "__proto__" || o === "constructor" || o === "prototype")
       return;
-    const a = e && hn(n, o) || o;
+    const a = e && gn(n, o) || o;
     qe(n[a]) && qe(r) ? n[a] = ct(n[a], r) : qe(r) ? n[a] = ct({}, r) : _e(r) ? n[a] = r.slice() : (!t || !xe(r)) && (n[a] = r);
   };
   for (let r = 0, o = arguments.length; r < o; r++)
@@ -1314,8 +1316,8 @@ function ct() {
 const Ws = (e, t, n, { allOwnKeys: s } = {}) => (Pe(
   t,
   (r, o) => {
-    n && G(r) ? Object.defineProperty(e, o, {
-      value: dn(r, n),
+    n && Z(r) ? Object.defineProperty(e, o, {
+      value: fn(r, n),
       writable: !0,
       enumerable: !0,
       configurable: !0
@@ -1354,7 +1356,7 @@ const Ws = (e, t, n, { allOwnKeys: s } = {}) => (Pe(
   if (!e) return null;
   if (_e(e)) return e;
   let t = e.length;
-  if (!mn(t)) return null;
+  if (!hn(t)) return null;
   const n = new Array(t);
   for (; t-- > 0; )
     n[t] = e[t];
@@ -1372,20 +1374,20 @@ const Ws = (e, t, n, { allOwnKeys: s } = {}) => (Pe(
   for (; (n = e.exec(t)) !== null; )
     s.push(n);
   return s;
-}, Gs = ie("HTMLFormElement"), Zs = (e) => e.toLowerCase().replace(/[-_\s]([a-z\d])(\w*)/g, function(n, s, r) {
+}, Gs = ce("HTMLFormElement"), Zs = (e) => e.toLowerCase().replace(/[-_\s]([a-z\d])(\w*)/g, function(n, s, r) {
   return s.toUpperCase() + r;
-}), kt = (({ hasOwnProperty: e }) => (t, n) => e.call(t, n))(Object.prototype), Qs = ie("RegExp"), yn = (e, t) => {
+}), kt = (({ hasOwnProperty: e }) => (t, n) => e.call(t, n))(Object.prototype), Qs = ce("RegExp"), wn = (e, t) => {
   const n = Object.getOwnPropertyDescriptors(e), s = {};
   Pe(n, (r, o) => {
     let a;
     (a = t(r, o, e)) !== !1 && (s[o] = a || r);
   }), Object.defineProperties(e, s);
 }, er = (e) => {
-  yn(e, (t, n) => {
-    if (G(e) && ["arguments", "caller", "callee"].indexOf(n) !== -1)
+  wn(e, (t, n) => {
+    if (Z(e) && ["arguments", "caller", "callee"].indexOf(n) !== -1)
       return !1;
     const s = e[n];
-    if (G(s)) {
+    if (Z(s)) {
       if (t.enumerable = !1, "writable" in t) {
         t.writable = !1;
         return;
@@ -1405,7 +1407,7 @@ const Ws = (e, t, n, { allOwnKeys: s } = {}) => (Pe(
 }, nr = () => {
 }, sr = (e, t) => e != null && Number.isFinite(e = +e) ? e : t;
 function rr(e) {
-  return !!(e && G(e.append) && e[fn] === "FormData" && e[Ve]);
+  return !!(e && Z(e.append) && e[pn] === "FormData" && e[Ve]);
 }
 const or = (e) => {
   const t = new Array(10), n = (s, r) => {
@@ -1426,7 +1428,7 @@ const or = (e) => {
     return s;
   };
   return n(e, 0);
-}, ar = ie("AsyncFunction"), ir = (e) => e && (ke(e) || G(e)) && G(e.then) && G(e.catch), wn = ((e, t) => e ? setImmediate : t ? ((n, s) => (he.addEventListener(
+}, ar = ce("AsyncFunction"), ir = (e) => e && (ke(e) || Z(e)) && Z(e.then) && Z(e.catch), bn = ((e, t) => e ? setImmediate : t ? ((n, s) => (he.addEventListener(
   "message",
   ({ source: r, data: o }) => {
     r === he && o === n && s.length && s.shift()();
@@ -1434,14 +1436,14 @@ const or = (e) => {
   !1
 ), (r) => {
   s.push(r), he.postMessage(n, "*");
-}))(`axios@${Math.random()}`, []) : (n) => setTimeout(n))(typeof setImmediate == "function", G(he.postMessage)), cr = typeof queueMicrotask < "u" ? queueMicrotask.bind(he) : typeof process < "u" && process.nextTick || wn, lr = (e) => e != null && G(e[Ve]), f = {
+}))(`axios@${Math.random()}`, []) : (n) => setTimeout(n))(typeof setImmediate == "function", Z(he.postMessage)), cr = typeof queueMicrotask < "u" ? queueMicrotask.bind(he) : typeof process < "u" && process.nextTick || bn, lr = (e) => e != null && Z(e[Ve]), f = {
   isArray: _e,
-  isArrayBuffer: pn,
+  isArrayBuffer: mn,
   isBuffer: Ae,
   isFormData: Ms,
   isArrayBufferView: Ss,
   isString: Es,
-  isNumber: mn,
+  isNumber: hn,
   isBoolean: Ts,
   isObject: ke,
   isPlainObject: qe,
@@ -1451,13 +1453,13 @@ const or = (e) => {
   isResponse: Is,
   isHeaders: $s,
   isUndefined: xe,
-  isDate: Os,
-  isFile: vs,
-  isReactNativeBlob: Cs,
-  isReactNative: Ns,
+  isDate: vs,
+  isFile: Os,
+  isReactNativeBlob: Ns,
+  isReactNative: Cs,
   isBlob: As,
   isRegExp: Qs,
-  isFunction: G,
+  isFunction: Z,
   isStream: Ps,
   isURLSearchParams: Us,
   isTypedArray: Ks,
@@ -1470,7 +1472,7 @@ const or = (e) => {
   inherits: zs,
   toFlatObject: Hs,
   kindOf: Ke,
-  kindOfTest: ie,
+  kindOfTest: ce,
   endsWith: Js,
   toArray: Vs,
   forEachEntry: Ys,
@@ -1479,26 +1481,26 @@ const or = (e) => {
   hasOwnProperty: kt,
   hasOwnProp: kt,
   // an alias to avoid ESLint no-prototype-builtins detection
-  reduceDescriptors: yn,
+  reduceDescriptors: wn,
   freezeMethods: er,
   toObjectSet: tr,
   toCamelCase: Zs,
   noop: nr,
   toFiniteNumber: sr,
-  findKey: hn,
+  findKey: gn,
   global: he,
-  isContextDefined: gn,
+  isContextDefined: yn,
   isSpecCompliantForm: rr,
   toJSONObject: or,
   isAsyncFn: ar,
   isThenable: ir,
-  setImmediate: wn,
+  setImmediate: bn,
   asap: cr,
   isIterable: lr
 };
-let j = class bn extends Error {
+let T = class xn extends Error {
   static from(t, n, s, r, o, a) {
-    const i = new bn(t.message, n || t.code, s, r, o);
+    const i = new xn(t.message, n || t.code, s, r, o);
     return i.cause = t, i.name = t.name, t.status != null && i.status == null && (i.status = t.status), a && Object.assign(i, a), i;
   }
   /**
@@ -1540,28 +1542,28 @@ let j = class bn extends Error {
     };
   }
 };
-j.ERR_BAD_OPTION_VALUE = "ERR_BAD_OPTION_VALUE";
-j.ERR_BAD_OPTION = "ERR_BAD_OPTION";
-j.ECONNABORTED = "ECONNABORTED";
-j.ETIMEDOUT = "ETIMEDOUT";
-j.ERR_NETWORK = "ERR_NETWORK";
-j.ERR_FR_TOO_MANY_REDIRECTS = "ERR_FR_TOO_MANY_REDIRECTS";
-j.ERR_DEPRECATED = "ERR_DEPRECATED";
-j.ERR_BAD_RESPONSE = "ERR_BAD_RESPONSE";
-j.ERR_BAD_REQUEST = "ERR_BAD_REQUEST";
-j.ERR_CANCELED = "ERR_CANCELED";
-j.ERR_NOT_SUPPORT = "ERR_NOT_SUPPORT";
-j.ERR_INVALID_URL = "ERR_INVALID_URL";
+T.ERR_BAD_OPTION_VALUE = "ERR_BAD_OPTION_VALUE";
+T.ERR_BAD_OPTION = "ERR_BAD_OPTION";
+T.ECONNABORTED = "ECONNABORTED";
+T.ETIMEDOUT = "ETIMEDOUT";
+T.ERR_NETWORK = "ERR_NETWORK";
+T.ERR_FR_TOO_MANY_REDIRECTS = "ERR_FR_TOO_MANY_REDIRECTS";
+T.ERR_DEPRECATED = "ERR_DEPRECATED";
+T.ERR_BAD_RESPONSE = "ERR_BAD_RESPONSE";
+T.ERR_BAD_REQUEST = "ERR_BAD_REQUEST";
+T.ERR_CANCELED = "ERR_CANCELED";
+T.ERR_NOT_SUPPORT = "ERR_NOT_SUPPORT";
+T.ERR_INVALID_URL = "ERR_INVALID_URL";
 const ur = null;
 function lt(e) {
   return f.isPlainObject(e) || f.isArray(e);
 }
-function xn(e) {
+function _n(e) {
   return f.endsWith(e, "[]") ? e.slice(0, -2) : e;
 }
 function rt(e, t, n) {
   return e ? e.concat(t).map(function(r, o) {
-    return r = xn(r), !n && o ? "[" + r + "]" : r;
+    return r = _n(r), !n && o ? "[" + r + "]" : r;
   }).join(n ? "." : "") : t;
 }
 function dr(e) {
@@ -1595,7 +1597,7 @@ function Xe(e, t, n) {
     if (f.isBoolean(l))
       return l.toString();
     if (!m && f.isBlob(l))
-      throw new j("Blob is not supported. Use a Buffer instead.");
+      throw new T("Blob is not supported. Use a Buffer instead.");
     return f.isArrayBuffer(l) || f.isTypedArray(l) ? m && typeof Blob == "function" ? new Blob([l]) : Buffer.from(l) : l;
   }
   function u(l, h, y) {
@@ -1606,11 +1608,11 @@ function Xe(e, t, n) {
       if (f.endsWith(h, "{}"))
         h = s ? h : h.slice(0, -2), l = JSON.stringify(l);
       else if (f.isArray(l) && dr(l) || (f.isFileList(l) || f.endsWith(h, "[]")) && (_ = f.toArray(l)))
-        return h = xn(h), _.forEach(function(O, v) {
-          !(f.isUndefined(O) || O === null) && t.append(
+        return h = _n(h), _.forEach(function(v, j) {
+          !(f.isUndefined(v) || v === null) && t.append(
             // eslint-disable-next-line no-nested-ternary
-            a === !0 ? rt([h], v, o) : a === null ? h : h + "[]",
-            p(O)
+            a === !0 ? rt([h], j, o) : a === null ? h : h + "[]",
+            p(v)
           );
         }), !1;
     }
@@ -1621,18 +1623,18 @@ function Xe(e, t, n) {
     convertValue: p,
     isVisitable: lt
   });
-  function b(l, h) {
+  function x(l, h) {
     if (!f.isUndefined(l)) {
       if (d.indexOf(l) !== -1)
         throw Error("Circular reference detected in " + h.join("."));
-      d.push(l), f.forEach(l, function(_, C) {
-        (!(f.isUndefined(_) || _ === null) && r.call(t, _, f.isString(C) ? C.trim() : C, h, w)) === !0 && b(_, h ? h.concat(C) : [C]);
+      d.push(l), f.forEach(l, function(_, O) {
+        (!(f.isUndefined(_) || _ === null) && r.call(t, _, f.isString(O) ? O.trim() : O, h, w)) === !0 && x(_, h ? h.concat(O) : [O]);
       }), d.pop();
     }
   }
   if (!f.isObject(e))
     throw new TypeError("data must be an object");
-  return b(e), t;
+  return x(e), t;
 }
 function Pt(e) {
   const t = {
@@ -1651,11 +1653,11 @@ function Pt(e) {
 function ht(e, t) {
   this._pairs = [], e && Xe(e, this, t);
 }
-const _n = ht.prototype;
-_n.append = function(t, n) {
+const Rn = ht.prototype;
+Rn.append = function(t, n) {
   this._pairs.push([t, n]);
 };
-_n.toString = function(t) {
+Rn.toString = function(t) {
   const n = t ? function(s) {
     return t.call(this, s, Pt);
   } : Pt;
@@ -1666,7 +1668,7 @@ _n.toString = function(t) {
 function pr(e) {
   return encodeURIComponent(e).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+");
 }
-function Rn(e, t, n) {
+function Sn(e, t, n) {
   if (!t)
     return e;
   const s = n && n.encode || pr, r = f.isFunction(n) ? {
@@ -1779,7 +1781,7 @@ function Er(e) {
     o = n[s], t[o] = e[o];
   return t;
 }
-function Sn(e) {
+function En(e) {
   function t(n, s, r, o) {
     let a = n[o++];
     if (a === "__proto__") return !0;
@@ -1811,7 +1813,7 @@ const Fe = {
     function(t, n) {
       const s = n.getContentType() || "", r = s.indexOf("application/json") > -1, o = f.isObject(t);
       if (o && f.isHTMLForm(t) && (t = new FormData(t)), f.isFormData(t))
-        return r ? JSON.stringify(Sn(t)) : t;
+        return r ? JSON.stringify(En(t)) : t;
       if (f.isArrayBuffer(t) || f.isBuffer(t) || f.isStream(t) || f.isFile(t) || f.isBlob(t) || f.isReadableStream(t))
         return t;
       if (f.isArrayBufferView(t))
@@ -1845,7 +1847,7 @@ const Fe = {
           return JSON.parse(t, this.parseReviver);
         } catch (i) {
           if (a)
-            throw i.name === "SyntaxError" ? j.from(i, j.ERR_BAD_RESPONSE, this, null, this.response) : i;
+            throw i.name === "SyntaxError" ? T.from(i, T.ERR_BAD_RESPONSE, this, null, this.response) : i;
         }
       }
       return t;
@@ -1895,7 +1897,7 @@ const jr = f.toObjectSet([
   "referer",
   "retry-after",
   "user-agent"
-]), Or = (e) => {
+]), vr = (e) => {
   const t = {};
   let n, s, r;
   return e && e.split(`
@@ -1909,14 +1911,14 @@ function je(e) {
 function ze(e) {
   return e === !1 || e == null ? e : f.isArray(e) ? e.map(ze) : String(e);
 }
-function vr(e) {
+function Or(e) {
   const t = /* @__PURE__ */ Object.create(null), n = /([^\s,;=]+)\s*(?:=\s*([^,;]+))?/g;
   let s;
   for (; s = n.exec(e); )
     t[s[1]] = s[2];
   return t;
 }
-const Cr = (e) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(e.trim());
+const Nr = (e) => /^[-_a-zA-Z0-9^`|~,!#$%&'*+.]+$/.test(e.trim());
 function ot(e, t, n, s, r) {
   if (f.isFunction(s))
     return s.call(this, t, n);
@@ -1927,7 +1929,7 @@ function ot(e, t, n, s, r) {
       return s.test(t);
   }
 }
-function Nr(e) {
+function Cr(e) {
   return e.trim().toLowerCase().replace(/([a-z\d])(\w*)/g, (t, n, s) => n.toUpperCase() + s);
 }
 function Ar(e, t) {
@@ -1941,7 +1943,7 @@ function Ar(e, t) {
     });
   });
 }
-let Z = class {
+let Q = class {
   constructor(t) {
     t && this.set(t);
   }
@@ -1957,8 +1959,8 @@ let Z = class {
     const a = (i, m) => f.forEach(i, (p, u) => o(p, u, m));
     if (f.isPlainObject(t) || t instanceof this.constructor)
       a(t, n);
-    else if (f.isString(t) && (t = t.trim()) && !Cr(t))
-      a(Or(t), n);
+    else if (f.isString(t) && (t = t.trim()) && !Nr(t))
+      a(vr(t), n);
     else if (f.isObject(t) && f.isIterable(t)) {
       let i = {}, m, p;
       for (const u of t) {
@@ -1979,7 +1981,7 @@ let Z = class {
         if (!n)
           return r;
         if (n === !0)
-          return vr(r);
+          return Or(r);
         if (f.isFunction(n))
           return n.call(this, r, s);
         if (f.isRegExp(n))
@@ -2023,7 +2025,7 @@ let Z = class {
         n[a] = ze(r), delete n[o];
         return;
       }
-      const i = t ? Nr(o) : String(o).trim();
+      const i = t ? Cr(o) : String(o).trim();
       i !== o && delete n[o], n[i] = ze(r), s[i] = !0;
     }), this;
   }
@@ -2067,7 +2069,7 @@ let Z = class {
     return f.isArray(t) ? t.forEach(o) : o(t), this;
   }
 };
-Z.accessor([
+Q.accessor([
   "Content-Type",
   "Content-Length",
   "Accept",
@@ -2075,7 +2077,7 @@ Z.accessor([
   "User-Agent",
   "Authorization"
 ]);
-f.reduceDescriptors(Z.prototype, ({ value: e }, t) => {
+f.reduceDescriptors(Q.prototype, ({ value: e }, t) => {
   let n = t[0].toUpperCase() + t.slice(1);
   return {
     get: () => e,
@@ -2084,18 +2086,18 @@ f.reduceDescriptors(Z.prototype, ({ value: e }, t) => {
     }
   };
 });
-f.freezeMethods(Z);
+f.freezeMethods(Q);
 function at(e, t) {
-  const n = this || Fe, s = t || n, r = Z.from(s.headers);
+  const n = this || Fe, s = t || n, r = Q.from(s.headers);
   let o = s.data;
   return f.forEach(e, function(i) {
     o = i.call(n, o, r.normalize(), t ? t.status : void 0);
   }), r.normalize(), o;
 }
-function En(e) {
+function Tn(e) {
   return !!(e && e.__CANCEL__);
 }
-let Me = class extends j {
+let Me = class extends T {
   /**
    * A `CanceledError` is an object that is thrown when an operation is canceled.
    *
@@ -2106,15 +2108,15 @@ let Me = class extends j {
    * @returns {CanceledError} The created error.
    */
   constructor(t, n, s) {
-    super(t ?? "canceled", j.ERR_CANCELED, n, s), this.name = "CanceledError", this.__CANCEL__ = !0;
+    super(t ?? "canceled", T.ERR_CANCELED, n, s), this.name = "CanceledError", this.__CANCEL__ = !0;
   }
 };
-function Tn(e, t, n) {
+function jn(e, t, n) {
   const s = n.config.validateStatus;
   !n.status || !s || s(n.status) ? e(n) : t(
-    new j(
+    new T(
       "Request failed with status code " + n.status,
-      [j.ERR_BAD_REQUEST, j.ERR_BAD_RESPONSE][Math.floor(n.status / 100) - 4],
+      [T.ERR_BAD_REQUEST, T.ERR_BAD_RESPONSE][Math.floor(n.status / 100) - 4],
       n.config,
       n.request,
       n
@@ -2137,8 +2139,8 @@ function Pr(e, t) {
       w += n[d++], d = d % e;
     if (r = (r + 1) % e, r === o && (o = (o + 1) % e), p - a < t)
       return;
-    const b = u && p - u;
-    return b ? Math.round(w * 1e3 / b) : void 0;
+    const x = u && p - u;
+    return x ? Math.round(w * 1e3 / x) : void 0;
   };
 }
 function Fr(e, t) {
@@ -2220,11 +2222,11 @@ function Dr(e) {
 function Lr(e, t) {
   return t ? e.replace(/\/?\/$/, "") + "/" + t.replace(/^\/+/, "") : e;
 }
-function jn(e, t, n) {
+function vn(e, t, n) {
   let s = !Dr(t);
   return e && (s || n == !1) ? Lr(e, t) : t;
 }
-const Lt = (e) => e instanceof Z ? { ...e } : e;
+const Lt = (e) => e instanceof Q ? { ...e } : e;
 function ye(e, t) {
   t = t || {};
   const n = {};
@@ -2293,8 +2295,8 @@ function ye(e, t) {
 const On = (e) => {
   const t = ye({}, e);
   let { data: n, withXSRFToken: s, xsrfHeaderName: r, xsrfCookieName: o, headers: a, auth: i } = t;
-  if (t.headers = a = Z.from(a), t.url = Rn(
-    jn(t.baseURL, t.url, t.allowAbsoluteUrls),
+  if (t.headers = a = Q.from(a), t.url = Sn(
+    vn(t.baseURL, t.url, t.allowAbsoluteUrls),
     e.params,
     e.paramsSerializer
   ), i && a.set(
@@ -2321,32 +2323,32 @@ const On = (e) => {
   return new Promise(function(n, s) {
     const r = On(e);
     let o = r.data;
-    const a = Z.from(r.headers).normalize();
-    let { responseType: i, onUploadProgress: m, onDownloadProgress: p } = r, u, d, w, b, l;
+    const a = Q.from(r.headers).normalize();
+    let { responseType: i, onUploadProgress: m, onDownloadProgress: p } = r, u, d, w, x, l;
     function h() {
-      b && b(), l && l(), r.cancelToken && r.cancelToken.unsubscribe(u), r.signal && r.signal.removeEventListener("abort", u);
+      x && x(), l && l(), r.cancelToken && r.cancelToken.unsubscribe(u), r.signal && r.signal.removeEventListener("abort", u);
     }
     let y = new XMLHttpRequest();
     y.open(r.method.toUpperCase(), r.url, !0), y.timeout = r.timeout;
     function _() {
       if (!y)
         return;
-      const O = Z.from(
+      const v = Q.from(
         "getAllResponseHeaders" in y && y.getAllResponseHeaders()
       ), N = {
         data: !i || i === "text" || i === "json" ? y.responseText : y.response,
         status: y.status,
         statusText: y.statusText,
-        headers: O,
+        headers: v,
         config: e,
         request: y
       };
-      Tn(
-        function(R) {
-          n(R), h();
+      jn(
+        function(C) {
+          n(C), h();
         },
-        function(R) {
-          s(R), h();
+        function(C) {
+          s(C), h();
         },
         N
       ), y = null;
@@ -2354,32 +2356,32 @@ const On = (e) => {
     "onloadend" in y ? y.onloadend = _ : y.onreadystatechange = function() {
       !y || y.readyState !== 4 || y.status === 0 && !(y.responseURL && y.responseURL.indexOf("file:") === 0) || setTimeout(_);
     }, y.onabort = function() {
-      y && (s(new j("Request aborted", j.ECONNABORTED, e, y)), y = null);
-    }, y.onerror = function(v) {
-      const N = v && v.message ? v.message : "Network Error", M = new j(N, j.ERR_NETWORK, e, y);
-      M.event = v || null, s(M), y = null;
+      y && (s(new T("Request aborted", T.ECONNABORTED, e, y)), y = null);
+    }, y.onerror = function(j) {
+      const N = j && j.message ? j.message : "Network Error", F = new T(N, T.ERR_NETWORK, e, y);
+      F.event = j || null, s(F), y = null;
     }, y.ontimeout = function() {
-      let v = r.timeout ? "timeout of " + r.timeout + "ms exceeded" : "timeout exceeded";
+      let j = r.timeout ? "timeout of " + r.timeout + "ms exceeded" : "timeout exceeded";
       const N = r.transitional || gt;
-      r.timeoutErrorMessage && (v = r.timeoutErrorMessage), s(
-        new j(
-          v,
-          N.clarifyTimeoutError ? j.ETIMEDOUT : j.ECONNABORTED,
+      r.timeoutErrorMessage && (j = r.timeoutErrorMessage), s(
+        new T(
+          j,
+          N.clarifyTimeoutError ? T.ETIMEDOUT : T.ECONNABORTED,
           e,
           y
         )
       ), y = null;
-    }, o === void 0 && a.setContentType(null), "setRequestHeader" in y && f.forEach(a.toJSON(), function(v, N) {
-      y.setRequestHeader(N, v);
-    }), f.isUndefined(r.withCredentials) || (y.withCredentials = !!r.withCredentials), i && i !== "json" && (y.responseType = r.responseType), p && ([w, l] = Je(p, !0), y.addEventListener("progress", w)), m && y.upload && ([d, b] = Je(m), y.upload.addEventListener("progress", d), y.upload.addEventListener("loadend", b)), (r.cancelToken || r.signal) && (u = (O) => {
-      y && (s(!O || O.type ? new Me(null, e, y) : O), y.abort(), y = null);
+    }, o === void 0 && a.setContentType(null), "setRequestHeader" in y && f.forEach(a.toJSON(), function(j, N) {
+      y.setRequestHeader(N, j);
+    }), f.isUndefined(r.withCredentials) || (y.withCredentials = !!r.withCredentials), i && i !== "json" && (y.responseType = r.responseType), p && ([w, l] = Je(p, !0), y.addEventListener("progress", w)), m && y.upload && ([d, x] = Je(m), y.upload.addEventListener("progress", d), y.upload.addEventListener("loadend", x)), (r.cancelToken || r.signal) && (u = (v) => {
+      y && (s(!v || v.type ? new Me(null, e, y) : v), y.abort(), y = null);
     }, r.cancelToken && r.cancelToken.subscribe(u), r.signal && (r.signal.aborted ? u() : r.signal.addEventListener("abort", u)));
-    const C = kr(r.url);
-    if (C && V.protocols.indexOf(C) === -1) {
+    const O = kr(r.url);
+    if (O && V.protocols.indexOf(O) === -1) {
       s(
-        new j(
-          "Unsupported protocol " + C + ":",
-          j.ERR_BAD_REQUEST,
+        new T(
+          "Unsupported protocol " + O + ":",
+          T.ERR_BAD_REQUEST,
           e
         )
       );
@@ -2396,12 +2398,12 @@ const On = (e) => {
         r = !0, i();
         const u = p instanceof Error ? p : this.reason;
         s.abort(
-          u instanceof j ? u : new Me(u instanceof Error ? u.message : u)
+          u instanceof T ? u : new Me(u instanceof Error ? u.message : u)
         );
       }
     };
     let a = t && setTimeout(() => {
-      a = null, o(new j(`timeout of ${t}ms exceeded`, j.ETIMEDOUT));
+      a = null, o(new T(`timeout of ${t}ms exceeded`, T.ETIMEDOUT));
     }, t);
     const i = () => {
       e && (a && clearTimeout(a), a = null, e.forEach((p) => {
@@ -2510,9 +2512,9 @@ const On = (e) => {
       let _ = h && h[l];
       if (_)
         return _.call(h);
-      throw new j(
+      throw new T(
         `Response type '${l}' is not supported`,
-        j.ERR_NOT_SUPPORT,
+        T.ERR_NOT_SUPPORT,
         y
       );
     });
@@ -2531,7 +2533,7 @@ const On = (e) => {
       return l.byteLength;
     if (f.isURLSearchParams(l) && (l = l + ""), f.isString(l))
       return (await m(l)).byteLength;
-  }, b = async (l, h) => {
+  }, x = async (l, h) => {
     const y = f.toFiniteNumber(l.getContentLength());
     return y ?? w(h);
   };
@@ -2540,100 +2542,100 @@ const On = (e) => {
       url: h,
       method: y,
       data: _,
-      signal: C,
-      cancelToken: O,
-      timeout: v,
+      signal: O,
+      cancelToken: v,
+      timeout: j,
       onDownloadProgress: N,
-      onUploadProgress: M,
-      responseType: R,
-      headers: L,
-      withCredentials: q = "same-origin",
-      fetchOptions: J
-    } = On(l), ce = t || fetch;
-    R = R ? (R + "").toLowerCase() : "text";
-    let B = Br(
-      [C, O && O.toAbortSignal()],
-      v
-    ), H = null;
-    const I = B && B.unsubscribe && (() => {
-      B.unsubscribe();
+      onUploadProgress: F,
+      responseType: C,
+      headers: J,
+      withCredentials: z = "same-origin",
+      fetchOptions: X
+    } = On(l), P = t || fetch;
+    C = C ? (C + "").toLowerCase() : "text";
+    let D = Br(
+      [O, v && v.toAbortSignal()],
+      j
+    ), W = null;
+    const L = D && D.unsubscribe && (() => {
+      D.unsubscribe();
     });
-    let Q;
+    let ee;
     try {
-      if (M && p && y !== "get" && y !== "head" && (Q = await b(L, _)) !== 0) {
+      if (F && p && y !== "get" && y !== "head" && (ee = await x(J, _)) !== 0) {
         let g = new n(h, {
           method: "POST",
           body: _,
           duplex: "half"
-        }), T;
-        if (f.isFormData(_) && (T = g.headers.get("content-type")) && L.setContentType(T), g.body) {
-          const [A, F] = Ut(
-            Q,
-            Je(Dt(M))
+        }), E;
+        if (f.isFormData(_) && (E = g.headers.get("content-type")) && J.setContentType(E), g.body) {
+          const [A, U] = Ut(
+            ee,
+            Je(Dt(F))
           );
-          _ = It(g.body, $t, A, F);
+          _ = It(g.body, $t, A, U);
         }
       }
-      f.isString(q) || (q = q ? "include" : "omit");
-      const P = o && "credentials" in n.prototype, re = {
-        ...J,
-        signal: B,
+      f.isString(z) || (z = z ? "include" : "omit");
+      const M = o && "credentials" in n.prototype, oe = {
+        ...X,
+        signal: D,
         method: y.toUpperCase(),
-        headers: L.normalize().toJSON(),
+        headers: J.normalize().toJSON(),
         body: _,
         duplex: "half",
-        credentials: P ? q : void 0
+        credentials: M ? z : void 0
       };
-      H = o && new n(h, re);
-      let ee = await (o ? ce(H, J) : ce(h, re));
-      const de = u && (R === "stream" || R === "response");
-      if (u && (N || de && I)) {
+      W = o && new n(h, oe);
+      let te = await (o ? P(W, X) : P(h, oe));
+      const de = u && (C === "stream" || C === "response");
+      if (u && (N || de && L)) {
         const g = {};
-        ["status", "statusText", "headers"].forEach((te) => {
-          g[te] = ee[te];
+        ["status", "statusText", "headers"].forEach((ne) => {
+          g[ne] = te[ne];
         });
-        const T = f.toFiniteNumber(ee.headers.get("content-length")), [A, F] = N && Ut(
-          T,
+        const E = f.toFiniteNumber(te.headers.get("content-length")), [A, U] = N && Ut(
+          E,
           Je(Dt(N), !0)
         ) || [];
-        ee = new s(
-          It(ee.body, $t, A, () => {
-            F && F(), I && I();
+        te = new s(
+          It(te.body, $t, A, () => {
+            U && U(), L && L();
           }),
           g
         );
       }
-      R = R || "text";
-      let le = await d[f.findKey(d, R) || "text"](
-        ee,
+      C = C || "text";
+      let le = await d[f.findKey(d, C) || "text"](
+        te,
         l
       );
-      return !de && I && I(), await new Promise((g, T) => {
-        Tn(g, T, {
+      return !de && L && L(), await new Promise((g, E) => {
+        jn(g, E, {
           data: le,
-          headers: Z.from(ee.headers),
-          status: ee.status,
-          statusText: ee.statusText,
+          headers: Q.from(te.headers),
+          status: te.status,
+          statusText: te.statusText,
           config: l,
-          request: H
+          request: W
         });
       });
-    } catch (P) {
-      throw I && I(), P && P.name === "TypeError" && /Load failed|fetch/i.test(P.message) ? Object.assign(
-        new j(
+    } catch (M) {
+      throw L && L(), M && M.name === "TypeError" && /Load failed|fetch/i.test(M.message) ? Object.assign(
+        new T(
           "Network Error",
-          j.ERR_NETWORK,
+          T.ERR_NETWORK,
           l,
-          H,
-          P && P.response
+          W,
+          M && M.response
         ),
         {
-          cause: P.cause || P
+          cause: M.cause || M
         }
-      ) : j.from(P, P && P.code, l, H, P && P.response);
+      ) : T.from(M, M && M.code, l, W, M && M.response);
     }
   };
-}, Vr = /* @__PURE__ */ new Map(), vn = (e) => {
+}, Vr = /* @__PURE__ */ new Map(), Nn = (e) => {
   let t = e && e.env || {};
   const { fetch: n, Request: s, Response: r } = t, o = [s, r, n];
   let a = o.length, i = a, m, p, u = Vr;
@@ -2641,12 +2643,12 @@ const On = (e) => {
     m = o[i], p = u.get(m), p === void 0 && u.set(m, p = i ? /* @__PURE__ */ new Map() : Jr(t)), u = p;
   return p;
 };
-vn();
+Nn();
 const wt = {
   http: ur,
   xhr: $r,
   fetch: {
-    get: vn
+    get: Nn
   }
 };
 f.forEach(wt, (e, t) => {
@@ -2668,7 +2670,7 @@ function Yr(e, t) {
     s = e[a];
     let i;
     if (r = s, !Kr(s) && (r = wt[(i = String(s)).toLowerCase()], r === void 0))
-      throw new j(`Unknown adapter '${i}'`);
+      throw new T(`Unknown adapter '${i}'`);
     if (r && (f.isFunction(r) || (r = r.get(t))))
       break;
     o[i || "#" + a] = r;
@@ -2680,7 +2682,7 @@ function Yr(e, t) {
     let i = n ? a.length > 1 ? `since :
 ` + a.map(zt).join(`
 `) : " " + zt(a[0]) : "as no adapter specified";
-    throw new j(
+    throw new T(
       "There is no suitable adapter to dispatch the request " + i,
       "ERR_NOT_SUPPORT"
     );
@@ -2704,20 +2706,20 @@ function it(e) {
     throw new Me(null, e);
 }
 function Ht(e) {
-  return it(e), e.headers = Z.from(e.headers), e.data = at.call(e, e.transformRequest), ["post", "put", "patch"].indexOf(e.method) !== -1 && e.headers.setContentType("application/x-www-form-urlencoded", !1), Cn.getAdapter(e.adapter || Fe.adapter, e)(e).then(
+  return it(e), e.headers = Q.from(e.headers), e.data = at.call(e, e.transformRequest), ["post", "put", "patch"].indexOf(e.method) !== -1 && e.headers.setContentType("application/x-www-form-urlencoded", !1), Cn.getAdapter(e.adapter || Fe.adapter, e)(e).then(
     function(s) {
-      return it(e), s.data = at.call(e, e.transformResponse, s), s.headers = Z.from(s.headers), s;
+      return it(e), s.data = at.call(e, e.transformResponse, s), s.headers = Q.from(s.headers), s;
     },
     function(s) {
-      return En(s) || (it(e), s && s.response && (s.response.data = at.call(
+      return Tn(s) || (it(e), s && s.response && (s.response.data = at.call(
         e,
         e.transformResponse,
         s.response
-      ), s.response.headers = Z.from(s.response.headers))), Promise.reject(s);
+      ), s.response.headers = Q.from(s.response.headers))), Promise.reject(s);
     }
   );
 }
-const Nn = "1.13.6", Ge = {};
+const An = "1.13.6", Ge = {};
 ["object", "boolean", "number", "function", "string", "symbol"].forEach((e, t) => {
   Ge[e] = function(s) {
     return typeof s === e || "a" + (t < 1 ? "n " : " ") + e;
@@ -2726,13 +2728,13 @@ const Nn = "1.13.6", Ge = {};
 const Jt = {};
 Ge.transitional = function(t, n, s) {
   function r(o, a) {
-    return "[Axios v" + Nn + "] Transitional option '" + o + "'" + a + (s ? ". " + s : "");
+    return "[Axios v" + An + "] Transitional option '" + o + "'" + a + (s ? ". " + s : "");
   }
   return (o, a, i) => {
     if (t === !1)
-      throw new j(
+      throw new T(
         r(a, " has been removed" + (n ? " in " + n : "")),
-        j.ERR_DEPRECATED
+        T.ERR_DEPRECATED
       );
     return n && !Jt[a] && (Jt[a] = !0, console.warn(
       r(
@@ -2747,7 +2749,7 @@ Ge.spelling = function(t) {
 };
 function Xr(e, t, n) {
   if (typeof e != "object")
-    throw new j("options must be an object", j.ERR_BAD_OPTION_VALUE);
+    throw new T("options must be an object", T.ERR_BAD_OPTION_VALUE);
   const s = Object.keys(e);
   let r = s.length;
   for (; r-- > 0; ) {
@@ -2755,20 +2757,20 @@ function Xr(e, t, n) {
     if (a) {
       const i = e[o], m = i === void 0 || a(i, o, e);
       if (m !== !0)
-        throw new j(
+        throw new T(
           "option " + o + " must be " + m,
-          j.ERR_BAD_OPTION_VALUE
+          T.ERR_BAD_OPTION_VALUE
         );
       continue;
     }
     if (n !== !0)
-      throw new j("Unknown option " + o, j.ERR_BAD_OPTION);
+      throw new T("Unknown option " + o, T.ERR_BAD_OPTION);
   }
 }
 const He = {
   assertOptions: Xr,
   validators: Ge
-}, ne = He.validators;
+}, se = He.validators;
 let ge = class {
   constructor(t) {
     this.defaults = t || {}, this.interceptors = {
@@ -2807,10 +2809,10 @@ let ge = class {
     s !== void 0 && He.assertOptions(
       s,
       {
-        silentJSONParsing: ne.transitional(ne.boolean),
-        forcedJSONParsing: ne.transitional(ne.boolean),
-        clarifyTimeoutError: ne.transitional(ne.boolean),
-        legacyInterceptorReqResOrdering: ne.transitional(ne.boolean)
+        silentJSONParsing: se.transitional(se.boolean),
+        forcedJSONParsing: se.transitional(se.boolean),
+        clarifyTimeoutError: se.transitional(se.boolean),
+        legacyInterceptorReqResOrdering: se.transitional(se.boolean)
       },
       !1
     ), r != null && (f.isFunction(r) ? n.paramsSerializer = {
@@ -2818,22 +2820,22 @@ let ge = class {
     } : He.assertOptions(
       r,
       {
-        encode: ne.function,
-        serialize: ne.function
+        encode: se.function,
+        serialize: se.function
       },
       !0
     )), n.allowAbsoluteUrls !== void 0 || (this.defaults.allowAbsoluteUrls !== void 0 ? n.allowAbsoluteUrls = this.defaults.allowAbsoluteUrls : n.allowAbsoluteUrls = !0), He.assertOptions(
       n,
       {
-        baseUrl: ne.spelling("baseURL"),
-        withXsrfToken: ne.spelling("withXSRFToken")
+        baseUrl: se.spelling("baseURL"),
+        withXsrfToken: se.spelling("withXSRFToken")
       },
       !0
     ), n.method = (n.method || this.defaults.method || "get").toLowerCase();
     let a = o && f.merge(o.common, o[n.method]);
     o && f.forEach(["delete", "get", "head", "post", "put", "patch", "common"], (l) => {
       delete o[l];
-    }), n.headers = Z.concat(a, o);
+    }), n.headers = Q.concat(a, o);
     const i = [];
     let m = !0;
     this.interceptors.request.forEach(function(h) {
@@ -2855,18 +2857,18 @@ let ge = class {
       return u;
     }
     w = i.length;
-    let b = n;
+    let x = n;
     for (; d < w; ) {
       const l = i[d++], h = i[d++];
       try {
-        b = l(b);
+        x = l(x);
       } catch (y) {
         h.call(this, y);
         break;
       }
     }
     try {
-      u = Ht.call(this, b);
+      u = Ht.call(this, x);
     } catch (l) {
       return Promise.reject(l);
     }
@@ -2876,8 +2878,8 @@ let ge = class {
   }
   getUri(t) {
     t = ye(this.defaults, t);
-    const n = jn(t.baseURL, t.url, t.allowAbsoluteUrls);
-    return Rn(n, t.params, t.paramsSerializer);
+    const n = vn(t.baseURL, t.url, t.allowAbsoluteUrls);
+    return Sn(n, t.params, t.paramsSerializer);
   }
 };
 f.forEach(["delete", "get", "head", "options"], function(t) {
@@ -2908,7 +2910,7 @@ f.forEach(["post", "put", "patch"], function(t) {
   }
   ge.prototype[t] = n(), ge.prototype[t + "Form"] = n(!0);
 });
-let Gr = class An {
+let Gr = class kn {
   constructor(t) {
     if (typeof t != "function")
       throw new TypeError("executor must be a function.");
@@ -2974,7 +2976,7 @@ let Gr = class An {
   static source() {
     let t;
     return {
-      token: new An(function(r) {
+      token: new kn(function(r) {
         t = r;
       }),
       cancel: t
@@ -3063,32 +3065,32 @@ const dt = {
 Object.entries(dt).forEach(([e, t]) => {
   dt[t] = e;
 });
-function kn(e) {
-  const t = new ge(e), n = dn(ge.prototype.request, t);
+function Pn(e) {
+  const t = new ge(e), n = fn(ge.prototype.request, t);
   return f.extend(n, ge.prototype, t, { allOwnKeys: !0 }), f.extend(n, t, null, { allOwnKeys: !0 }), n.create = function(r) {
-    return kn(ye(e, r));
+    return Pn(ye(e, r));
   }, n;
 }
-const $ = kn(Fe);
-$.Axios = ge;
-$.CanceledError = Me;
-$.CancelToken = Gr;
-$.isCancel = En;
-$.VERSION = Nn;
-$.toFormData = Xe;
-$.AxiosError = j;
-$.Cancel = $.CanceledError;
-$.all = function(t) {
+const B = Pn(Fe);
+B.Axios = ge;
+B.CanceledError = Me;
+B.CancelToken = Gr;
+B.isCancel = Tn;
+B.VERSION = An;
+B.toFormData = Xe;
+B.AxiosError = T;
+B.Cancel = B.CanceledError;
+B.all = function(t) {
   return Promise.all(t);
 };
-$.spread = Zr;
-$.isAxiosError = Qr;
-$.mergeConfig = ye;
-$.AxiosHeaders = Z;
-$.formToJSON = (e) => Sn(f.isHTMLForm(e) ? new FormData(e) : e);
-$.getAdapter = Cn.getAdapter;
-$.HttpStatusCode = dt;
-$.default = $;
+B.spread = Zr;
+B.isAxiosError = Qr;
+B.mergeConfig = ye;
+B.AxiosHeaders = Q;
+B.formToJSON = (e) => En(f.isHTMLForm(e) ? new FormData(e) : e);
+B.getAdapter = Cn.getAdapter;
+B.HttpStatusCode = dt;
+B.default = B;
 const {
   Axios: wo,
   AxiosError: bo,
@@ -3099,15 +3101,15 @@ const {
   all: Eo,
   Cancel: To,
   isAxiosError: jo,
-  spread: Oo,
-  toFormData: vo,
-  AxiosHeaders: Co,
-  HttpStatusCode: No,
+  spread: vo,
+  toFormData: Oo,
+  AxiosHeaders: No,
+  HttpStatusCode: Co,
   formToJSON: Ao,
   getAdapter: ko,
   mergeConfig: Po
-} = $, eo = (e, t) => {
-  const n = $.create({
+} = B, eo = (e, t) => {
+  const n = B.create({
     baseURL: e,
     withCredentials: !0
   });
@@ -3235,16 +3237,16 @@ const {
     refDoctype: u = "Contact",
     refName: d = "",
     links: w = [],
-    isChatOpen: b,
+    isChatOpen: x,
     attach: l,
     preAddedMessages: h,
     showNotification: y,
     showWarning: _,
-    showError: C
-  } = e, O = to(r, o, i), v = t || O, N = me(
-    () => no(v, { showNotification: y, showWarning: _, showError: C }),
-    [v, y, _, C]
-  ), M = me(() => n ? {
+    showError: O
+  } = e, v = to(r, o, i), j = t || v, N = me(
+    () => no(j, { showNotification: y, showWarning: _, showError: O }),
+    [j, y, _, O]
+  ), F = me(() => n ? {
     ...n,
     ...l !== void 0 ? { attach: l } : {},
     ...h !== void 0 ? { preAddedMessages: h } : {}
@@ -3255,7 +3257,7 @@ const {
     refName: d || "",
     phone: p || "",
     links: w,
-    isChatOpen: b,
+    isChatOpen: x,
     apiBaseUrl: r,
     ...l !== void 0 ? { attach: l } : {},
     ...h !== void 0 ? { preAddedMessages: h } : {}
@@ -3267,18 +3269,18 @@ const {
     d,
     p,
     w,
-    b,
+    x,
     r,
     l,
     h
-  ]), R = me(() => {
+  ]), C = me(() => {
     if (a !== void 0)
       return { isConnected: a };
   }, [a]);
   return {
     apiAdapter: N,
-    config: M,
-    finalSocketAdapter: s || R
+    config: F,
+    finalSocketAdapter: s || C
   };
 }, so = () => {
   const {
@@ -3295,33 +3297,33 @@ const {
     setSelectedTemplateText: u,
     setSelectedTemplateName: d,
     setSelectedTemplate: w,
-    attachedFiles: b,
+    attachedFiles: x,
     templates: l,
     isLoadingTemplates: h,
     sendMessage: y,
     handleTemplateSelect: _,
-    handleFileSelect: C,
-    handleFileRemove: O,
-    uploadFileMutation: v,
+    handleFileSelect: O,
+    handleFileRemove: v,
+    uploadFileMutation: j,
     composerMountKey: N
-  } = un(), { config: M } = Ce();
+  } = dn(), { config: F } = Ne();
   return /* @__PURE__ */ c.jsxs(c.Fragment, { children: [
     /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-chat-container", children: [
       /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-header", children: [
-        /* @__PURE__ */ c.jsx("div", { className: "whatsapp-header-avatar", children: /* @__PURE__ */ c.jsx(ts, { size: 20, color: "#008069" }) }),
+        /* @__PURE__ */ c.jsx("div", { className: "whatsapp-header-avatar", children: /* @__PURE__ */ c.jsx(Xt, { size: 20, color: "#008069" }) }),
         /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-header-info", children: [
-          /* @__PURE__ */ c.jsx("h4", { children: M.currentUserFullName || "WhatsApp Chat" }),
+          /* @__PURE__ */ c.jsx("h4", { children: F.currentUserFullName || "WhatsApp Chat" }),
           /* @__PURE__ */ c.jsx("span", { className: s ? "connection-status connected" : "connection-status reconnecting", children: s ? "● Connected" : "○ Reconnecting..." })
         ] })
       ] }),
       /* @__PURE__ */ c.jsx(ms, { messages: e, isLoading: t, error: n }),
       /* @__PURE__ */ c.jsx(
-        an,
+        cn,
         {
-          initialInputText: M.preAddedMessages ?? "",
+          initialInputText: F.preAddedMessages ?? "",
           onSend: y,
-          isLoading: t || r || v.isPending,
-          isUploading: v.isPending,
+          isLoading: t || r || j.isPending,
+          isUploading: j.isPending,
           isSending: r,
           onTemplateClick: () => a(!0),
           templateText: i,
@@ -3330,21 +3332,21 @@ const {
           onClearTemplate: () => {
             d(void 0), u(void 0), w(void 0);
           },
-          attachedFiles: b,
-          onFileSelect: C,
-          onFileRemove: O
+          attachedFiles: x,
+          onFileSelect: O,
+          onFileRemove: v
         },
         N
       )
     ] }),
     /* @__PURE__ */ c.jsx(
-      Ne,
+      Ce,
       {
         open: o,
         onClose: () => a(!1),
         width: "700px",
         header: /* @__PURE__ */ c.jsx("h4", { className: "text-base font-semibold", children: "Select WhatsApp Template" }),
-        children: /* @__PURE__ */ c.jsx(cn, { templates: l, onSelect: _, isLoading: h })
+        children: /* @__PURE__ */ c.jsx(ln, { templates: l, onSelect: _, isLoading: h })
       }
     )
   ] });
@@ -3362,13 +3364,13 @@ const {
   refDoctype: u = "Contact",
   refName: d = "",
   links: w = [],
-  attach: b,
+  attach: x,
   preAddedMessages: l,
   showNotification: h,
   showWarning: y,
   showError: _
 }) => {
-  const { apiAdapter: C, config: O, finalSocketAdapter: v } = Ze({
+  const { apiAdapter: O, config: v, finalSocketAdapter: j } = Ze({
     apiAdapter: e,
     config: t,
     socketAdapter: n,
@@ -3383,13 +3385,13 @@ const {
     links: w,
     isChatOpen: !0,
     // Standalone component assumes it is active/open if rendered
-    attach: b,
+    attach: x,
     preAddedMessages: l,
     showNotification: h,
     showWarning: y,
     showError: _
   });
-  return !C || !O ? null : /* @__PURE__ */ c.jsx(nn, { apiAdapter: C, config: O, socketAdapter: v, socketPayload: s, children: /* @__PURE__ */ c.jsx(so, {}) });
+  return !O || !v ? null : /* @__PURE__ */ c.jsx(sn, { apiAdapter: O, config: v, socketAdapter: j, socketPayload: s, children: /* @__PURE__ */ c.jsx(so, {}) });
 }, oo = () => {
   const {
     isLoading: e,
@@ -3405,24 +3407,30 @@ const {
     setSelectedTemplate: u,
     attachedFiles: d,
     templates: w,
-    isLoadingTemplates: b,
+    isLoadingTemplates: x,
     sendMessage: l,
     handleTemplateSelect: h,
     handleFileSelect: y,
     handleFileRemove: _,
-    uploadFileMutation: C,
-    composerMountKey: O
-  } = un(), { config: v } = Ce();
+    uploadFileMutation: O,
+    composerMountKey: v
+  } = dn(), { config: j } = Ne();
   return /* @__PURE__ */ c.jsxs(c.Fragment, { children: [
     /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-chat-container whatsapp-send-msg-only", children: [
-      /* @__PURE__ */ c.jsx("div", { className: "whatsapp-send-only-spacer", style: { flex: 1, minHeight: "20px" } }),
+      /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-header", style: { borderRadius: "6px 6px 0 0", boxShadow: "none", borderBottom: "1px solid #DCE2E5" }, children: [
+        /* @__PURE__ */ c.jsx("div", { className: "whatsapp-header-avatar", children: /* @__PURE__ */ c.jsx(Xt, { size: 20, color: "#008069" }) }),
+        /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-header-info", children: [
+          /* @__PURE__ */ c.jsx("h4", { children: j.currentUserFullName || "Send WhatsApp Message" }),
+          /* @__PURE__ */ c.jsx("span", { className: t ? "connection-status connected" : "connection-status reconnecting", children: t ? "● Connected" : "○ Reconnecting..." })
+        ] })
+      ] }),
       /* @__PURE__ */ c.jsx(
-        an,
+        cn,
         {
-          initialInputText: v.preAddedMessages ?? "",
+          initialInputText: j.preAddedMessages ?? "",
           onSend: l,
-          isLoading: e || n || C.isPending,
-          isUploading: C.isPending,
+          isLoading: e || n || O.isPending,
+          isUploading: O.isPending,
           isSending: n,
           onTemplateClick: () => r(!0),
           templateText: o,
@@ -3433,19 +3441,20 @@ const {
           },
           attachedFiles: d,
           onFileSelect: y,
-          onFileRemove: _
+          onFileRemove: _,
+          style: { borderRadius: "0 0 6px 6px" }
         },
-        O
+        v
       )
     ] }),
     /* @__PURE__ */ c.jsx(
-      Ne,
+      Ce,
       {
         open: s,
         onClose: () => r(!1),
         width: "700px",
-        header: /* @__PURE__ */ c.jsx("h4", { className: "text-base font-semibold", children: "Select WhatsApp Template" }),
-        children: /* @__PURE__ */ c.jsx(cn, { templates: w, onSelect: h, isLoading: b })
+        header: /* @__PURE__ */ c.jsx("h4", { className: "whatsapp-modal-header-title", children: "Select WhatsApp Template" }),
+        children: /* @__PURE__ */ c.jsx(ln, { templates: w, onSelect: h, isLoading: x })
       }
     )
   ] });
@@ -3463,13 +3472,13 @@ const {
   refDoctype: u = "Contact",
   refName: d = "",
   links: w = [],
-  attach: b,
+  attach: x,
   preAddedMessages: l,
   showNotification: h,
   showWarning: y,
   showError: _
 }) => {
-  const { apiAdapter: C, config: O, finalSocketAdapter: v } = Ze({
+  const { apiAdapter: O, config: v, finalSocketAdapter: j } = Ze({
     apiAdapter: e,
     config: t,
     socketAdapter: n,
@@ -3483,18 +3492,18 @@ const {
     refName: d,
     links: w,
     isChatOpen: !0,
-    attach: b,
+    attach: x,
     preAddedMessages: l,
     showNotification: h,
     showWarning: y,
     showError: _
   });
-  return !C || !O ? null : /* @__PURE__ */ c.jsx(
-    nn,
+  return !O || !v ? null : /* @__PURE__ */ c.jsx(
+    sn,
     {
-      apiAdapter: C,
-      config: { ...O, isChatOpen: !0, preventHistoryFetch: !0 },
-      socketAdapter: v,
+      apiAdapter: O,
+      config: { ...v, isChatOpen: !0, preventHistoryFetch: !0 },
+      socketAdapter: j,
       socketPayload: s,
       children: /* @__PURE__ */ c.jsx(oo, {})
     }
@@ -3512,14 +3521,14 @@ function lo(e) {
   return n ? We.has(n) ? !1 : (We.set(n, t), !0) : !0;
 }
 function uo(e, t, n, s, r, o, a) {
-  const i = $e((l) => l.incomingData), m = $e((l) => l.setIncomingData), p = $e((l) => l.handleIncomingMessage), u = $e((l) => l.clearContact), d = ae(null), w = me(() => {
+  const i = $e((l) => l.incomingData), m = $e((l) => l.setIncomingData), p = $e((l) => l.handleIncomingMessage), u = $e((l) => l.clearContact), d = ie(null), w = me(() => {
     if (!s && !r)
       return i.filter((h) => h.type === "whatsapp").reduce((h, y) => h + (y.counts || 0), 0);
     const l = i.find(
       (h) => h.type === "whatsapp" && (s && h.from === s || r && h.customer === r)
     );
     return (l == null ? void 0 : l.counts) ?? 0;
-  }, [i, s, r]), b = Oe(async () => {
+  }, [i, s, r]), x = ve(async () => {
     if (e.getIncomingCommunications)
       try {
         const l = await e.getIncomingCommunications(a || "");
@@ -3534,19 +3543,19 @@ function uo(e, t, n, s, r, o, a) {
         console.error("Failed to fetch unread count:", l);
       }
   }, [e, s, r, m]);
-  return se(() => {
-    b();
-  }, [b]), se(() => {
+  return re(() => {
+    x();
+  }, [x]), re(() => {
     o && u(s, r);
-  }, [o, s, r, u]), se(() => {
+  }, [o, s, r, u]), re(() => {
     if (!e) return;
     const l = e.onMessageSent;
     return e.onMessageSent = () => {
-      b(), l && l();
+      x(), l && l();
     }, () => {
       e.onMessageSent && (e.onMessageSent = l);
     };
-  }, [e, b]), se(() => {
+  }, [e, x]), re(() => {
     const l = (h) => {
       if (!h || h.name === void 0) return;
       const y = h.status !== null && h.status !== void 0;
@@ -3586,21 +3595,21 @@ const Fo = ({
   refDoctype: u = "Contact",
   refName: d = "",
   links: w = [],
-  attach: b,
+  attach: x,
   preAddedMessages: l,
   buttonLabel: h,
   icon: y,
   btnClassName: _ = "",
-  modalSize: C = "1024px",
-  variant: O = "default",
-  isOpen: v,
+  modalSize: O = "1024px",
+  variant: v = "default",
+  isOpen: j,
   onOpen: N,
-  onClose: M,
-  showNotification: R,
-  showWarning: L,
-  showError: q
+  onClose: F,
+  showNotification: C,
+  showWarning: J,
+  showError: z
 }) => {
-  const [J, ce] = Y(!1), B = v !== void 0 ? v : J, { apiAdapter: H, config: I, finalSocketAdapter: Q } = Ze({
+  const [X, P] = Y(!1), D = j !== void 0 ? j : X, { apiAdapter: W, config: L, finalSocketAdapter: ee } = Ze({
     apiAdapter: e,
     config: t,
     socketAdapter: n,
@@ -3613,66 +3622,57 @@ const Fo = ({
     refDoctype: u,
     refName: d,
     links: w,
-    isChatOpen: B,
-    attach: b,
+    isChatOpen: D,
+    attach: x,
     preAddedMessages: l,
-    showNotification: R,
-    showWarning: L,
-    showError: q
-  }), P = uo(
-    H,
-    Q,
+    showNotification: C,
+    showWarning: J,
+    showError: z
+  }), M = uo(
+    W,
+    ee,
     o,
     p,
     d || void 0,
-    B,
-    I == null ? void 0 : I.currentUser
-  ), re = () => {
-    v !== void 0 ? B ? M == null || M() : N == null || N() : ce(!J);
+    D,
+    L == null ? void 0 : L.currentUser
+  ), oe = () => {
+    j !== void 0 ? D ? F == null || F() : N == null || N() : P(!X);
   };
-  return H ? /* @__PURE__ */ c.jsxs(c.Fragment, { children: [
-    O === "plain" ? /* @__PURE__ */ c.jsxs(
+  return W ? /* @__PURE__ */ c.jsxs(c.Fragment, { children: [
+    v === "plain" ? /* @__PURE__ */ c.jsxs(
       "button",
       {
         className: _,
-        onClick: re,
+        onClick: oe,
         style: {
           position: "relative",
           ...typeof _ == "string" && _.includes("button") ? {} : { border: "none", background: "none", cursor: "pointer", padding: 0 }
         },
         children: [
           y || h,
-          P > 0 && /* @__PURE__ */ c.jsx("span", { className: "whatsapp-trigger-badge", style: { top: "-10px", right: "-10px" }, children: P })
+          M > 0 && /* @__PURE__ */ c.jsx("span", { className: "whatsapp-trigger-badge", style: { top: "-10px", right: "-10px" }, children: M })
         ]
       }
-    ) : /* @__PURE__ */ c.jsxs("div", { className: `whatsapp-trigger-wrapper ${_}`, onClick: re, children: [
+    ) : /* @__PURE__ */ c.jsxs("div", { className: `whatsapp-trigger-wrapper ${_}`, onClick: oe, children: [
       /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-trigger-icon-container", children: [
-        y || /* @__PURE__ */ c.jsx(Gt, { size: 20, color: "#175353" }),
-        P > 0 && /* @__PURE__ */ c.jsx("span", { className: "whatsapp-trigger-badge", children: P })
+        y || /* @__PURE__ */ c.jsx(Zt, { size: 20, color: "#175353" }),
+        M > 0 && /* @__PURE__ */ c.jsx("span", { className: "whatsapp-trigger-badge", children: M })
       ] }),
       /* @__PURE__ */ c.jsx("span", { className: "whatsapp-trigger-label", children: h })
     ] }),
-    /* @__PURE__ */ c.jsx(
-      Ne,
+    /* @__PURE__ */ c.jsx(Ce, { open: D, onClose: oe, width: O, header: /* @__PURE__ */ c.jsx("h3", { className: "whatsapp-modal-header-title", children: "WhatsApp Chat" }), children: /* @__PURE__ */ c.jsx(
+      ro,
       {
-        open: B,
-        onClose: re,
-        width: C,
-        header: /* @__PURE__ */ c.jsx("h3", { style: { margin: 0, fontSize: "1.1rem" }, children: "WhatsApp Chat" }),
-        children: /* @__PURE__ */ c.jsx(
-          ro,
-          {
-            apiAdapter: H,
-            config: I,
-            socketAdapter: Q,
-            socketPayload: o,
-            currentUserFullName: m,
-            attach: b,
-            preAddedMessages: l
-          }
-        )
+        apiAdapter: W,
+        config: L,
+        socketAdapter: ee,
+        socketPayload: o,
+        currentUserFullName: m,
+        attach: x,
+        preAddedMessages: l
       }
-    )
+    ) })
   ] }) : null;
 }, Mo = ({
   apiAdapter: e,
@@ -3688,21 +3688,21 @@ const Fo = ({
   refDoctype: u = "Contact",
   refName: d = "",
   links: w = [],
-  attach: b,
+  attach: x,
   preAddedMessages: l,
   buttonLabel: h = "Send WhatsApp",
   icon: y,
   btnClassName: _ = "",
-  modalSize: C = "600px",
-  variant: O = "default",
-  isOpen: v,
+  modalSize: O = "600px",
+  variant: v = "default",
+  isOpen: j,
   onOpen: N,
-  onClose: M,
-  showNotification: R,
-  showWarning: L,
-  showError: q
+  onClose: F,
+  showNotification: C,
+  showWarning: J,
+  showError: z
 }) => {
-  const [J, ce] = Y(!1), B = v !== void 0 ? v : J, { apiAdapter: H, config: I, finalSocketAdapter: Q } = Ze({
+  const [X, P] = Y(!1), D = j !== void 0 ? j : X, { apiAdapter: W, config: L, finalSocketAdapter: ee } = Ze({
     apiAdapter: e,
     config: t,
     socketAdapter: n,
@@ -3715,50 +3715,50 @@ const Fo = ({
     refDoctype: u,
     refName: d,
     links: w,
-    isChatOpen: B,
-    attach: b,
+    isChatOpen: D,
+    attach: x,
     preAddedMessages: l,
-    showNotification: R,
-    showWarning: L,
-    showError: q
-  }), P = () => {
-    v !== void 0 ? B ? M == null || M() : N == null || N() : ce(!J);
+    showNotification: C,
+    showWarning: J,
+    showError: z
+  }), M = () => {
+    j !== void 0 ? D ? F == null || F() : N == null || N() : P(!X);
   };
-  return H ? /* @__PURE__ */ c.jsxs(c.Fragment, { children: [
-    O === "plain" ? /* @__PURE__ */ c.jsx(
+  return W ? /* @__PURE__ */ c.jsxs(c.Fragment, { children: [
+    v === "plain" ? /* @__PURE__ */ c.jsx(
       "button",
       {
         className: _,
-        onClick: P,
+        onClick: M,
         style: {
           position: "relative",
           ...typeof _ == "string" && _.includes("button") ? {} : { border: "none", background: "none", cursor: "pointer", padding: 0 }
         },
         children: y || h
       }
-    ) : /* @__PURE__ */ c.jsxs("div", { className: `whatsapp-trigger-wrapper ${_}`, onClick: P, children: [
-      /* @__PURE__ */ c.jsx("div", { className: "whatsapp-trigger-icon-container", children: y || /* @__PURE__ */ c.jsx(Gt, { size: 20, color: "#175353" }) }),
+    ) : /* @__PURE__ */ c.jsxs("div", { className: `whatsapp-trigger-wrapper ${_}`, onClick: M, children: [
+      /* @__PURE__ */ c.jsx("div", { className: "whatsapp-trigger-icon-container", children: y || /* @__PURE__ */ c.jsx(Zt, { size: 20, color: "#175353" }) }),
       /* @__PURE__ */ c.jsx("span", { className: "whatsapp-trigger-label", children: h })
     ] }),
     /* @__PURE__ */ c.jsx(
-      Ne,
+      Ce,
       {
-        open: B,
-        onClose: P,
-        width: C,
-        header: /* @__PURE__ */ c.jsx("h3", { style: { margin: 0, fontSize: "1.1rem" }, children: "WhatsApp Chat" }),
-        children: /* @__PURE__ */ c.jsx("div", { style: { padding: "0 4px 8px 4px" }, children: /* @__PURE__ */ c.jsx(
+        open: D,
+        onClose: M,
+        width: "780px",
+        header: /* @__PURE__ */ c.jsx("h3", { className: "whatsapp-modal-header-title", children: "WhatsApp Chat" }),
+        children: /* @__PURE__ */ c.jsx(
           ao,
           {
-            apiAdapter: H,
-            config: I,
-            socketAdapter: Q,
+            apiAdapter: W,
+            config: L,
+            socketAdapter: ee,
             socketPayload: o,
             currentUserFullName: m,
-            attach: b,
+            attach: x,
             preAddedMessages: l
           }
-        ) })
+        )
       }
     )
   ] }) : null;
@@ -3767,14 +3767,14 @@ export {
   fs as WhatsAppMessageSkeleton,
   ys as WhatsAppTemplateSkeleton,
   ro as WhatsappChat,
-  nn as WhatsappChatProvider,
+  sn as WhatsappChatProvider,
   Fo as WhatsappChatTrigger,
   so as WhatsappChatWidget,
   ao as WhatsappSendMessage,
   Mo as WhatsappSendMessageTrigger,
   oo as WhatsappSendMessageWidget,
   uo as useWhatsappBadgeCount,
-  Ce as useWhatsappChatConfig,
-  un as useWhatsappWidgetLogic,
+  Ne as useWhatsappChatConfig,
+  dn as useWhatsappWidgetLogic,
   ue as useWhatsappWidgetZustand
 };

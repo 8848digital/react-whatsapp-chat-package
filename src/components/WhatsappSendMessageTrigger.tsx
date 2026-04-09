@@ -138,20 +138,18 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
       <Modal
         open={isOpen}
         onClose={toggleModal}
-        width={modalSize}
-        header={<h3 style={{ margin: 0, fontSize: "1.1rem" }}>WhatsApp Chat</h3>}
+        width={"780px"}
+        header={<h3 className="whatsapp-modal-header-title">WhatsApp Chat</h3>}
       >
-        <div style={{ padding: "0 4px 8px 4px" }}>
-          <WhatsappSendMessage
-            apiAdapter={apiAdapter}
-            config={config}
-            socketAdapter={finalSocketAdapter}
-            socketPayload={socketPayload}
-            currentUserFullName={currentUserFullName}
-            attach={attach}
-            preAddedMessages={preAddedMessages}
-          />
-        </div>
+        <WhatsappSendMessage
+          apiAdapter={apiAdapter}
+          config={config}
+          socketAdapter={finalSocketAdapter}
+          socketPayload={socketPayload}
+          currentUserFullName={currentUserFullName}
+          attach={attach}
+          preAddedMessages={preAddedMessages}
+        />
       </Modal>
     </>
   );

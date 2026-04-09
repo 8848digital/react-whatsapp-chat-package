@@ -22,6 +22,10 @@ export const MessageInput = ({
   onFileRemove,
   onFileSelect,
   initialInputText = "",
+  isPreviewOpen,
+  setIsPreviewOpen,
+  style,
+  className,
 }: MessageInputProps) => {
   const [text, setText] = useState(initialInputText);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -85,10 +89,10 @@ export const MessageInput = ({
   return (
     <div 
       ref={containerRef}
-      className="whatsapp-input-container" 
+      className={`whatsapp-input-container ${className || ""}`}
       onKeyDown={handleKeyDown}
       tabIndex={templateSelected ? 0 : undefined}
-      style={{ outline: "none" }}
+      style={{ outline: "none", ...style }}
     >
       <FileUpload ref={fileUploadRef} onSelect={handleFilesSelected} multiple={true} accept="image/*,video/*,audio/*,.pdf,.doc,.docx" />
       <button

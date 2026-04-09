@@ -1,8 +1,12 @@
 import React, { createContext, useContext } from "react";
 import { create, createStore, StoreApi, useStore } from "zustand";
-import type { 
-  Message, WhatsappWidgetApiAdapter, WhatsappWidgetConfig, 
-  SocketAdapter, SocketPayload, IncomingCommunication 
+import type {
+  Message,
+  WhatsappWidgetApiAdapter,
+  WhatsappWidgetConfig,
+  SocketAdapter,
+  SocketPayload,
+  IncomingCommunication,
 } from "../types/whatsapp";
 
 // ------------------------------------------------------------------
@@ -20,74 +24,73 @@ export interface WhatsappIncomingState {
 export const useWhatsappIncomingStore = create<WhatsappIncomingState>((set) => ({
   incomingData: [],
   setIncomingData: (data) => set({ incomingData: data }),
-  handleIncomingMessage: (msg) => set((state) => {
-    if (msg.is_outbound === 1) return state;
+  handleIncomingMessage: (msg) =>
+    set((state) => {
+      if (msg.is_outbound === 1) return state;
 
-    const data = [...state.incomingData];
-    const msgId = msg.name;
-    const sender = msg.from || msg.sender || "";
-    const refName = msg.reference_name || "";
-    const isReadUpdate = msg.status === 4;
+      const data = [...state.incomingData];
+      const msgId = msg.name;
+      const sender = msg.from || msg.sender || "";
+      const refName = msg.reference_name || "";
+      const isReadUpdate = msg.status === 4;
 
-    // 1. Handle "Read" Status Update (Remove from unread list)
-    if (isReadUpdate) {
-      const gIndex = data.findIndex(c => c.names?.includes(msgId));
-      if (gIndex !== -1) {
-        const group = { ...data[gIndex] };
-        group.names = group.names.filter(n => n !== msgId);
-        group.counts = Math.max(0, (group.counts || 0) - 1);
-        
-        if (group.counts === 0) {
-          data.splice(gIndex, 1);
-        } else {
-          data[gIndex] = group;
+      // 1. Handle "Read" Status Update (Remove from unread list)
+      if (isReadUpdate) {
+        const gIndex = data.findIndex((c) => c.names?.includes(msgId));
+        if (gIndex !== -1) {
+          const group = { ...data[gIndex] };
+          group.names = group.names.filter((n) => n !== msgId);
+          group.counts = Math.max(0, (group.counts || 0) - 1);
+
+          if (group.counts === 0) {
+            data.splice(gIndex, 1);
+          } else {
+            data[gIndex] = group;
+          }
+          return { incomingData: data };
         }
-        return { incomingData: data };
+        return state;
       }
-      return state;
-    }
 
-    // 2. Handle New Incoming Message
-    // Check if this specific message is already tracked
-    const alreadyTracked = data.some(c => c.names?.includes(msgId));
-    if (alreadyTracked) return state;
+      // 2. Handle New Incoming Message
+      // Check if this specific message is already tracked
+      const alreadyTracked = data.some((c) => c.names?.includes(msgId));
+      if (alreadyTracked) return state;
 
-    // Find matching communication group
-    const index = data.findIndex(c => 
-      c.type === "whatsapp" && 
-      ((sender && c.from === sender) || (refName && c.customer === refName))
-    );
+      // Find matching communication group
+      const index = data.findIndex((c) => c.type === "whatsapp" && ((sender && c.from === sender) || (refName && c.customer === refName)));
 
-    if (index !== -1) {
-      data[index] = {
-        ...data[index],
-        counts: (data[index].counts || 0) + 1,
-        names: [...(data[index].names || []), msgId]
-      };
+      if (index !== -1) {
+        data[index] = {
+          ...data[index],
+          counts: (data[index].counts || 0) + 1,
+          names: [...(data[index].names || []), msgId],
+        };
+        return { incomingData: data };
+      } else {
+        // Create new entry for this contact
+        const newEntry: IncomingCommunication = {
+          from: sender,
+          counts: 1,
+          received_at: msg.creation || new Date().toISOString(),
+          names: [msgId],
+          customer: refName,
+          type: "whatsapp",
+          full_name: msg.from_name || "New Message",
+          data: [],
+        };
+        return { incomingData: [...data, newEntry] };
+      }
+    }),
+  clearContact: (phone, referenceName) =>
+    set((state) => {
+      const data = state.incomingData.filter((c) => {
+        if (c.type !== "whatsapp") return true;
+        const isMatch = (phone && c.from === phone) || (referenceName && c.customer === referenceName);
+        return !isMatch;
+      });
       return { incomingData: data };
-    } else {
-      // Create new entry for this contact
-      const newEntry: IncomingCommunication = {
-        from: sender,
-        counts: 1,
-        received_at: msg.creation || new Date().toISOString(),
-        names: [msgId],
-        customer: refName,
-        type: "whatsapp",
-        full_name: msg.from_name || "New Message",
-        data: [] 
-      };
-      return { incomingData: [...data, newEntry] };
-    }
-  }),
-  clearContact: (phone, referenceName) => set((state) => {
-    const data = state.incomingData.filter(c => {
-      if (c.type !== "whatsapp") return true;
-      const isMatch = (phone && c.from === phone) || (referenceName && c.customer === referenceName);
-      return !isMatch;
-    });
-    return { incomingData: data };
-  })
+    }),
 }));
 
 // ------------------------------------------------------------------

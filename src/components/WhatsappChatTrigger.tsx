@@ -167,12 +167,7 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
         </div>
       )}
 
-      <Modal
-        open={isOpen}
-        onClose={toggleModal}
-        width={modalSize}
-        header={<h3 style={{ margin: 0, fontSize: "1.1rem" }}>WhatsApp Chat</h3>}
-      >
+      <Modal open={isOpen} onClose={toggleModal} width={modalSize} header={<h3 className="whatsapp-modal-header-title">WhatsApp Chat</h3>}>
         <WhatsappChat
           apiAdapter={apiAdapter}
           config={config}

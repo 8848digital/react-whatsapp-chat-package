@@ -179,6 +179,8 @@ export interface MessageInputProps {
     initialInputText?: string;
     isPreviewOpen?: boolean;
     setIsPreviewOpen?: (open: boolean) => void;
+    style?: React.CSSProperties;
+    className?: string;
 }
 /** AttachmentPreview component props */
 export interface AttachmentPreviewProps {

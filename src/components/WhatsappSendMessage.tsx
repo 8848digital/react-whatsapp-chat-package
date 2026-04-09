@@ -45,7 +45,7 @@ export const WhatsappSendMessageWidget = () => {
   return (
     <>
       <div className="whatsapp-chat-container whatsapp-send-msg-only">
-        {/* <div className="whatsapp-header">
+        <div className="whatsapp-header" style={{ borderRadius: "6px 6px 0 0", boxShadow: "none", borderBottom: "1px solid #DCE2E5" }}>
           <div className="whatsapp-header-avatar">
             <User size={20} color="#008069" />
           </div>
@@ -55,10 +55,10 @@ export const WhatsappSendMessageWidget = () => {
               {isConnected ? "● Connected" : "○ Reconnecting..."}
             </span>
           </div>
-        </div> */}
+        </div>
 
         {/* MessageList is omitted here as per requirements */}
-        <div className="whatsapp-send-only-spacer" style={{ flex: 1, minHeight: "20px" }}></div>
+        {/* <div className="whatsapp-send-only-spacer" style={{ flex: 1, minHeight: "20px" }}></div> */}
 
         <MessageInput
           key={composerMountKey}
@@ -79,6 +79,7 @@ export const WhatsappSendMessageWidget = () => {
           attachedFiles={attachedFiles}
           onFileSelect={handleFileSelect}
           onFileRemove={handleFileRemove}
+          style={{ borderRadius: "0 0 6px 6px" }}
         />
       </div>
 
@@ -86,7 +87,7 @@ export const WhatsappSendMessageWidget = () => {
         open={isTemplateModalOpen}
         onClose={() => setIsTemplateModalOpen(false)}
         width="700px"
-        header={<h4 className="text-base font-semibold">Select WhatsApp Template</h4>}
+        header={<h4 className="whatsapp-modal-header-title">Select WhatsApp Template</h4>}
       >
         <WhatsAppTemplateSelector templates={templates} onSelect={handleTemplateSelect} isLoading={isLoadingTemplates} />
       </Modal>

@@ -185,6 +185,8 @@ export interface MessageInputProps {
   // Preview state
   isPreviewOpen?: boolean;
   setIsPreviewOpen?: (open: boolean) => void;
+  style?: React.CSSProperties;
+  className?: string;
 }
 
 /** AttachmentPreview component props */
