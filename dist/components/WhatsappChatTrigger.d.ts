@@ -18,6 +18,10 @@ interface WhatsappChatTriggerProps {
     links?: WhatsappChatLink[];
     attach?: WhatsappAttachItem[];
     preAddedMessages?: string;
+    activeLeadName?: string;
+    activeLeadDoctype?: string;
+    activeTaskName?: string;
+    activeTaskDoctype?: string;
     buttonLabel?: string;
     icon?: React.ReactNode;
     btnClassName?: string;

@@ -13,9 +13,13 @@ interface WhatsappSendMessageTriggerProps {
     phone?: string;
     refDoctype?: string;
     refName?: string | null;
+    preAddedMessages?: string;
+    activeLeadName?: string;
+    activeLeadDoctype?: string;
+    activeTaskName?: string;
+    activeTaskDoctype?: string;
     links?: WhatsappChatLink[];
     attach?: WhatsappAttachItem[];
-    preAddedMessages?: string;
     buttonLabel?: string;
     icon?: React.ReactNode;
     btnClassName?: string;

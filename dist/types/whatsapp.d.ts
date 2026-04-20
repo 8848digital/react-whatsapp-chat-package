@@ -262,6 +262,8 @@ export interface WhatsappWidgetConfig {
     currentUserFullName?: string;
     activeLeadName?: string;
     activeLeadDoctype?: string;
+    activeTaskName?: string;
+    activeTaskDoctype?: string;
     doctype: string;
     refName: string;
     phone: string;

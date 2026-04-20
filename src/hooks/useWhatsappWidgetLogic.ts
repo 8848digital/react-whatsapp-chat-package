@@ -110,13 +110,15 @@ export function useWhatsappWidgetLogic() {
     const baseName = config.refName || "";
     const activeLeadDoctype = config.activeLeadDoctype || "";
     const activeLeadName = config.activeLeadName || "";
+    const activeTaskDoctype = config.activeTaskDoctype || "";
+    const activeTaskName = config.activeTaskName || "";
 
     let primaryDoctype = baseDoctype;
     let primaryName = baseName;
     let secondaryLinks = config.links || [];
 
     if (activeLeadName) {
-      primaryDoctype = activeLeadDoctype;
+      primaryDoctype = activeLeadDoctype || "CRM Lead";
       primaryName = activeLeadName;
       secondaryLinks = baseDoctype ? [{ link_doctype: baseDoctype, link_name: baseName }] : [];
     } else {
@@ -130,9 +132,16 @@ export function useWhatsappWidgetLogic() {
     }
 
     // Prepare reference array for loading compatible templates
-    const templateRefs = activeLeadName
-      ? [{ reference_doctype: activeLeadDoctype, reference_name: activeLeadName }]
-      : [{ reference_doctype: baseDoctype, reference_name: baseName }, ...(config.links || []).map((l: WhatsappChatLink) => ({ reference_doctype: l.link_doctype, reference_name: l.link_name }))];
+    const templateRefs: Array<{ reference_doctype: string; reference_name: string }> = [];
+    if (activeLeadName) templateRefs.push({ reference_doctype: activeLeadDoctype || "CRM Lead", reference_name: activeLeadName });
+    if (activeTaskName) templateRefs.push({ reference_doctype: activeTaskDoctype || "CRM Task", reference_name: activeTaskName });
+    if (baseDoctype && baseName) templateRefs.push({ reference_doctype: baseDoctype, reference_name: baseName });
+    
+    (config.links || []).forEach((l) => {
+      if (!templateRefs.some((r) => r.reference_name === l.link_name && r.reference_doctype === l.link_doctype)) {
+        templateRefs.push({ reference_doctype: l.link_doctype, reference_name: l.link_name });
+      }
+    });
 
     return {
       primaryDoctype,
@@ -142,7 +151,9 @@ export function useWhatsappWidgetLogic() {
       baseDoctype,
       baseName,
       activeLeadDoctype,
-      activeLeadName
+      activeLeadName,
+      activeTaskDoctype,
+      activeTaskName
     };
   }, [config]);
 
@@ -289,7 +300,9 @@ export function useWhatsappWidgetLogic() {
         baseDoctype,
         baseName,
         activeLeadDoctype,
-        activeLeadName
+        activeLeadName,
+        activeTaskDoctype,
+        activeTaskName
       } = whatsappReferences;
 
       const commonToPayload = {
@@ -303,13 +316,40 @@ export function useWhatsappWidgetLogic() {
         let finalRefName = primaryName;
         let finalLinks = secondaryLinks;
 
-        if (templateForDoctype.includes("Lead")) {
-          finalRefDoctype = activeLeadDoctype || templateForDoctype;
-          finalRefName = activeLeadName || primaryName;
-          finalLinks = baseDoctype ? [{ link_doctype: baseDoctype, link_name: baseName }] : [];
+        if (templateForDoctype) {
+          // Priority 1: Match with config.doctype / refName
+          if (baseDoctype === templateForDoctype) {
+            finalRefDoctype = baseDoctype;
+            finalRefName = baseName;
+          }
+          // Priority 2: Match with Active Lead if template is Lead
+          else if (templateForDoctype.includes("Lead") && activeLeadName) {
+            finalRefDoctype = activeLeadDoctype || "CRM Lead";
+            finalRefName = activeLeadName;
+          }
+          // Priority 3: Match with Active Task if template is Task
+          else if (templateForDoctype.includes("Task") && activeTaskName) {
+            finalRefDoctype = activeTaskDoctype || "CRM Task";
+            finalRefName = activeTaskName;
+          }
+          // Priority 4: Match with any record in links
+          else {
+            const matchedLink = config.links?.find((l) => l.link_doctype === templateForDoctype);
+            if (matchedLink) {
+              finalRefDoctype = matchedLink.link_doctype;
+              finalRefName = matchedLink.link_name;
+            }
+          }
+        }
+
+        // Re-calculate links to ensure the base record is linked if we've switched reference
+        if (finalRefName !== baseName || finalRefDoctype !== baseDoctype) {
+          const baseLink = baseDoctype ? [{ link_doctype: baseDoctype, link_name: baseName }] : [];
+          const otherLinks = (config.links || []).filter(
+            (l) => l.link_name !== finalRefName || l.link_doctype !== finalRefDoctype
+          );
+          finalLinks = [...baseLink, ...otherLinks];
         } else {
-          finalRefDoctype = baseDoctype || primaryDoctype;
-          finalRefName = baseName || primaryName;
           finalLinks = config.links || [];
         }
 

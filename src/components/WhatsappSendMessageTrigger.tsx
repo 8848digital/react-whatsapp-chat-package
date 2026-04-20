@@ -27,9 +27,13 @@ interface WhatsappSendMessageTriggerProps {
   phone?: string;
   refDoctype?: string;
   refName?: string | null;
+  preAddedMessages?: string;
+  activeLeadName?: string;
+  activeLeadDoctype?: string;
+  activeTaskName?: string;
+  activeTaskDoctype?: string;
   links?: WhatsappChatLink[];
   attach?: WhatsappAttachItem[];
-  preAddedMessages?: string;
   buttonLabel?: string;
   icon?: React.ReactNode;
   btnClassName?: string;
@@ -61,6 +65,10 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
   refDoctype = "Contact",
   refName = "",
   links = [],
+  activeLeadName,
+  activeLeadDoctype,
+  activeTaskName,
+  activeTaskDoctype,
   attach,
   preAddedMessages,
   buttonLabel = "Send WhatsApp",
@@ -91,6 +99,10 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
     refDoctype,
     refName,
     links,
+    activeLeadName,
+    activeLeadDoctype,
+    activeTaskName,
+    activeTaskDoctype,
     isChatOpen: isOpen,
     attach,
     preAddedMessages,
@@ -135,12 +147,7 @@ export const WhatsappSendMessageTrigger: React.FC<WhatsappSendMessageTriggerProp
         </div>
       )}
 
-      <Modal
-        open={isOpen}
-        onClose={toggleModal}
-        width={"780px"}
-        header={<h3 className="whatsapp-modal-header-title">WhatsApp Chat</h3>}
-      >
+      <Modal open={isOpen} onClose={toggleModal} width={"780px"} header={<h3 className="whatsapp-modal-header-title">WhatsApp Chat</h3>}>
         <WhatsappSendMessage
           apiAdapter={apiAdapter}
           config={config}

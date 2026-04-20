@@ -12,6 +12,10 @@ export interface WidgetResolutionParams {
     refDoctype?: string;
     refName?: string | null;
     links?: WhatsappChatLink[];
+    activeLeadName?: string;
+    activeLeadDoctype?: string;
+    activeTaskName?: string;
+    activeTaskDoctype?: string;
     isChatOpen: boolean;
     /** Pre-seeded attachments (server file paths); merged into resolved `config.attach` */
     attach?: WhatsappAttachItem[];
@@ -34,6 +38,8 @@ export declare const useWhatsappWidgetResolution: (params: WidgetResolutionParam
         currentUserFullName?: string;
         activeLeadName?: string;
         activeLeadDoctype?: string;
+        activeTaskName?: string;
+        activeTaskDoctype?: string;
         doctype: string;
         refName: string;
         phone: string;

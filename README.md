@@ -6,6 +6,7 @@
 - **Easy Integration**: Built-in Frappe-compatible logic with simple props (`baseURL`, `token`, etc.).
 - **Real-Time Ready**: Plug-and-play support for Socket.io via message event passing.
 - **Rich Media Support**: Handles images, videos, documents, and interactive templates.
+- **Dynamic Template Routing**: Automatically switches message references (Lead, Task, Contact) based on the selected template's target doctype.
 - **Skeleton Support**: Premium loading skeletons for messages and templates.
 - **Isolated State**: Uses an isolated Zustand store per widget instance—safely render multiple widgets on one page.
 - **Notification Slots**: Easily connect to your application's toast/notification system.
@@ -136,6 +137,10 @@ These props are available on **`WhatsappChat`**, **`WhatsappChatTrigger`**, **`W
 | `refDoctype`              | `string`             | `"Contact"` | Primary record type.                                                                                                                                                                                                                                    |
 | `currentUserEmail`        | `string`             | Optional    | Your identity (required for unread badge logic).                                                                                                                                                                                                        |
 | `currentUserFullName`     | `string`             | Optional    | Display name used in headers and templates.                                                                                                                                                                                                             |
+| `activeLeadName`          | `string`             | Optional    | Active Lead ID for dynamic template routing.                                                                                                                                                                                                            |
+| `activeLeadDoctype`       | `string`             | Optional    | Active Lead Doctype (defaults to "CRM Lead").                                                                                                                                                                                                          |
+| `activeTaskName`          | `string`             | Optional    | Active Task ID for dynamic template routing.                                                                                                                                                                                                            |
+| `activeTaskDoctype`       | `string`             | Optional    | Active Task Doctype (defaults to "CRM Task").                                                                                                                                                                                                          |
 | `links`                   | `WhatsappChatLink[]` | `[]`        | Secondary linked documents to track communication against.                                                                                                                                                                                              |
 | **Real-Time Integration** |                      |             |                                                                                                                                                                                                                                                         |
 | `socketPayload`           | `SocketPayload`      | Optional    | Raw socket event from your host app to trigger unread counts.                                                                                                                                                                                           |
@@ -202,6 +207,8 @@ export interface UseWhatsappChatAdaptersParams {
   currentUserEmail?: string;
   contextDoctype?: string;
   contextName?: string;
+  activeTaskName?: string;
+  activeTaskDoctype?: string;
   links?: Array<{ link_doctype: string; link_name: string }>;
   isChatOpen?: boolean;
 }
@@ -325,6 +332,8 @@ export function useWhatsappChatAdapters({
       currentUser,
       activeLeadName,
       activeLeadDoctype,
+      activeTaskName,
+      activeTaskDoctype,
       doctype: referenceDoctype ?? "Contact",
       refName: referenceName ?? "",
       phone: toPhone ?? "",
@@ -332,7 +341,18 @@ export function useWhatsappChatAdapters({
       isChatOpen: !!isChatOpen,
       apiBaseUrl: API_BASE_URL,
     }),
-    [currentUser, activeLeadName, activeLeadDoctype, referenceDoctype, referenceName, toPhone, links, isChatOpen]
+    [
+      currentUser,
+      activeLeadName,
+      activeLeadDoctype,
+      activeTaskName,
+      activeTaskDoctype,
+      referenceDoctype,
+      referenceName,
+      toPhone,
+      links,
+      isChatOpen,
+    ]
   );
 
   const apiAdapter: WhatsappWidgetApiAdapter = useMemo(

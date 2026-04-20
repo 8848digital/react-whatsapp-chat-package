@@ -39,6 +39,10 @@ interface WhatsappChatTriggerProps {
   links?: WhatsappChatLink[];
   attach?: WhatsappAttachItem[];
   preAddedMessages?: string;
+  activeLeadName?: string;
+  activeLeadDoctype?: string;
+  activeTaskName?: string;
+  activeTaskDoctype?: string;
 
   // --- UI Props ---
   buttonLabel?: string;
@@ -75,6 +79,10 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
   refDoctype = "Contact",
   refName = "",
   links = [],
+  activeLeadName,
+  activeLeadDoctype,
+  activeTaskName,
+  activeTaskDoctype,
   attach,
   preAddedMessages,
   buttonLabel,
@@ -105,6 +113,10 @@ export const WhatsappChatTrigger: React.FC<WhatsappChatTriggerProps> = ({
     refDoctype,
     refName,
     links,
+    activeLeadName,
+    activeLeadDoctype,
+    activeTaskName,
+    activeTaskDoctype,
     isChatOpen: isOpen,
     attach,
     preAddedMessages,

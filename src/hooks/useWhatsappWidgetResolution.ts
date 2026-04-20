@@ -22,6 +22,10 @@ export interface WidgetResolutionParams {
   refDoctype?: string;
   refName?: string | null;
   links?: WhatsappChatLink[];
+  activeLeadName?: string;
+  activeLeadDoctype?: string;
+  activeTaskName?: string;
+  activeTaskDoctype?: string;
   isChatOpen: boolean;
   /** Pre-seeded attachments (server file paths); merged into resolved `config.attach` */
   attach?: WhatsappAttachItem[];
@@ -50,6 +54,10 @@ export const useWhatsappWidgetResolution = (params: WidgetResolutionParams) => {
     refDoctype = "Contact",
     refName = "",
     links = [],
+    activeLeadName,
+    activeLeadDoctype,
+    activeTaskName,
+    activeTaskDoctype,
     isChatOpen,
     attach: attachProp,
     preAddedMessages: preAddedMessagesProp,
@@ -84,6 +92,10 @@ export const useWhatsappWidgetResolution = (params: WidgetResolutionParams) => {
       refName: refName || "",
       phone: phone || "",
       links: links,
+      activeLeadName,
+      activeLeadDoctype,
+      activeTaskName,
+      activeTaskDoctype,
       isChatOpen: isChatOpen,
       apiBaseUrl: baseURL,
       ...(attachProp !== undefined ? { attach: attachProp } : {}),
@@ -101,6 +113,10 @@ export const useWhatsappWidgetResolution = (params: WidgetResolutionParams) => {
     baseURL,
     attachProp,
     preAddedMessagesProp,
+    activeLeadName,
+    activeLeadDoctype,
+    activeTaskName,
+    activeTaskDoctype,
   ]);
 
   // 4. Resolve Socket Adapter
