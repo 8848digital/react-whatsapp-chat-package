@@ -596,8 +596,8 @@ const bs = ({
     if (!a) return;
     const u = setTimeout(() => {
       var w;
-      (w = p.current) == null || w.scrollIntoView({ behavior: "smooth" });
-    }, 0);
+      (w = p.current) == null || w.scrollIntoView({ behavior: "smooth", block: "end" });
+    }, 100);
     return () => clearTimeout(u);
   }, [l, a]), t ? /* @__PURE__ */ c.jsx(ys, {}) : n ? /* @__PURE__ */ c.jsx("div", { className: "whatsapp-message-list", style: { textAlign: "center", color: "#c53030", padding: "20px" }, children: n }) : /* @__PURE__ */ c.jsxs("div", { className: "whatsapp-message-list", children: [
     l.length === 0 && /* @__PURE__ */ c.jsx("div", { style: { textAlign: "center", color: "#888", padding: "20px" }, children: "No messages yet. Start the conversation!" }),
