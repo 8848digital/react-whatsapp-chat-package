@@ -68,10 +68,14 @@ export const MessageList = ({
     return messages || [];
   }, [activity, messages]);
 
+  // setTimeout(0) defers scroll until after the browser paints (fixes modal open timing).
+  // This runs on mount AND whenever messages change — one effect handles both.
   useEffect(() => {
-    if (enableScroll) {
+    if (!enableScroll) return;
+    const timer = setTimeout(() => {
       bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
+    }, 0);
+    return () => clearTimeout(timer);
   }, [transformedMessages, enableScroll]);
 
   if (isLoading) {
