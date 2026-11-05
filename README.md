@@ -1,565 +1,655 @@
 # React WhatsApp Chat Package 💬
 
-## 🚀 Key Features
+A WhatsApp chat widget for React. It shows a contact's message history, sends text, attachments and approved WhatsApp templates, tracks unread counts, and receives live updates over Socket.io.
 
-- **Decoupled Architecture**: Logic is separated from UI for maximum flexibility.
-- **Easy Integration**: Built-in Frappe-compatible logic with simple props (`baseURL`, `token`, etc.).
-- **Real-Time Ready**: Plug-and-play support for Socket.io via message event passing.
-- **Rich Media Support**: Handles images, videos, documents, and interactive templates.
-- **Dynamic Template Routing**: Automatically switches message references (Lead, Task, Contact) based on the selected template's target doctype.
-- **Skeleton Support**: Premium loading skeletons for messages and templates.
-- **Isolated State**: Uses an isolated Zustand store per widget instance—safely render multiple widgets on one page.
-- **Notification Slots**: Easily connect to your application's toast/notification system.
-- **Optimistic UI**: Instant UI updates when sending messages for a premium feel.
+It works out of the box with the 8848 Digital Frappe backend (`crm_integration` app). You can also plug in your own API and socket layer through adapters.
+
+- **Package:** `react-whatsapp-chat-package` (current version **1.0.19**)
+- **React:** 19 (see [Compatibility](#-compatibility))
+- **License:** MIT
+
+---
+
+## Table of contents
+
+1. [Features](#-features)
+2. [Installation](#-installation)
+3. [Quick start](#-quick-start)
+4. [Components](#-components)
+5. [Props reference](#-props-reference)
+6. [How references and links are chosen](#-how-references-and-links-are-chosen)
+7. [Templates](#-templates)
+8. [Attachments](#-attachments)
+9. [Real-time updates (sockets)](#-real-time-updates-sockets)
+10. [Read receipts and unread badges](#-read-receipts-and-unread-badges)
+11. [Notifications](#-notifications)
+12. [Advanced: custom adapters](#-advanced-custom-adapters)
+13. [Hooks and low-level exports](#-hooks-and-low-level-exports)
+14. [TypeScript types](#-typescript-types)
+15. [Backend API contract](#-backend-api-contract)
+16. [Styling](#-styling)
+17. [Compatibility](#-compatibility)
+18. [Known limitations](#-known-limitations)
+19. [Development](#-development)
+20. [Changelog](#-changelog)
+
+---
+
+## 🚀 Features
+
+- **Four ready-made components:** a full chat in a modal, an embeddable chat, a send-only composer, and a send-only composer in a modal.
+- **Two integration modes:**
+  - **Internal mode:** pass `baseURL` and `token`, and the widget calls the Frappe API itself.
+  - **Adapter mode:** pass your own `apiAdapter` and `socketAdapter`, for example backed by React Query.
+- **WhatsApp templates:** a template picker, a preview, and send through `send_whatsapp_template`. The record the template is rendered against follows the template's `for_doctype` (Lead, Task, Contact or a linked record).
+- **Rich messages:** template cards with header text, image or document, footer and CTA buttons. Image and file attachments. URLs in message text become clickable links.
+- **Optimistic UI:** a sent message appears at once as "pending" and is swapped for the server copy when its socket event arrives.
+- **Unread badges:** the trigger button shows the unread count for the contact. One shared store keeps several triggers on a page in sync.
+- **Read receipts:** the latest unread incoming message is marked read when the chat opens, and new incoming messages are marked read while it stays open.
+- **Isolated state:** every widget instance has its own Zustand store, so several chats can be open on one page.
+- **Loading skeletons** for messages and templates.
+- **Safe rendering:** message and template text is rendered as React text. There is no `dangerouslySetInnerHTML`.
+
+---
 
 ## 🛠️ Installation
 
-````bash
-# If using Git installation
+```bash
+npm install react-whatsapp-chat-package
+```
+
+Or straight from GitHub:
+
+```bash
 npm install https://github.com/8848digital/react-whatsapp-chat-package.git
-## 📋 Usage
+```
 
-### 1. Standard Usage (Direct API Integration)
+The host application must provide these **peer dependencies**:
 
-The easiest way to integrate. The package handles all API calls internally using the provided `baseURL` and `token`.
+| Package     | Version            |
+| ----------- | ------------------ |
+| `react`     | `^19` (see note)   |
+| `react-dom` | `^19`              |
+
+`axios`, `zustand` and `@phosphor-icons/react` are regular dependencies and are installed for you.
+
+Import the stylesheet once, for example in `layout.tsx` or `App.tsx`:
+
+```ts
+import "react-whatsapp-chat-package/styles.css";
+```
+
+---
+
+## ⚡ Quick start
 
 ```tsx
+"use client";
 import { WhatsappChatTrigger } from "react-whatsapp-chat-package";
 import "react-whatsapp-chat-package/styles.css";
 
-const MyComponent = () => {
+export function ContactWhatsAppButton() {
   return (
     <WhatsappChatTrigger
       buttonLabel="WhatsApp"
-      baseURL="https://your-api.com"
-      token="your-auth-token"
-      phone="1234567890" // Recipient
-      currentUserEmail="user@me.com" // Your email (for unread counts)
-      refName="Contact-001" // Record ID
-      refDoctype="Contact" // Record Type
-      // Connect to your app's toast system
+      baseURL="https://crm.example.com"   // Frappe site
+      token="api_key:api_secret"          // sent as "Authorization: token <token>"
+      currentUserEmail="agent@example.com" // needed for unread badges
+      phone="919876543210"                 // recipient
+      refDoctype="Contact"
+      refName="CONT-0001"
       showNotification={(title, msg) => toast.success(msg)}
       showError={(title, msg) => toast.error(msg)}
     />
   );
-};
-````
+}
+```
 
-### 2. Embedded Mode (Direct Component Usage)
+That's enough for history, sending, templates, attachments and badges. Live updates need one more prop; see [Real-time updates](#-real-time-updates-sockets).
 
-If you already have your own modal or want to embed the chat directly into a sidebar/page, use the `WhatsappChat` component.
+> **Next.js App Router:** the published bundle has no `"use client"` directive. Import the package from a file marked `"use client"`.
+
+---
+
+## 🧩 Components
+
+| Component                    | What it renders                                                   | History | Unread badge |
+| ---------------------------- | ----------------------------------------------------------------- | ------- | ------------ |
+| `WhatsappChatTrigger`        | A button with an unread badge. Clicking it opens the full chat in a modal. | ✅ | ✅ |
+| `WhatsappChat`               | The full chat (header, message list, composer) for embedding in your own layout. | ✅ | ❌ |
+| `WhatsappSendMessageTrigger` | A button that opens a compact send-only composer in a modal.      | ❌      | ❌           |
+| `WhatsappSendMessage`        | The send-only composer for embedding.                             | ❌      | ❌           |
+
+### 1. Chat in a modal: `WhatsappChatTrigger`
+
+See [Quick start](#-quick-start). The modal is uncontrolled by default. To control it from outside, pass `isOpen`, `onOpen` and `onClose`:
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<WhatsappChatTrigger
+  {...connectionProps}
+  isOpen={open}
+  onOpen={() => setOpen(true)}
+  onClose={() => setOpen(false)}
+/>;
+```
+
+The chat is mounted only while the modal is open. Each time it opens, it reloads history, rebuilds the composer (re-applying `preAddedMessages` and `attach`) and re-reads templates.
+
+### 2. Embedded chat: `WhatsappChat`
 
 ```tsx
 import { WhatsappChat } from "react-whatsapp-chat-package";
 
-const SidePanel = () => {
-  return (
-    <div style={{ height: "600px", border: "1px solid #ddd" }}>
-      <WhatsappChat baseURL="https://api.com" token="xyz" phone="1234567890" refName="Contact-001" />
-    </div>
-  );
-};
+<div style={{ height: 600 }}>
+  <WhatsappChat
+    baseURL="https://crm.example.com"
+    token="api_key:api_secret"
+    phone="919876543210"
+    refDoctype="Contact"
+    refName="CONT-0001"
+  />
+</div>;
 ```
 
-### 3. Send-Only Mode (No History)
+`WhatsappChat` treats itself as open for as long as it is mounted: it loads history on mount and sends read receipts for incoming messages. To route templates by lead or task, pass `activeLeadName` and the other active-record fields inside a [`config`](#config-object) object. They are not top-level props on this component.
 
-For cases where you only need to send a quick message or template without showing the full chat history, use the `SendMessage` variant. This is more compact and does not fetch previous messages.
+### 3. Send-only: `WhatsappSendMessageTrigger` / `WhatsappSendMessage`
+
+Send-only mode doesn't fetch or show history. Use it for "quick message" actions.
 
 ```tsx
-import { WhatsappSendMessageTrigger } from "react-whatsapp-chat-package";
+import { WhatsappSendMessageTrigger, WhatsappSendMessage } from "react-whatsapp-chat-package";
 
-const QuickAction = () => {
-  return (
-    <WhatsappSendMessageTrigger
-      buttonLabel="Quick Msg"
-      baseURL="..."
-      token="..."
-      phone="1234567890"
-      currentUserFullName="John Doe"
-      showNotification={(t, m) => toast.info(m)}
-    />
-  );
-};
+<WhatsappSendMessageTrigger
+  buttonLabel="Quick message"
+  baseURL="https://crm.example.com"
+  token="api_key:api_secret"
+  phone="919876543210"
+  refName="CONT-0001"
+  currentUserFullName="Support Team"
+  preAddedMessages="Hi! Following up on your enquiry."
+/>;
+
+// or embedded
+<WhatsappSendMessage baseURL="…" token="…" phone="919876543210" refName="CONT-0001" />;
 ```
 
-#### Embedded Send-Only Component
+The send-only modal is 780 px wide.
 
-If you want to use the send-only interface without a trigger button:
+---
 
-```tsx
-import { WhatsappSendMessage } from "react-whatsapp-chat-package";
+## 📑 Props reference
 
-const FastReplyPanel = () => {
-  return (
-    <div style={{ padding: "1rem", border: "1px solid #ddd" }}>
-      <WhatsappSendMessage baseURL="https://api.com" token="xyz" phone="1234567890" currentUserFullName="Support Team" />
-    </div>
-  );
-};
-```
+### Shared props
 
-#### Key differences for Send-Only:
+These props work on all four components unless a row says otherwise.
 
-- **No History**: Skips the initial history fetch and does not render the message list.
-- **Compact UI**: The modal defaults to `600px` width and `auto` height (shrinks to fit).
-- **Display Name**: Supports `currentUserFullName` to show your identity in the header.
+| Prop                  | Type                                       | Default     | Description |
+| --------------------- | ------------------------------------------ | ----------- | ----------- |
+| **Connection**        |                                            |             |             |
+| `baseURL`             | `string`                                   | –           | Frappe site URL. Turns on internal mode and is also used to build attachment and media URLs. |
+| `token`               | `string`                                   | –           | Sent as `Authorization: token <token>`. Requests also carry cookies (`withCredentials`). Unread counts need a token in internal mode. |
+| `apiAdapter`          | `WhatsappWidgetApiAdapter`                 | –           | Your own API layer. Takes priority over `baseURL`/`token`. |
+| `config`              | `WhatsappWidgetConfig`                     | –           | Full configuration object. When given, the metadata props below are ignored (except `attach` and `preAddedMessages`, which override it). |
+| **Record context**    |                                            |             |             |
+| `phone`               | `string`                                   | `""`        | Recipient number, in the same format the backend stores in `from`. |
+| `refDoctype`          | `string`                                   | `"Contact"` | Base record type. History is loaded for this record. |
+| `refName`             | `string \| null`                           | `""`        | Base record name. |
+| `links`               | `WhatsappChatLink[]`                       | `[]`        | Other records to link the message to (`{ link_doctype, link_name }`). Pass a stable, memoised array. |
+| `activeLeadName`      | `string`                                   | –           | *Trigger components only.* The lead currently in context. It becomes the primary reference for sends. |
+| `activeLeadDoctype`   | `string`                                   | `"CRM Lead"` | *Trigger components only.* |
+| `activeTaskName`      | `string`                                   | –           | *Trigger components only.* The task currently in context, used for Task templates. |
+| `activeTaskDoctype`   | `string`                                   | `"CRM Task"` | *Trigger components only.* |
+| **User**              |                                            |             |             |
+| `currentUserEmail`    | `string`                                   | –           | The signed-in agent. Needed for unread counts. |
+| `currentUserFullName` | `string`                                   | –           | Shown in the chat header. |
+| **Real-time**         |                                            |             |             |
+| `socketPayload`       | `SocketPayload`                            | –           | The latest raw socket event from your app, for example `{ event: "whatsapp_message", message: doc }`. |
+| `socketConnected`     | `boolean`                                  | –           | Socket connection state, shown as "● Connected" or "○ Reconnecting…". |
+| `socketAdapter`       | `SocketAdapter`                            | –           | Subscribe/unsubscribe interface. Use it instead of `socketPayload`. |
+| **Composer presets**  |                                            |             |             |
+| `attach`              | `{ file: string }[]`                       | –           | Files already on the server (for example `/files/brochure.pdf`), pre-attached when the chat opens and sent with the next message. Images get a preview built from `baseURL`. |
+| `preAddedMessages`    | `string`                                   | –           | Text that pre-fills the composer when the chat opens. |
+| **Notifications**     |                                            |             |             |
+| `showNotification`    | `(title: string, message: string) => void` | –           | Success messages ("Message sent successfully", and incoming-message alerts from triggers). |
+| `showWarning`         | `(title: string, message: string) => void` | –           | Warnings. |
+| `showError`           | `(title: string, message: string) => void` | –           | Failures (send, upload). |
 
-## 🛠 Props & Configuration
+### Trigger-only props (`WhatsappChatTrigger`, `WhatsappSendMessageTrigger`)
 
-### `WhatsappChatTrigger` / `WhatsappSendMessageTrigger` Props
+| Prop           | Type                   | Default                            | Description |
+| -------------- | ---------------------- | ---------------------------------- | ----------- |
+| `buttonLabel`  | `string`               | – / `"Send WhatsApp"`              | Text next to the icon. |
+| `icon`         | `ReactNode`            | WhatsApp logo                      | Custom icon. |
+| `btnClassName` | `string`               | `""`                               | Extra class on the trigger. In `plain` mode, a class containing `button` keeps your own button styles. |
+| `variant`      | `"default" \| "plain"` | `"default"`                        | `plain` renders a bare `<button>`. |
+| `modalSize`    | `string`               | `"1024px"`                         | Chat modal max width (`WhatsappChatTrigger` only). |
+| `isOpen`       | `boolean`              | internal state                     | Controlled open state. |
+| `onOpen`       | `() => void`           | –                                  | Called when the trigger is clicked while closed (controlled mode). |
+| `onClose`      | `() => void`           | –                                  | Called on overlay click, the close button, or a trigger click while open. |
 
-The Trigger component includes everything in the `WhatsappChat` props, plus:
+### `config` object
 
-| Prop              | Type                   | Default      | Description                                                  |
-| ----------------- | ---------------------- | ------------ | ------------------------------------------------------------ |
-| `buttonLabel`     | `string`               | `"WhatsApp"` | Trigger button text.                                         |
-| `icon`            | `ReactNode`            | Optional     | Custom icon to show inside/instead of the button.            |
-| `btnClassName`    | `string`               | `""`         | Additional CSS class for the button/trigger wrapper.         |
-| `variant`         | `"default" \| "plain"` | `"default"`  | Use "plain" for a minimalist button without the wrapper box. |
-| `modalSize`       | `string`               | `"1024px"`   | Chat modal width (e.g. "800px", "50%").                      |
-| **Modal Control** |                        |              |                                                              |
-| `isOpen`          | `boolean`              | Internal     | Controlled state for the modal visibility.                   |
-| `onOpen`          | `() => void`           | Optional     | Fired when the trigger button is clicked to open the modal.  |
-| `onClose`         | `() => void`           | Optional     | Fired when the modal's close button is clicked.              |
+`WhatsappWidgetConfig` is what every component resolves its props into. Pass it directly in adapter mode:
 
-### `WhatsappChat` / Shared Props
-
-These props are available on **`WhatsappChat`**, **`WhatsappChatTrigger`**, **`WhatsappSendMessage`**, and **`WhatsappSendMessageTrigger`** (same underlying `config`).
-
-| Prop                      | Type                 | Default     | Description                                                                                                                                                                                                                                             |
-| ------------------------- | -------------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Connection Settings**   |                      |             |                                                                                                                                                                                                                                                         |
-| `baseURL`                 | `string`             | Optional    | API Base URL.                                                                                                                                                                                                                                           |
-| `token`                   | `string`             | Optional    | Auth token for API calls.                                                                                                                                                                                                                               |
-| **Metadata**              |                      |             |                                                                                                                                                                                                                                                         |
-| `phone`                   | `string`             | Optional    | The recipient's phone number.                                                                                                                                                                                                                           |
-| `refName`                 | `string`             | `""`        | Primary record ID (e.g. "Contact-001").                                                                                                                                                                                                                 |
-| `refDoctype`              | `string`             | `"Contact"` | Primary record type.                                                                                                                                                                                                                                    |
-| `currentUserEmail`        | `string`             | Optional    | Your identity (required for unread badge logic).                                                                                                                                                                                                        |
-| `currentUserFullName`     | `string`             | Optional    | Display name used in headers and templates.                                                                                                                                                                                                             |
-| `activeLeadName`          | `string`             | Optional    | Active Lead ID for dynamic template routing.                                                                                                                                                                                                            |
-| `activeLeadDoctype`       | `string`             | Optional    | Active Lead Doctype (defaults to "CRM Lead").                                                                                                                                                                                                          |
-| `activeTaskName`          | `string`             | Optional    | Active Task ID for dynamic template routing.                                                                                                                                                                                                            |
-| `activeTaskDoctype`       | `string`             | Optional    | Active Task Doctype (defaults to "CRM Task").                                                                                                                                                                                                          |
-| `links`                   | `WhatsappChatLink[]` | `[]`        | Secondary linked documents to track communication against.                                                                                                                                                                                              |
-| **Real-Time Integration** |                      |             |                                                                                                                                                                                                                                                         |
-| `socketPayload`           | `SocketPayload`      | Optional    | Raw socket event from your host app to trigger unread counts.                                                                                                                                                                                           |
-| `socketConnected`         | `boolean`            | Optional    | Manual override for socket connection status.                                                                                                                                                                                                           |
-| **Composer presets**      |                      |             |                                                                                                                                                                                                                                                         |
-| `attach`                  | `{ file: string }[]` | Optional    | Server file paths already uploaded; merged into the send payload `attach` when the user sends. Shown as pre-filled attachments when the chat opens. Uses `apiBaseUrl` for image previews when set.                                                      |
-| `preAddedMessages`        | `string`             | Optional    | Initial text in the message input when the chat opens. On modal **reopen**, the composer resets and this text is applied again. Embedded (non-modal) usage: prefilled on first mount; change the component `key` to reset the text if the prop updates. |
-| **Notifications**         |                      |             |                                                                                                                                                                                                                                                         |
-| `showNotification`        | `Function`           | Optional    | Callback for success alerts.                                                                                                                                                                                                                            |
-| `showWarning`             | `Function`           | Optional    | Callback for warning alerts.                                                                                                                                                                                                                            |
-| `showError`               | `Function`           | Optional    | Callback for error alerts.                                                                                                                                                                                                                              |
-
-You can also pass `attach` and `preAddedMessages` on a custom `config` object (`WhatsappWidgetConfig`); top-level props with the same names override those fields when both are used.
-
-### Example: prefilled attachments and message
-
-```tsx
-<WhatsappChatTrigger
-  buttonLabel="WhatsApp"
-  baseURL="https://your-api.com"
-  token="your-auth-token"
-  phone="1234567890"
-  currentUserEmail="user@me.com"
-  refName="Contact-001"
-  attach={[{ file: "/files/image.png" }, { file: "/private/files/doc.pdf" }]}
-  preAddedMessages="Hello, following up on your request."
-  showNotification={(title, msg) => toast.success(msg)}
-/>
-```
-
-## 🧩 Adapter Implementation (Advanced)
-
-For advanced use cases where you want to control exactly how the widget interacts with your backend—such as using **React Query** for caching, custom **Socket.io** event handling, or centralized notification management—you can implement custom adapters.
-
-The following snippet demonstrates a robust implementation using the adapter pattern:
-
-```typescript
-"use client";
-
-import React, { useMemo } from "react";
-import { useQueryClient } from "@tanstack/react-query";
-import { useSocket, type SocketMessage } from "@/hooks/useSocket";
-import { useSendWhatsAppMessage, useSendWhatsAppTemplate, useUploadFile, useSendReadReceipt } from "@/hooks/whatsapp/useWhatsappHooks";
-import { useNotification } from "@/components/common/NotificationProvider";
-
-import { API_BASE_URL } from "@/services/config/apiClient";
-import type { SendWhatsAppMessagePayload, SendWhatsAppTemplatePayload, WhatsAppMessage } from "@/services/api/whatsapp/whatsapp.api";
-import { getWhatsAppMessages, getWhatsAppTemplates, getIncomingCommunications } from "@/services/api/whatsapp/whatsapp.api";
-
-import type {
-  Message,
-  MessageTemplateLink,
-  SocketMessageDoc,
-  WhatsappWidgetApiAdapter,
-  WhatsappWidgetConfig,
-  SocketAdapter,
-  TemplateListReference,
-} from "react-whatsapp-chat-package";
-
-export interface UseWhatsappChatAdaptersParams {
-  referenceDoctype: string;
-  referenceName: string;
-  toPhone: string;
-  currentUserEmail?: string;
-  contextDoctype?: string;
-  contextName?: string;
+```ts
+interface WhatsappWidgetConfig {
+  currentUser: string;            // agent email
+  currentUserFullName?: string;
+  doctype: string;                // base record type, e.g. "Contact"
+  refName: string;                // base record name
+  phone: string;                  // recipient
+  links?: WhatsappChatLink[];
+  activeLeadName?: string;
+  activeLeadDoctype?: string;     // default "CRM Lead"
   activeTaskName?: string;
-  activeTaskDoctype?: string;
-  links?: Array<{ link_doctype: string; link_name: string }>;
-  isChatOpen?: boolean;
+  activeTaskDoctype?: string;     // default "CRM Task"
+  isChatOpen: boolean;            // drives history fetch and read receipts
+  preventHistoryFetch?: boolean;  // set by send-only mode
+  apiBaseUrl?: string;            // prefix for attachment and template media URLs
+  attach?: WhatsappAttachItem[];
+  preAddedMessages?: string;
 }
+```
 
-/** Map backend status string to UI status number (1 Sent, 2 Failed, 3 Delivered, 4 Read, 5 Pending). */
-export function statusStringToNumber(s: string | undefined): number | undefined {
-  if (!s) return undefined;
-  const lower = s.toLowerCase();
-  if (lower === "success" || lower === "sent") return 1;
-  if (lower === "failed") return 2;
-  if (lower === "delivered") return 3;
-  if (lower === "read") return 4;
-  const n = parseInt(s, 10);
-  if (!isNaN(n) && n >= 1 && n <= 5) return n;
-  return undefined;
-}
+Memoise `config` and `links` (`useMemo`). A new object or array on every render makes the widget recompute its references and can refetch templates.
 
-/**
- * Unified transformer for both API (WhatsAppMessage) and Socket (SocketMessageDoc) messages.
- */
-export function transformToMessage(raw: WhatsAppMessage | SocketMessageDoc): Message | null {
-  if (!raw?.name) return null;
+---
 
-  const rawType = String(raw.type ?? "")
-    .trim()
-    .toLowerCase();
-  const isOutbound =
-    rawType === "outgoing" ||
-    (raw as unknown as { is_outbound?: number | string }).is_outbound === 1 ||
-    (raw as unknown as { is_outbound?: number | string }).is_outbound === "1";
+## 🧭 How references and links are chosen
 
-  let status: number | undefined = statusStringToNumber(raw.status ?? undefined);
-  if (status === undefined && isOutbound) status = 5;
+Every send carries a `reference_doctype`/`reference_name` (the primary record) and an optional `links` array. History is always loaded for the **base** record (`refDoctype`/`refName`).
 
-  const isTemplate = raw.message_type === "Template";
-  const rawMessage = raw.message != null ? String(raw.message) : undefined;
-  const hasRealMessage = rawMessage != null && rawMessage.trim() !== "" && rawMessage !== "Template message";
+### Plain messages and attachments
 
-  const displayMessage = isTemplate && !hasRealMessage && raw.template ? raw.template : (rawMessage ?? raw.template ?? "");
+| Context | `reference_*` sent | `links` sent |
+| ------- | ------------------ | ------------ |
+| No active lead, and no `*Lead*` doctype in `links` | base record | `links` as given |
+| No `activeLeadName`, but `links` contains a doctype with "Lead" in its name | that linked lead | `[base]` |
+| `activeLeadName` set | active lead | `[base]` |
 
-  const template_links: MessageTemplateLink[] | undefined = raw.links?.length
-    ? raw.links
-        .filter((l): l is { button_label: string; link: string } => Boolean(l?.button_label && l?.link))
-        .map((l) => ({ button_label: l.button_label, link: l.link }))
-    : undefined;
+### Templates
 
-  const fromName = (raw as WhatsAppMessage).from_name || (raw as SocketMessageDoc).profile_name;
+The template's `for_doctype` decides which record the server renders the template against:
 
-  return {
-    name: raw.name,
-    message: displayMessage,
-    sender: fromName || (isOutbound ? "You" : "Customer"),
-    creation: raw.creation ?? new Date().toISOString(),
-    is_outbound: isOutbound ? 1 : 0,
-    attach: raw.attach ?? undefined,
-    content_type: raw.content_type ?? undefined,
-    status,
-    header: isTemplate ? (raw.header ?? undefined) : undefined,
-    footer: isTemplate ? (raw.footer ?? undefined) : undefined,
-    template_links: template_links?.length ? template_links : undefined,
-    message_type: raw.message_type,
-    header_type: isTemplate ? (raw.header_type ?? undefined) : undefined,
-    sample: isTemplate ? (raw.sample ?? undefined) : undefined,
-    from: (raw as SocketMessageDoc).from ?? (raw as WhatsAppMessage).from ?? null,
-    reference_name: (raw as SocketMessageDoc).reference_name ?? (raw as WhatsAppMessage).reference_name ?? null,
-  };
-}
+1. `for_doctype` equals the base doctype → **base record**. `links` = `links` as given.
+2. `for_doctype` contains "Lead" and an active lead exists → **active lead**.
+3. `for_doctype` contains "Task" and an active task exists → **active task**.
+4. `for_doctype` matches a `link_doctype` in `links` → **that linked record**.
+5. Nothing matches, or the template has no `for_doctype` → the plain-message primary record (the active lead if there is one, else the base).
 
-/**
- * Shared hook to initialize WhatsApp adapters and config.
- */
-export function useWhatsappChatAdapters({
-  referenceDoctype,
-  referenceName,
-  toPhone,
-  currentUserEmail,
-  contextDoctype,
-  contextName,
-  links,
-  isChatOpen = false,
-}: UseWhatsappChatAdaptersParams) {
-  const queryClient = useQueryClient();
-  const currentUser = currentUserEmail ?? "";
-  const activeLeadName = contextName;
-  const activeLeadDoctype = contextDoctype;
+In cases 2–5, when the chosen record isn't the base, `links` = `[base, ...links without the chosen record]`.
 
-  const { showSuccess } = useNotification();
+When loading the template list, the widget sends every record in context as `references` (active lead, active task, base record, then each link, de-duplicated), so the server can return templates and sample values for all of them.
 
-  const sendWhatsAppMessageMutation = useSendWhatsAppMessage();
-  const sendWhatsAppTemplateMutation = useSendWhatsAppTemplate();
-  const uploadFileMutation = useUploadFile();
-  const sendReadReceiptMutation = useSendReadReceipt();
+> ⚠️ The active lead and the active task are not added to `links` automatically. If a message must also appear on the lead's or task's timeline, include those records in `links` yourself. See [Known limitations](#-known-limitations).
 
-  const messageListeners = React.useRef<Set<(msg: Message) => void>>(new Set());
-  const handleSocketMessage = React.useCallback((data: SocketMessage) => {
-    if (data.event !== "whatsapp_message") return;
-    const doc = data.message as SocketMessageDoc;
-    const transformed = transformToMessage(doc);
-    if (transformed) {
-      messageListeners.current.forEach((cb) => cb(transformed));
-    }
+---
+
+## 📝 Templates
+
+- The 📄 button in the composer opens the template picker. Templates load the first time the picker opens in each chat session.
+- Each card shows the category and a text preview (`*header*`, body, footer).
+- Choosing a template puts the composer in **template mode**:
+  - The text box is locked and shows the preview.
+  - A chip shows the template name, with 👁 to preview the full card and ✕ to go back to a normal message.
+  - **Send** calls `sendTemplate` with the template's API `name` (for example `hello_world-en_US`).
+- Template messages in history render as cards: a text, image or document header (media opens in a new tab), the body, the footer, and the CTA buttons.
+
+---
+
+## 📎 Attachments
+
+- The 📎 button opens a file picker for images, video, audio, `.pdf`, `.doc` and `.docx`. Several files can be picked at once.
+- Files are uploaded straight away (`uploadFiles`, or `uploadFile` once per file) and appear as chips under the composer, with a thumbnail for images. A file whose upload returns no URL is dropped.
+- On send, the uploaded `file_url`s go as `attach: [{ file }]`. The content type (`image` / `video` / `audio` / `document`) is taken from the **first** file.
+- `attach` presets (paths already on the server) are added when the chat opens.
+- In history, `image` messages render `<img src="{apiBaseUrl}/{attach}">`, and other types render a download link.
+
+The widget does not check file size or type beyond the picker's `accept` list. Your backend must enforce WhatsApp's media limits.
+
+---
+
+## 🔌 Real-time updates (sockets)
+
+The widget never opens a socket itself. Your app owns the Socket.io connection and passes events in, in one of two ways.
+
+### Option A: pass-through (`socketPayload`)
+
+Pass the latest event as a prop. This is the simplest option and is what the CRM uses.
+
+```tsx
+const [lastEvent, setLastEvent] = useState<SocketPayload>();
+const { isConnected } = useSocket((evt) => {
+  if (evt.event === "whatsapp_message") setLastEvent(evt);
+});
+
+<WhatsappChatTrigger {...props} socketPayload={lastEvent} socketConnected={isConnected} />;
+```
+
+`message` should be the raw `WhatsApp Message` doc that Frappe publishes with `publish_realtime("whatsapp_message", doc)`. The widget turns it into a `Message` with `transformToMessage`.
+
+### Option B: `socketAdapter` (recommended for busy pages)
+
+Expose subscribe and unsubscribe functions. Each event reaches the widget exactly once, which avoids missing events when React batches state updates.
+
+```ts
+const listeners = useRef(new Set<(m: Message) => void>());
+
+useSocket((evt) => {
+  if (evt.event !== "whatsapp_message") return;
+  const msg = transformToMessage(evt.message); // your own copy, or one matching the package's
+  if (msg) listeners.current.forEach((cb) => cb(msg));
+});
+
+const socketAdapter = useMemo<SocketAdapter>(() => ({
+  isConnected,
+  onMessage: (cb) => listeners.current.add(cb),
+  offMessage: (cb) => listeners.current.delete(cb),
+}), [isConnected]);
+```
+
+### What the widget does with an event
+
+- **Incoming, no status** → appended to the chat, marked read if the chat is open and `from === phone`, and counted on the unread badge.
+- **Incoming, with a status** → only updates the status of a message that is already shown.
+- **Outgoing** → replaces the pending `temp-…` bubble (the latest one sent, or one with the same text), or is appended if no bubble is pending. An event for a message already shown only updates its status.
+
+> ⚠️ The widget does not filter events by contact. Send it only the events for the record being shown, or a room scoped to that document. Otherwise another contact's messages can appear in the open chat. See [Known limitations](#-known-limitations).
+
+### Minimal `useSocket` example
+
+```ts
+import { useEffect, useRef, useState } from "react";
+import { io } from "socket.io-client";
+
+export function useSocket(onEvent: (e: { event: string; message?: any }) => void) {
+  const handler = useRef(onEvent);
+  handler.current = onEvent;
+  const [isConnected, setConnected] = useState(false);
+
+  useEffect(() => {
+    const socket = io(SOCKET_URL, {
+      transports: ["websocket", "polling"],
+      reconnection: true,
+      extraHeaders: { Authorization: `token ${TOKEN}` },
+    });
+    socket.on("connect", () => setConnected(true));
+    socket.on("disconnect", () => setConnected(false));
+    socket.on("whatsapp_message", (doc) => handler.current({ event: "whatsapp_message", message: doc }));
+    return () => { socket.disconnect(); };
   }, []);
 
-  const { isConnected } = useSocket(handleSocketMessage, { onlyEvents: ["whatsapp_message"] });
-
-  const socketAdapter: SocketAdapter = useMemo(
-    () => ({
-      isConnected,
-      onMessage: (cb: (msg: Message) => void) => {
-        messageListeners.current.add(cb);
-      },
-      offMessage: (cb: (msg: Message) => void) => {
-        messageListeners.current.delete(cb);
-      },
-    }),
-    [isConnected]
-  );
-
-  const config: WhatsappWidgetConfig = useMemo(
-    () => ({
-      currentUser,
-      activeLeadName,
-      activeLeadDoctype,
-      activeTaskName,
-      activeTaskDoctype,
-      doctype: referenceDoctype ?? "Contact",
-      refName: referenceName ?? "",
-      phone: toPhone ?? "",
-      links,
-      isChatOpen: !!isChatOpen,
-      apiBaseUrl: API_BASE_URL,
-    }),
-    [
-      currentUser,
-      activeLeadName,
-      activeLeadDoctype,
-      activeTaskName,
-      activeTaskDoctype,
-      referenceDoctype,
-      referenceName,
-      toPhone,
-      links,
-      isChatOpen,
-    ]
-  );
-
-  const apiAdapter: WhatsappWidgetApiAdapter = useMemo(
-    () => ({
-      getMessages: async (doctype: string, name: string) => {
-        const res = await queryClient.fetchQuery({
-          queryKey: ["whatsapp-messages", doctype, name],
-          queryFn: () => getWhatsAppMessages({ reference_doctype: doctype, reference_name: name }),
-          staleTime: 0,
-        });
-        const msgs = res.message || [];
-        return msgs.map(transformToMessage).filter((m): m is Message => !!m);
-      },
-      sendMessage: async (payload) => {
-        const res = await sendWhatsAppMessageMutation.mutateAsync(payload);
-        return { name: res?.name };
-      },
-      sendTemplate: async (payload) => {
-        return sendWhatsAppTemplateMutation.mutateAsync(payload);
-      },
-      getTemplates: async (refs: TemplateListReference[]) => {
-        const res = await queryClient.fetchQuery({
-          queryKey: ["whatsappTemplates", refs],
-          queryFn: () =>
-            getWhatsAppTemplates(
-              refs.map((r) => ({
-                reference_doctype: r.reference_doctype,
-                reference_name: r.reference_name,
-              }))
-            ),
-          staleTime: 0,
-        });
-        return res.message?.data || [];
-      },
-      uploadFile: async (file: File) => {
-        const res = await uploadFileMutation.mutateAsync(file);
-        const uploadRes = res as unknown as { message?: { file_url: string } };
-        return { file_url: uploadRes.message?.file_url || "" };
-      },
-      sendReadReceipt: async (messageName: string) => {
-        await sendReadReceiptMutation.mutateAsync({ name: messageName });
-      },
-      getUnreadCount: async () => {
-        if (!currentUser) return 0;
-        try {
-          const res = await queryClient.fetchQuery({
-            queryKey: ["incomingCommunication", currentUser],
-            queryFn: () => getIncomingCommunications(currentUser),
-            staleTime: 0,
-          });
-          const data = res.message?.data || [];
-          const count = data.find((c) => c.type === "whatsapp" && (c.from === toPhone || c.customer === referenceName))?.counts ?? 0;
-          return count;
-        } catch {
-          return 0;
-        }
-      },
-      onMessageSent: () => {
-        queryClient.invalidateQueries({ queryKey: ["incomingCommunication", currentUser] });
-        setTimeout(() => {
-          messageListeners.current.forEach((cb) =>
-            cb({
-              name: `sys-${Date.now()}`,
-              is_outbound: 1,
-              message: "",
-              sender: currentUser,
-              creation: new Date().toISOString(),
-            } as Message)
-          );
-        }, 1000);
-      },
-      showNotification: (title: string, message: string) => {
-        if (!isChatOpen) {
-          showSuccess(title, message);
-        }
-      },
-    }),
-    [
-      sendWhatsAppMessageMutation,
-      sendWhatsAppTemplateMutation,
-      uploadFileMutation,
-      sendReadReceiptMutation,
-      queryClient,
-      currentUser,
-      toPhone,
-      referenceName,
-      showSuccess,
-      isChatOpen,
-    ]
-  );
-
-  return {
-    config,
-    apiAdapter,
-    socketAdapter,
-  };
+  return { isConnected };
 }
 ```
 
-### Implementation Example
+---
 
-Once you have your hook ready, you simply pass the `config`, `apiAdapter`, and `socketAdapter` down to the widget components:
+## ✅ Read receipts and unread badges
+
+**Read receipts** (`sendReadReceipt(name)`):
+
+- When the chat opens and history has loaded, the latest incoming message without a status is marked read. The server is expected to mark earlier ones too.
+- While the chat is open, each new incoming socket message from `phone` is marked read.
+
+**Unread badge** (trigger components):
+
+- Loaded from `getIncomingCommunications(currentUserEmail)` into a shared store, on mount and after every successful send.
+- The count for this trigger is the `whatsapp` entry where `from === phone` or `customer === refName`. With neither set, it is the total across all contacts.
+- New incoming socket messages add to the count. Opening the chat clears it locally.
+- When the chat is closed, an incoming message calls `showNotification("WhatsApp", "New message received from …")`, de-duplicated per message for 60 s.
+
+In internal mode the badge needs both `token` and `currentUserEmail`.
+
+---
+
+## 🔔 Notifications
+
+The package ships no toast library. It calls your callbacks instead:
+
+| Callback           | Called for |
+| ------------------ | ---------- |
+| `showNotification` | Message or template sent, and new incoming messages (triggers, chat closed). |
+| `showWarning`      | Warnings. |
+| `showError`        | Send or template failure, upload failure. |
+
+With no callbacks in internal mode, success messages fall back to the browser `Notification` API (only if permission was already granted), then to `console.log`.
+
+Wrap the callbacks in `useCallback`. A new function on every render rebuilds the adapter on every render.
+
+---
+
+## 🧠 Advanced: custom adapters
+
+Implement `WhatsappWidgetApiAdapter` to use your own HTTP client, caching (React Query) or backend:
+
+```ts
+interface WhatsappWidgetApiAdapter {
+  getMessages(doctype: string, name: string): Promise<Message[]>;      // return newest first; the widget reverses it
+  sendMessage(payload: {
+    to: string; message: string;
+    attach?: string | { file: string }[]; content_type?: string;
+    reference_doctype?: string; reference_name?: string;
+    links?: WhatsappChatLink[];
+  }): Promise<{ name?: string }>;
+  sendTemplate(payload: {
+    to: string; template: string;
+    reference_doctype?: string; reference_name?: string;
+    links?: WhatsappChatLink[];
+  }): Promise<any>;
+  getTemplates(refs: TemplateListReference[]): Promise<WhatsAppTemplateResponse[]>;
+  uploadFile(file: File): Promise<{ file_url: string }>;
+  uploadFiles?(files: File[]): Promise<{ file_urls: string[] }>;     // preferred when present
+  sendReadReceipt(messageName: string): Promise<void>;
+  getUnreadCount(phone: string, referenceName: string): Promise<number>;
+  getIncomingCommunications?(user: string): Promise<IncomingCommunication[]>; // powers the badge store
+  onMessageSent?(): void;
+  showNotification?(title: string, message: string): void;
+  showWarning?(title: string, message: string): void;
+  showError?(title: string, message: string): void;
+}
+```
+
+`getMessages` must return `Message` objects. Statuses are numbers: `1` Sent, `2` Failed, `3` Delivered, `4` Read, `5` Pending. The package uses `transformToMessage` internally to map a raw Frappe doc. It isn't exported, so copy its mapping if you need the same behaviour.
+
+### Example with React Query
 
 ```tsx
-import React from "react";
-import { useWhatsappChatAdapters } from "./hooks/useWhatsappChatAdapters"; // Your custom hook
-import { WhatsappChat } from "react-whatsapp-chat-package";
-import "react-whatsapp-chat-package/styles.css";
+"use client";
+import { useMemo } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  WhatsappChat,
+  type WhatsappWidgetApiAdapter,
+  type WhatsappWidgetConfig,
+} from "react-whatsapp-chat-package";
+import { api } from "@/services/whatsapp"; // your API functions
 
-const MyChatWidget = ({ phone, refName, refDoctype }) => {
-  const { config, apiAdapter, socketAdapter } = useWhatsappChatAdapters({
-    referenceDoctype: refDoctype,
-    referenceName: refName,
-    toPhone: phone,
-    isChatOpen: true, // or control via state
-  });
+export function ChatPanel({ phone, contact, lead, links }: Props) {
+  const qc = useQueryClient();
+
+  const config = useMemo<WhatsappWidgetConfig>(() => ({
+    currentUser: session.email,
+    doctype: "Contact",
+    refName: contact,
+    phone,
+    links,
+    activeLeadName: lead,
+    isChatOpen: true,
+    apiBaseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+  }), [contact, phone, links, lead]);
+
+  const apiAdapter = useMemo<WhatsappWidgetApiAdapter>(() => ({
+    getMessages: (dt, name) =>
+      qc.fetchQuery({ queryKey: ["wa-messages", dt, name], queryFn: () => api.getMessages(dt, name), staleTime: 0 }),
+    sendMessage: (p) => api.sendMessage(p),
+    sendTemplate: (p) => api.sendTemplate(p),
+    getTemplates: (refs) => api.getTemplates(refs),
+    uploadFile: (f) => api.uploadFile(f),
+    uploadFiles: (fs) => api.uploadFiles(fs),
+    sendReadReceipt: (name) => api.sendReadReceipt(name),
+    getUnreadCount: async () => 0,
+    getIncomingCommunications: (user) => api.getIncomingCommunications(user),
+    onMessageSent: () => qc.invalidateQueries({ queryKey: ["incoming-communications"] }),
+    showError: (_t, m) => toast.error(m),
+  }), [qc]);
 
   return (
-    <div style={{ height: "600px" }}>
+    <div style={{ height: 600 }}>
       <WhatsappChat config={config} apiAdapter={apiAdapter} socketAdapter={socketAdapter} />
     </div>
   );
-};
-```
-
-The package is UI-agnostic regarding notifications. Instead of bundling a toast library, it provides "slots" for you to connect your own application's alert system.
-
-The following props follow the signature: `(title: string, message: string) => void`.
-
-- **`showNotification`**: Called on successful message send or template selection.
-- **`showWarning`**: Called for validation errors or "Upload in Progress" states.
-- **`showError`**: Called for API or server-side failures.
-
-### Example with custom handlers
-
-```tsx
-<WhatsappChatTrigger
-  {...props}
-  showNotification={(title, message) => myToast.show({ title, body: message, type: "success" })}
-  showError={(title, message) => myToast.show({ title, body: message, type: "error" })}
-/>
-```
-
-## 🔌 Socket Implementation Example
-
-To use the **Socket Bridge**, your application's `useSocket` hook should be structured to handle the standard widget `SocketMessage` format. Here is a concise example of how to implement it:
-
-```tsx
-// your-app/hooks/useSocket.ts
-import { useEffect, useRef } from "react";
-import { Socket, io } from "socket.io-client";
-
-export interface SocketMessage {
-  event: string;
-  message?: any;
 }
-
-export const useSocket = (onMessage: (data: SocketMessage) => void) => {
-  const onMessageRef = useRef(onMessage);
-
-  // Keep the handler ref up to date
-  useEffect(() => {
-    onMessageRef.current = onMessage;
-  }, [onMessage]);
-
-  useEffect(() => {
-    // Note: Reconnection and transports are key for a stable connection
-    const socket = io("YOUR_SOCKET_URL", {
-      reconnection: true,
-      reconnectionAttempts: 10,
-      reconnectionDelay: 2000,
-      transports: ["websocket", "polling"],
-      extraHeaders: {
-        Authorization: `token ${YOUR_TOKEN}`,
-      },
-    });
-
-    // Standard event listener
-    socket.onAny((eventName, data) => {
-      onMessageRef.current({
-        event: eventName,
-        message: data,
-      });
-    });
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-};
 ```
+
+---
+
+## 🪝 Hooks and low-level exports
+
+| Export | Purpose |
+| ------ | ------- |
+| `WhatsappChatProvider` | Context and store provider. Props: `apiAdapter`, `config`, `socketAdapter?`, `socketPayload?`. |
+| `WhatsappChatWidget` / `WhatsappSendMessageWidget` | The bare UIs, which must sit inside `WhatsappChatProvider`. Use them to build your own shell. |
+| `useWhatsappWidgetLogic()` | Everything the UI uses (messages, send, templates, uploads, socket handling). Must sit inside the provider. |
+| `useWhatsappChatConfig()` | Reads `{ config, apiAdapter, socketAdapter, socketPayload }` from context. |
+| `useWhatsappWidgetZustand(selector)` | Selects from the instance store (`messages`, `isLoading`, `error`, and actions). |
+| `useWhatsappBadgeCount(apiAdapter, socketAdapter?, socketPayload?, phone?, refName?, isOpen?, userEmail?)` | The unread count used by `WhatsappChatTrigger`, for a custom button. |
+| `WhatsAppMessageSkeleton`, `WhatsAppTemplateSkeleton` | The loading placeholders. |
+
+Example of a custom shell:
+
+```tsx
+<WhatsappChatProvider apiAdapter={apiAdapter} config={config} socketAdapter={socketAdapter}>
+  <MyHeader />
+  <WhatsappChatWidget />
+</WhatsappChatProvider>
+```
+
+---
+
+## 🧾 TypeScript types
+
+Everything in `src/types/whatsapp.ts` is exported. The main ones:
+
+- `Message`: the message shape the UI renders. Important fields: `name`, `message`, `is_outbound` (0/1), `status` (1–5), `attach`, `content_type`, `message_type` (`"Template"`), `header`, `footer`, `template_links`, `header_type`, `sample`, `from`.
+- `WhatsAppMessage` (an API row) and `SocketMessageDoc` (a socket doc): the raw backend shapes.
+- `WhatsAppTemplateResponse`: a template list item (`name`, `template`, `header`, `footer`, `for_doctype`, `links`, `category`, …).
+- `WhatsappWidgetConfig`, `WhatsappWidgetApiAdapter`, `SocketAdapter`, `SocketPayload`.
+- `WhatsappChatLink` (`{ link_doctype, link_name }`), `WhatsappAttachItem` (`{ file }`), `TemplateListReference`, `IncomingCommunication`.
+- Component props: `WhatsappChatComponentProps`, `WhatsappSendMessageProps`.
+
+---
+
+## 🌐 Backend API contract
+
+In internal mode, the widget calls these Frappe methods on `baseURL`:
+
+| Purpose | Method & path | Parameters |
+| ------- | ------------- | ---------- |
+| History | `GET /api/method/crm_integration.crm_integration.api.whatsapp.get_whatsapp_messages` | `reference_doctype`, `reference_name` → `{ message: WhatsAppMessage[] }` (newest first) |
+| Send message | `POST …api.whatsapp.create_whatsapp_message` | query string: `to`, `message`, `reference_doctype`, `reference_name`, `attach` (JSON), `content_type`, `links` (JSON) |
+| Templates | `GET …api.whatsapp.get_templates_list` | `references` (JSON array of `{ reference_doctype, reference_name }`) → `{ message: { data: WhatsAppTemplateResponse[] } }` |
+| Send template | `POST …api.whatsapp.send_whatsapp_template` | form data: `to`, `template`, `reference_doctype`, `reference_name`, `links` (JSON) |
+| Read receipt | `GET …api.whatsapp.send_read_receipt` | `name` |
+| Upload | `POST …api.whatsapp.upload_files_from_portal` | multipart `file0`, `file1`, … → `{ message: { file_url } \| [{ file_url }] }` |
+| Unread data | `GET /api/method/crm_integration.crm_integration.api.dashboard.get_incoming_communications` | `user` → `{ message: { data: IncomingCommunication[] } }` |
+
+Real-time event: `whatsapp_message`, whose payload is the `WhatsApp Message` doc (`name`, `type` Incoming/Outgoing, `from`, `to`, `message`, `status`, `attach`, `content_type`, `message_type`, `template`, `header`, `footer`, `links`, `reference_doctype`, `reference_name`, …).
+
+---
 
 ## 🎨 Styling
 
-Import the styles in your main entry point (App.tsx or layout.tsx):
+- One stylesheet: `react-whatsapp-chat-package/styles.css` (also listed under `"style"` in `package.json`). The ES build also imports it automatically.
+- Most classes start with `whatsapp-` (`.whatsapp-chat-container`, `.whatsapp-header`, `.whatsapp-message-list`, `.whatsapp-input-container`, `.whatsapp-send-btn`, `.whatsapp-template-message-card`, `.whatsapp-trigger-badge`, …). Override them in your own CSS.
+- Message bubbles use `.message-bubble.sent` and `.message-bubble.received`. The modal uses `.raw-modal-overlay`, `.raw-modal-container`, `.raw-modal-header` and `.raw-modal-body`, with `z-index: 9999`. Other 8848 Digital widgets use some of the same names, so the stylesheet loaded last wins.
 
-```javascript
-import "react-whatsapp-chat-package/styles.css";
-```
+---
 
-## 📦 Building for Production
+## 🧪 Compatibility
+
+- **React 19:** supported and used in production by the CRM frontend.
+- **React 18:** listed in `peerDependencies`, but the current build bundles React 19's JSX runtime, so React 18 apps fail at render ("Objects are not valid as a React child"). Use React 19 until the build marks `react/jsx-runtime` as external.
+- **Browsers:** evergreen browsers. Uses `Array.prototype.findLast` (Chrome 97+, Safari 15.4+, Firefox 104+).
+- **Module formats:** ESM (`dist/index.mjs`, imports its CSS) and UMD/CJS (`dist/index.js`, which needs a manual CSS import). Types are in `dist/index.d.ts`.
+
+---
+
+## ⚠️ Known limitations
+
+These are known issues in 1.0.19, to be fixed in later releases:
+
+1. **Socket events are not filtered by contact.** Hosts should only pass events for the record on screen (see [Real-time updates](#-real-time-updates-sockets)).
+2. **Pending-message swap:** an outgoing socket event can replace the wrong pending bubble when several are pending, or when a send has failed. Reloading the chat shows the correct history.
+3. **Lead/task links:** active lead and task records aren't added to `links` automatically. Some template paths send only `links`.
+4. **Unmatched template `for_doctype`** falls back to the primary record instead of blocking the send.
+5. **Message text goes in the query string** of `create_whatsapp_message`. Very long messages, especially in non-Latin scripts, can exceed the server's URL length limit.
+6. **Enter anywhere in the composer sends**, including while a composer button has focus.
+7. **Mixed attachments** (for example an image and a PDF) all get the first file's content type.
+8. **No client-side file size or type validation.**
+9. **The send-only widget marks incoming messages read** while it is open.
+10. **React 18** is not currently supported (see [Compatibility](#-compatibility)).
+
+---
+
+## 🏗️ Development
 
 ```bash
-cd react-whatsapp-chat-package
-npm run build
+npm install        # also runs "prepare" → npm run build
+npm run dev        # Vite dev server
+npm run build      # tsc type-check + Vite library build into dist/
+npx tsc --noEmit   # type-check only
 ```
+
+Layout:
+
+```
+src/
+  api/whatsappApi.ts              axios client for the Frappe endpoints
+  components/                     WhatsappChat, triggers, MessageList, MessageInput, template UI
+    common/                       Modal, FileUpload, Icons, Skeleton
+    skeleton/                     loading skeletons
+  context/WhatsappChatContext.tsx provider, per-instance store, shared badge store
+  hooks/
+    useWhatsappWidgetLogic.ts     send, templates, uploads, socket handling, read receipts
+    useWhatsappWidgetResolution.ts props → config / adapters
+    useDefaultWhatsappAdapter.ts  internal-mode adapter
+    useWhatsappBadgeCount.ts      unread count
+  styles/whatsapp-chat.css
+  types/whatsapp.ts               public types
+  utils/                          message transform, link parsing, adapter wrapping
+```
+
+`dist/` is committed to the repository and is what npm publishes. Rebuild with `npm run build` before you bump the version.
+
+### Releasing
+
+1. Make the change on a `fix/react-whatsapp-chat-widget-vX.Y.Z` branch.
+2. `npm run build` and commit `dist/`.
+3. `npm version patch`.
+4. `npm publish`, then open a PR to `master`.
+
+---
+
+## 📜 Changelog
+
+| Version | Changes |
+| ------- | ------- |
+| **1.0.19** | Message list scroll fix: scroll-to-bottom is deferred until after layout. |
+| **1.0.18** | Chat scroll issue fixed. |
+| **1.0.17** | `activeTaskName`/`activeTaskDoctype` props. The template's `for_doctype` now picks the reference record and links. Template lookup sends lead, task, base and link references. |
+| **1.0.16** | Quick-message (send-only) UI fixes. |
+| **1.0.14 – 1.0.15** | CSS import fixes (`styles.css` export, `vite-plugin-lib-inject-css`). React version and peer dependency changes. |
+| **1.0.13** | UI refresh, multiple file attachments, README update. |
+| **1.0.11 – 1.0.12** | Read-receipt fixes. |
+| **1.0.9 – 1.0.10** | Send-only `WhatsappSendMessage` component. |
+| **1.0.0** | First standalone release. |
+
+---
 
 ## 📄 License
 
-MIT
+MIT © 8848 Digital
